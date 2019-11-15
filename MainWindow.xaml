@@ -1,28 +1,45 @@
 ﻿<Window x:Class="DiabloSimulator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DiabloSimulator"
-				xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Diablo Simulator" Height="200" Width="250">
+        Title="Diablo Simulator" Height="350" Width="300">
 	<Window.Resources>
 		<sys:String x:Key="strWindow">Hello, Window world!</sys:String>
 	</Window.Resources>
-	<Grid Background="LightBlue">
+	<Grid Background="AntiqueWhite">
 
 		<StackPanel HorizontalAlignment="Center" Margin="10">
 			<TextBlock TextWrapping="Wrap">
-				Welcome to the Diablo Simulator! Please choose a class:
+				Welcome to the Diablo Simulator! Stay a while and listen.
+			</TextBlock>
+			<Separator></Separator>
+			<TextBlock TextWrapping="Wrap">
+			Choose a class:
 			</TextBlock>
 			<DockPanel>
-				<StackPanel Margin="10" DockPanel.Dock ="Top">
-					<RadioButton>Warrior</RadioButton>
-					<RadioButton>Rogue</RadioButton>
-					<RadioButton>Sorcerer</RadioButton>
+				<StackPanel DockPanel.Dock ="Top">
+					<!-- Class options -->
+					<StackPanel Margin="10" >
+						<RadioButton>Warrior</RadioButton>
+						<RadioButton>Rogue</RadioButton>
+						<RadioButton>Sorcerer</RadioButton>
+					</StackPanel>
+					<Separator></Separator>
+					<!-- Character name -->
+					<TextBlock TextWrapping="Wrap">
+					Name your character:
+					</TextBlock>
+					<TextBox Margin="10"></TextBox>
+					<Separator></Separator>
+					<!-- Start button -->
+					<TextBlock TextWrapping="Wrap">
+					Click below to enter the world of Sanctuary.
+					</TextBlock>
 				</StackPanel>
-				<Button DockPanel.Dock ="Bottom" Name="btnClickMe" Click="btnClickMe_Click">Enter the world of Sanctuary!</Button>
+				<Button DockPanel.Dock ="Bottom" Name="btnClickMe" Click="btnClickMe_Click" Margin="10" >Start</Button>
 			</DockPanel>
 		</StackPanel>
 	</Grid>

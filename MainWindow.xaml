@@ -5,12 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Diablo Simulator" Height="300" Width="300">
-	<Window.Resources>
-		<sys:String x:Key="strWindow">Hello, Window world!</sys:String>
-	</Window.Resources>
+        Title="Diablo Simulator" Height="350" Width="300">
 	<Grid Background="DarkGray">
-
 		<StackPanel HorizontalAlignment="Center" Margin="10">
 			<TextBlock TextWrapping="Wrap">
 				Welcome to the Diablo Simulator! Stay a while and listen.

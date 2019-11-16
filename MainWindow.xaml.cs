@@ -23,13 +23,31 @@ namespace DiabloSimulator
         public MainWindow()
         {
             InitializeComponent();
+            btnStart.Click += btnStart_Click;
+            rbClassWarrior.Click += rbClassWarrior_Click;
+            rbClassRogue.Click += rbClassRogue_Click;
+            rbClassSorcerer.Click += rbClassSorcerer_Click;
         }
 
-        private void btnClickMe_Click(object sender, RoutedEventArgs e)
+        private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            //lbResult.Items.Add(pnlMain.FindResource("strPanel").ToString());
-            lbResult.Items.Add(this.FindResource("strWindow").ToString());
-            lbResult.Items.Add(Application.Current.FindResource("strApp").ToString());
+            Hero.current.name = tbxHeroName.Text;
+            MessageBox.Show("Abandon all hope, all ye who enter here.", "Notification");
+        }
+
+        private void rbClassWarrior_Click(object sender, RoutedEventArgs e)
+        {
+            Hero.current.heroClass = HeroClass.Warrior;
+        }
+
+        private void rbClassRogue_Click(object sender, RoutedEventArgs e)
+        {
+            Hero.current.heroClass = HeroClass.Rogue;
+        }
+
+        private void rbClassSorcerer_Click(object sender, RoutedEventArgs e)
+        {
+            Hero.current.heroClass = HeroClass.Sorcerer;
         }
     }
 }

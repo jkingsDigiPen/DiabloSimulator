@@ -22,6 +22,6 @@ namespace DiabloSimulator
         public string name;
         public HeroClass heroClass;
 
-        public static Hero current;
+        public static Hero current = new Hero();
     }
 }

@@ -21,6 +21,8 @@ namespace DiabloSimulator.Windows
         {
             Hero.current.name = tbxHeroName.Text;
             MessageBox.Show("Abandon all hope, all ye who enter here.", "Notification");
+            Window gw = new GameWindow();
+            gw.Show();
         }
 
         private void rbClassWarrior_Click(object sender, RoutedEventArgs e)

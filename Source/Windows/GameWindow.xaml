@@ -5,9 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="DIABLO SIMULATOR" Height="600" Width="800"
-				Style="{StaticResource CustomWindowStyle}"
-				Foreground="GhostWhite">
-	<Grid Background="#191919">
-		
+				Style="{StaticResource CustomWindowStyle}">
+	<!-- MASTER PANEL -->
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="50"/>
+		</Grid.RowDefinitions>
+		<!-- UPPER LEFT PANEL -->
+		<Grid Grid.Column="0">
+			<!-- Grid Format -->
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="200"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<!-- Content -->
+			<Label Grid.Row="0" HorizontalAlignment="Center">CHARACTER</Label>
+			<ListBox Grid.Row="1">
+				<ListBoxItem>NAME name</ListBoxItem>
+			</ListBox>
+		</Grid>
+		<!-- UPPER RIGHT PANEL -->
+		<Grid Grid.Column="1">
+			<!-- Grid Format -->
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<!-- Content -->
+			<Label Grid.Row="0" HorizontalAlignment="Center">EQUIPMENT</Label>
+			<Label Grid.Row="1" HorizontalAlignment="Center">INVENTORY</Label>
+			<Label Grid.Row="2" HorizontalAlignment="Center">WEAPON</Label>
+		</Grid>
 	</Grid>
 </Window>

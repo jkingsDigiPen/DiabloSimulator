@@ -4,45 +4,208 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Diablo Simulator" Height="600" Width="800"
+        Title="Diablo Simulator" Height="768" Width="1024"
 				Style="{StaticResource CustomWindowStyle}">
 	<!-- MASTER PANEL -->
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="50"/>
+			<RowDefinition Height="150"/>
+			<RowDefinition Height="200"/>
+			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
+
 		<!-- UPPER LEFT PANEL -->
-		<Grid Grid.Column="0">
-			<!-- Grid Format -->
-			<Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="200"/>
-				<RowDefinition Height="auto"/>
-			</Grid.RowDefinitions>
-			<!-- Content -->
-			<Label Grid.Row="0" HorizontalAlignment="Center">CHARACTER</Label>
-			<ListBox Grid.Row="1">
-				<ListBoxItem>NAME name</ListBoxItem>
-			</ListBox>
-		</Grid>
+		<Border Grid.Column="0" Grid.Row="0">
+			<Grid>
+				<!-- Grid Format -->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
+				<!-- Content -->
+				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="20" 
+						 FontWeight="SemiBold">Character</Label>
+				<ListBox Grid.Row="1" Name="lbStats"></ListBox>
+				<Grid Grid.Row="2">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontSize="16" 
+							 FontWeight="SemiBold">Offense</Label>
+					<Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">100</Label>
+					<Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" FontSize="16" 
+							 FontWeight="SemiBold">Defense</Label>
+					<Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">48</Label>
+				</Grid>
+			</Grid>
+		</Border>
+
 		<!-- UPPER RIGHT PANEL -->
-		<Grid Grid.Column="1">
-			<!-- Grid Format -->
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
-			<!-- Content -->
-			<Label Grid.Row="0" HorizontalAlignment="Center">EQUIPMENT</Label>
-			<Label Grid.Row="1" HorizontalAlignment="Center">INVENTORY</Label>
-			<Label Grid.Row="2" HorizontalAlignment="Center">WEAPON</Label>
-		</Grid>
+		<Border Grid.Column="1" Grid.Row="0">
+			<Grid>
+				<!-- Grid Format -->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<!-- Equipment Panel -->
+				<Grid Grid.Row="0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="100"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="250"/>
+						<ColumnDefinition Width="250"/>
+						<ColumnDefinition Width="250"/>
+					</Grid.ColumnDefinitions>
+					<Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" 
+								 FontSize="18" FontWeight="SemiBold">Equipment</Label>
+					<ListBox Name="lbEquip0" Grid.Row="1" Grid.Column="0"></ListBox>
+					<ListBox Name="lbEquip1" Grid.Row="1" Grid.Column="1"></ListBox>
+					<ListBox Name="lbEquip2" Grid.Row="1" Grid.Column="2"></ListBox>
+				</Grid>
+				<!-- Inventory Panel -->
+				<Grid Grid.Row="1">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
+					<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+								 FontWeight="SemiBold">Inventory</Label>
+					<ListBox Grid.Row="1" Name="lbInventory"></ListBox>
+					<Grid Grid.Row="2">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<Button Grid.Column="0">Equip</Button>
+						<Button Grid.Column="1">Keep</Button>
+						<Button Grid.Column="2">Junk</Button>
+						<Button Grid.Column="3">Discard / Sell</Button>
+					</Grid>
+				</Grid>
+			</Grid>
+		</Border>
+
+		<!-- MID LEFT PANEL -->
+		<Border Grid.Column="0" Grid.Row="1">
+			<Grid>
+				<!-- Grid Format -->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<!-- Content -->
+				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+							 FontWeight="SemiBold">Health</Label>
+				<Label Grid.Row="1" HorizontalAlignment="Center">83 / 100</Label>
+				<Label Grid.Row="2" HorizontalAlignment="Center">3 Potions Remaining</Label>
+				<Button Grid.Row="3">Use Potion</Button>
+			</Grid>
+		</Border>
+
+		<!-- MID RIGHT PANEL -->
+		<Border Grid.Column="1" Grid.Row="1">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+							 FontWeight="SemiBold">Weapon</Label>
+				<Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">Dirk</Label>
+				<Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center">Dagger (common)</Label>
+				<Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center">2 - 5 fire damage</Label>
+				<Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center">10% critical hit chance</Label>
+			</Grid>
+		</Border>
+		
+		<!-- LOWER LEFT PANEL -->
+		<Border Grid.Column="0" Grid.Row="2">
+			<Grid>
+				<!-- Grid Format -->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<!-- Content -->
+				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+						 FontWeight="SemiBold">Monster Stats</Label>
+				<Label Grid.Row="1" HorizontalAlignment="Center">Fallen Shaman</Label>
+				<Label Grid.Row="2" HorizontalAlignment="Center">(Common)</Label>
+				<Label Grid.Row="3" HorizontalAlignment="Center">76% Health</Label>
+			</Grid>
+		</Border>
+
+		<!-- LOWER RIGHT PANEL -->
+		<Border Grid.Column="1" Grid.Row="2">
+			<Grid>
+				<!-- Grid Format -->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<!-- Content -->
+				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+						 FontWeight="SemiBold">Events</Label>
+				<ListBox Grid.Row="1" Name="lbEvents"></ListBox>
+			</Grid>
+		</Border>
+
+		<!-- LOWEST LEFT PANEL -->
+		<Border Grid.Column="0" Grid.Row="3">
+			<Grid>
+				<!-- Grid Format -->
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<!-- Content -->
+				<Label Grid.Column="0" HorizontalAlignment="Center" FontSize="16">300 Exp until next level</Label>
+			</Grid>
+		</Border>
+
+		<!-- LOWEST RIGHT PANEL -->
+		<Border Grid.Column="1" Grid.Row="3">
+			<Grid>
+				<!-- Grid Format -->
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<!-- Content -->
+				<Button Grid.Column="0">Explore / Attack</Button>
+				<Button Grid.Column="1">Defend</Button>
+				<Button Grid.Column="2">Flee / Town Portal</Button>
+			</Grid>
+		</Border>
 	</Grid>
 </Window>

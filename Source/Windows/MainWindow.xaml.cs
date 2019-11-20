@@ -11,6 +11,8 @@ namespace DiabloSimulator.Windows
         public MainWindow()
         {
             InitializeComponent();
+
+            // Event handlers
             btnStart.Click += btnStart_Click;
             rbClassWarrior.Click += rbClassWarrior_Click;
             rbClassRogue.Click += rbClassRogue_Click;
@@ -19,10 +21,17 @@ namespace DiabloSimulator.Windows
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            Hero.current.name = tbxHeroName.Text;
-            MessageBox.Show("Abandon all hope, all ye who enter here.", "Notification");
-            Window gw = new GameWindow();
-            gw.Show();
+            // Check to make sure form is filled
+            if(tbxHeroName.Text.Trim() != "")
+            {
+                Hero.current.name = tbxHeroName.Text;
+                Window gw = new GameWindow();
+                gw.Show();
+            }
+            else
+            {
+                MessageBox.Show("Please enter a name for your character.", "Notification");
+            }
         }
 
         private void rbClassWarrior_Click(object sender, RoutedEventArgs e)

@@ -5,13 +5,14 @@
              StartupUri="Windows\MainWindow.xaml">
 	<Application.Resources>
 		<!--the brushes used in the template (use these to customize the window look along with the window style (see the bottom of this file)-->
-		<SolidColorBrush x:Key="WindowColor" Color="Red"/>
-		<SolidColorBrush x:Key="WindowBackColor" Color="DarkGray"/>
-		<SolidColorBrush x:Key="WindowForeColor" Color="WhiteSmoke"/>
+		<SolidColorBrush x:Key="WindowColor" Color="GhostWhite"/>
+		<SolidColorBrush x:Key="WindowBackColor" Color="#191919"/>
+		<SolidColorBrush x:Key="WindowForeColor" Color="GhostWhite"/>
 		<SolidColorBrush x:Key="WindowForeHighlightColor" Color="WhiteSmoke"/>
-		<SolidColorBrush x:Key="WindowButtonColor" Color="DarkGray"/>
-		<SolidColorBrush x:Key="WindowButtonOverColor" Color="Gray"/>
+		<SolidColorBrush x:Key="WindowButtonColor" Color="DarkRed"/>
+		<SolidColorBrush x:Key="WindowButtonOverColor" Color="Red"/>
 		<SolidColorBrush x:Key="WindowButtonPressedColor" Color="DarkSlateGray"/>
+		<SolidColorBrush x:Key="WindowToolbarColor" Color="#303030"/>
 
 		<!--The window template and it's components -->
 
@@ -22,7 +23,7 @@
 		<Style TargetType="{x:Type Button}" x:Key="WindowButton">
 			<Setter Property="Height" Value="25"/>
 			<Setter Property="Width" Value="25"/>
-			<Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+			<Setter Property="Background" Value="{StaticResource WindowBackColor}"/>
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
 			<Setter Property="Template">
 				<Setter.Value>
@@ -54,14 +55,54 @@
 			<Setter Property="Width" Value="25"/>
 		</Style>
 
+		<Style TargetType="{x:Type Button}">
+			<Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border Background="{TemplateBinding Background}">
+							<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+								<Setter Property="Foreground" Value="{StaticResource WindowColor}"/>
+							</Trigger>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Background" Value="{StaticResource WindowButtonOverColor}"/>
+								<Setter Property="Foreground" Value="{StaticResource WindowForeHighlightColor}"/>
+							</Trigger>
+							<Trigger Property="IsPressed" Value="True">
+								<Setter Property="Background" Value="{StaticResource WindowButtonPressedColor}"/>
+								<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<Style TargetType="{x:Type Grid}">
+			<Setter Property="Background" Value="{StaticResource WindowBackColor}"/>
+		</Style>
+
+		<Style TargetType="{x:Type Label}">
+			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+		</Style>
+
+		<Style TargetType="{x:Type TextBlock}">
+			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+		</Style>
+
 		<ControlTemplate x:Key="WindowTemplate" TargetType="{x:Type Window}">
-			<Grid Background="{StaticResource WindowBackColor}">
-				<Grid>
+			<Grid Background="{StaticResource WindowToolbarColor}">
+				<Grid Background="{StaticResource WindowToolbarColor}">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="30"/>
 						<RowDefinition Height="*"/>
 					</Grid.RowDefinitions>
-					<Grid Grid.Row="0" Margin="5,0,5,0">
+					<Grid Grid.Row="0" Margin="5,0,5,0" Background="{StaticResource WindowToolbarColor}">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="auto"/>
 							<ColumnDefinition Width="*"/>
@@ -134,7 +175,6 @@
 			<Setter Property="Background" Value="SlateGray"/>
 			<Setter Property="BorderBrush" Value="DarkGray"/>
 			<Setter Property="BorderThickness" Value="7"/>
-			<Setter Property="Foreground" Value="DarkRed"/>
 			<Setter Property="Template" Value="{StaticResource WindowTemplate}"/>
 		</Style>
 	</Application.Resources>

@@ -5,9 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="DIABLO SIMULATOR" Height="375" Width="300"
-				Style="{StaticResource CustomWindowStyle}"
-				Foreground="GhostWhite">
-	<Grid Background="#191919">
+				Style="{StaticResource CustomWindowStyle}">
+	<Grid>
 		<StackPanel HorizontalAlignment="Center" Margin="10">
 			<TextBlock TextWrapping="Wrap">
 				Welcome to the Diablo Simulator! Stay a while and listen.
@@ -20,9 +19,9 @@
 				<StackPanel DockPanel.Dock ="Top">
 					<!-- Class options -->
 					<StackPanel Margin="10">
-						<RadioButton Name="rbClassWarrior" IsChecked="True" Foreground="GhostWhite">Warrior</RadioButton>
-						<RadioButton Name="rbClassRogue" Foreground="GhostWhite">Rogue</RadioButton>
-						<RadioButton Name="rbClassSorcerer" Foreground="GhostWhite">Sorcerer</RadioButton>
+						<RadioButton Name="rbClassWarrior" IsChecked="True">Warrior</RadioButton>
+						<RadioButton Name="rbClassRogue">Rogue</RadioButton>
+						<RadioButton Name="rbClassSorcerer">Sorcerer</RadioButton>
 					</StackPanel>
 					<Separator></Separator>
 					<!-- Character name -->
@@ -36,7 +35,7 @@
 					Click below to enter the world of Sanctuary.
 					</TextBlock>
 				</StackPanel>
-				<Button Background="Red" Foreground="GhostWhite" DockPanel.Dock ="Bottom" Name="btnStart" Margin="10" >
+				<Button DockPanel.Dock ="Bottom" Name="btnStart" Margin="10" >
 					Start</Button>
 			</DockPanel>
 		</StackPanel>

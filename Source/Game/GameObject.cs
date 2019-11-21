@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------------
 //
-// File Name:	Hero.cs
+// File Name:	GameObject.cs
 // Author(s):	Jeremy Kings
 // Project:		DiabloSimulator
 //
@@ -12,31 +12,27 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public enum HeroClass
-    {
-        Warrior,
-        Rogue,
-        Sorcerer,
-    }
-
-    public class Hero : GameObject
+    public abstract class GameObject
     {
         //------------------------------------------------------------------------------
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public Hero(string name_ = "", HeroClass heroClass_ = HeroClass.Warrior)
-            : base(name_, heroClass_.ToString(), 1)
+        public GameObject(string name_, string archetype_ = "", uint level_ = 1)
         {
-            heroClass = heroClass_;
+            name = name_;
+            archetype = archetype_;
+            level = level_;
+            stats = new StatTable();
         }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public HeroClass heroClass;
-
-        public static Hero current = new Hero();
+        public string name;
+        public string archetype;
+        public uint level;
+        public StatTable stats;
     }
 }

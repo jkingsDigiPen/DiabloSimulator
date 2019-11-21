@@ -76,6 +76,7 @@
 					<ListBox Name="lbEquip1" Grid.Row="1" Grid.Column="1"></ListBox>
 					<ListBox Name="lbEquip2" Grid.Row="1" Grid.Column="2"></ListBox>
 				</Grid>
+				
 				<!-- Inventory Panel -->
 				<Grid Grid.Row="1">
 					<Grid.RowDefinitions>

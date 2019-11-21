@@ -17,6 +17,7 @@
 			</TextBlock>
 			<DockPanel>
 				<StackPanel DockPanel.Dock ="Top">
+					
 					<!-- Class options -->
 					<StackPanel Margin="10">
 						<RadioButton Name="rbClassWarrior" IsChecked="True">Warrior</RadioButton>
@@ -24,12 +25,14 @@
 						<RadioButton Name="rbClassSorcerer">Sorcerer</RadioButton>
 					</StackPanel>
 					<Separator></Separator>
+					
 					<!-- Character name -->
 					<TextBlock TextWrapping="Wrap">
 					Name your character:
 					</TextBlock>
 					<TextBox Margin="10" Name="tbxHeroName">The Vagabond</TextBox>
 					<Separator></Separator>
+					
 					<!-- Start button -->
 					<TextBlock TextWrapping="Wrap">
 					Click below to enter the world of Sanctuary.
@@ -37,6 +40,7 @@
 				</StackPanel>
 				<Button DockPanel.Dock ="Bottom" Name="btnStart" Margin="10" >
 					Start</Button>
+				
 			</DockPanel>
 		</StackPanel>
 	</Grid>

@@ -4,6 +4,9 @@
 						 xmlns:sw="clr-namespace:DiabloSimulator.StyleableWindow"
              StartupUri="Windows\MainWindow.xaml">
 	<Application.Resources>
+		<!--Fonts packaged with the application-->
+		<FontFamily x:Key="VollkornSC">pack://application:,,,/Fonts/#Vollkorn SC</FontFamily>
+
 		<!--the brushes used in the template (use these to customize the window look along with the window style (see the bottom of this file)-->
 		<SolidColorBrush x:Key="WindowColor" Color="GhostWhite"/>
 		<SolidColorBrush x:Key="WindowBackColor" Color="#191919"/>
@@ -15,7 +18,6 @@
 		<SolidColorBrush x:Key="WindowToolbarColor" Color="#303030"/>
 
 		<!--The window template and it's components -->
-
 		<sw:WindowMinimizeCommand x:Key="MinimizeCommand"></sw:WindowMinimizeCommand>
 		<sw:WindowMaximizeCommand x:Key="MaximizeCommand"></sw:WindowMaximizeCommand>
 		<sw:WindowCloseCommand x:Key="CloseCommand"></sw:WindowCloseCommand>
@@ -235,7 +237,7 @@
 			<Setter Property="BorderBrush" Value="DarkGray"/>
 			<Setter Property="BorderThickness" Value="7"/>
 			<Setter Property="Template" Value="{StaticResource WindowTemplate}"/>
-			<Setter Property="FontFamily" Value="Vollkorn SC"/>
+			<Setter Property="FontFamily" Value="{StaticResource VollkornSC}"/>
 			<Setter Property="FontSize" Value="14"/>
 		</Style>
 	</Application.Resources>

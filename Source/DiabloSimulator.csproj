@@ -17,7 +17,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\VollkornSC-Black.ttf" />
+    <None Remove="Fonts\VollkornSC-Bold.ttf" />
+    <None Remove="Fonts\VollkornSC-Regular.ttf" />
+    <None Remove="Fonts\VollkornSC-SemiBold.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\VollkornSC-Black.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\VollkornSC-Bold.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\VollkornSC-Regular.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\VollkornSC-SemiBold.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

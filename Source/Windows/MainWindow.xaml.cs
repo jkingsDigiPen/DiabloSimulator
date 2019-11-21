@@ -1,4 +1,12 @@
-﻿using System.Windows;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	MainWindow.xaml.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System.Windows;
 using DiabloSimulator.Game;
 
 namespace DiabloSimulator.Windows

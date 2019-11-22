@@ -39,14 +39,14 @@ namespace DiabloSimulator.Windows
         {
             lbStats.Items.Add("Name: " + Hero.current.name);
             lbStats.Items.Add("Class: " + Hero.current.heroClass);
-            lbStats.Items.Add("Level: " + 1);
+            lbStats.Items.Add("Level: " + Hero.current.stats.Level);
             lbStats.Items.Add("");
 
             lbStats.Items.Add("Core Stats");
-            lbStats.Items.Add("Str: " + 10);
-            lbStats.Items.Add("Dex: " + 10);
-            lbStats.Items.Add("Int: " + 10);
-            lbStats.Items.Add("Vit: " + 10);
+            lbStats.Items.Add("Strength: " + Hero.current.stats.GetModifiedValue("Strength"));
+            lbStats.Items.Add("Dexterity: " + Hero.current.stats.GetModifiedValue("Dexterity"));
+            lbStats.Items.Add("Intelligence: " + Hero.current.stats.GetModifiedValue("Intelligence"));
+            lbStats.Items.Add("Vitality: " + Hero.current.stats.GetModifiedValue("Vitality"));
         }
 
         private void PopulateEquipment()

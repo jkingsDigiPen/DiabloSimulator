@@ -19,28 +19,40 @@ namespace DiabloSimulator.Windows
         public GameWindow()
         {
             InitializeComponent();
-            App.Current.MainWindow.Close();
-            App.Current.MainWindow = this;
+            Application.Current.MainWindow.Close();
+            Application.Current.MainWindow = this;
 
-            // Add stats to list box
-            PopulateStats();
+            // Register event handlers
+            btnExploreAttack.Click += RefreshUI;
+            btnExploreAttack.Click += btnExploreAttack_Click;
 
-            // Add health information
-            PopulateHealth();
-
-            // Add equipment to list box
-            PopulateEquipment();
-
-            // Add inventory to list box
-            PopulateInventory();
+            // Force UI refresh
+            RefreshUI(null, null);
 
             // Add events to list box
             PopulateEvents();
+
+            // Initialize other vars
+            Turns = 0;
+        }
+
+        // Whether we are in a combat event
+        public bool InCombat
+        {
+            get; set;
+        }
+
+        // The number of turns taken so far in the game
+        public uint Turns
+        {
+            get; set;
         }
 
         private void PopulateStats()
         {
             ref var stats = ref Hero.current.stats;
+
+            lbStats.Items.Clear();
 
             lbStats.Items.Add("Name: " + Hero.current.name);
             lbStats.Items.Add("Class: " + Hero.current.archetype);
@@ -69,6 +81,10 @@ namespace DiabloSimulator.Windows
 
         private void PopulateEquipment()
         {
+            lbEquip0.Items.Clear();
+            lbEquip1.Items.Clear();
+            lbEquip2.Items.Clear();
+
             lbEquip0.Items.Add("");
             lbEquip1.Items.Add("Head: " + "Cap");
             lbEquip2.Items.Add("Amulet: " + "Halcyon's Ascent");
@@ -86,28 +102,32 @@ namespace DiabloSimulator.Windows
             lbEquip2.Items.Add("Off-Hand: " + "Buckler");
         }
 
-        private void PopulateInventory()
-        {
-            lbInventory.Items.Add("Buckler " + "(Off-Hand)");
-            lbInventory.Items.Add("Cap " + "(Head)");
-            lbInventory.Items.Add("Halcyon's Ascent " + "(Amulet)");
-
-            lbInventory.Items.Add("Hammering Pants " + "(Pants)");
-            lbInventory.Items.Add("Heavy Belt " + "(Belt)");
-            lbInventory.Items.Add("Hellfire Ring " + "(Ring)");
-
-            lbInventory.Items.Add("Leather Bots " + "(Boots)");
-            lbInventory.Items.Add("Quilted Armor " + "(Chest)");
-            lbInventory.Items.Add("Stone of Jordan " + "(Ring)");
-
-            lbInventory.Items.Add("Thin Gloves " + "(Gloves)");
-            lbInventory.Items.Add("Wirt's Leg " + "(Weapon)");  
-        }
-
         private void PopulateEvents()
         {
             lbEvents.Items.Add("Welcome to Sanctuary!");
             lbEvents.Items.Add("You are in the town of Tristram, a place of relative safety.");
+        }
+
+        // Refreshes dynamic elements of the UI
+        private void RefreshUI(object sender, RoutedEventArgs e)
+        {
+            // Add stats to list box
+            PopulateStats();
+
+            // Add health information
+            PopulateHealth();
+
+            // Add equipment to list box
+            PopulateEquipment();
+
+            // Add inventory to list box
+            Hero.current.inventory.Display(lbInventory);
+        }
+
+        private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
+        {
+            ++Turns;
+            lbEvents.Items.Add("Explore/attack was clicked. Turns taken: " + Turns + ".");
         }
     }
 }

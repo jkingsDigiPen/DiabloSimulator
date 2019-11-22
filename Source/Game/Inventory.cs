@@ -34,7 +34,8 @@ namespace DiabloSimulator.Game
 
         public void DiscardItem(ref Item item)
         {
-            items.Remove(item);
+            if(item.junkStatus != JunkStatus.Favorite)
+                items.Remove(item);
         }
 
         public void Display(ListBox itemListView)
@@ -42,7 +43,13 @@ namespace DiabloSimulator.Game
             itemListView.Items.Clear();
             foreach(Item item in items)
             {
-                itemListView.Items.Add(item.name + " (" + item.rarity + " " + item.archetype + ")");
+                string itemView = item.name + " (" + item.rarity + " " + item.archetype + ")";
+                if(item.junkStatus != JunkStatus.None)
+                {
+                    itemView += ", marked as " + item.junkStatus;
+                }
+
+                itemListView.Items.Add(itemView);
             }
         }
 

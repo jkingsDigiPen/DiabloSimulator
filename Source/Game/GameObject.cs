@@ -18,12 +18,11 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public GameObject(string name_, string archetype_ = "", uint level_ = 1)
+        public GameObject(string name_, string archetype_ = "")
         {
             name = name_;
             archetype = archetype_;
-            level = level_;
-            stats = new StatTable();
+            stats = null;
         }
 
         //------------------------------------------------------------------------------
@@ -32,7 +31,6 @@ namespace DiabloSimulator.Game
 
         public string name;
         public string archetype;
-        public uint level;
         public StatTable stats;
     }
 }

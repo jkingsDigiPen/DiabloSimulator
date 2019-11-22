@@ -26,7 +26,7 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         public Hero(string name_ = "", HeroClass heroClass_ = HeroClass.Warrior)
-            : base(name_, heroClass_.ToString(), 1)
+            : base(name_, heroClass_.ToString())
         {
             heroClass = heroClass_;
         }

@@ -10,6 +10,9 @@ using System.Collections.Generic;
 
 namespace DiabloSimulator.Game
 {
+    using StatMap = Dictionary<string, float>;
+    using ModifierMap = Dictionary<ModifierType, HashSet<StatModifier>>;
+
     //------------------------------------------------------------------------------
     // Public Structures:
     //------------------------------------------------------------------------------
@@ -20,28 +23,39 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public StatTable()
+        public StatTable(uint level_ = 1, Dictionary<string, float> values_ = null, Dictionary<string, float> progression_ = null)
         {
-            values = new Dictionary<string, float>();
+            level = level_;
+            values = values_;
+            progression = progression_;
             modifiers = new Dictionary<string, Dictionary<ModifierType, HashSet<StatModifier>>>();
+        }
+
+        public float GetBaseValue(string name)
+        {
+            return values[name] + progression[name] * (level - 1);
         }
 
         public float GetModifiedValue(string name)
         {
-            float baseValue = values[name];
-            HashSet<StatModifier> addMods = modifiers[name][ModifierType.Additive];
-            foreach(StatModifier modifier in addMods)
+            float baseValue = GetBaseValue(name);
+            ModifierMap modMap;
+            if (modifiers.TryGetValue(name, out modMap))
             {
-                baseValue += modifier.modValue;
-            }
+                HashSet<StatModifier> addMods = modMap[ModifierType.Additive];
+                foreach (StatModifier modifier in addMods)
+                {
+                    baseValue += modifier.modValue;
+                }
 
-            HashSet<StatModifier> multMods = modifiers[name][ModifierType.Multiplicative];
-            float totalMult = 1.0f;
-            foreach (StatModifier modifier in multMods)
-            {
-                totalMult += modifier.modValue;
+                HashSet<StatModifier> multMods = modMap[ModifierType.Multiplicative];
+                float totalMult = 1.0f;
+                foreach (StatModifier modifier in multMods)
+                {
+                    totalMult += modifier.modValue;
+                }
+                baseValue *= totalMult;
             }
-            baseValue *= totalMult;
 
             return baseValue;
         }
@@ -61,11 +75,25 @@ namespace DiabloSimulator.Game
             modifiers[mod.statName][mod.type].Add(mod);
         }
 
+        public void RemoveModifier(StatModifier mod)
+        {
+            modifiers[mod.statName][mod.type].Remove(mod);
+        }
+
+        public uint Level 
+        { 
+            get { return level; } 
+            set { level = value; }
+        }
+
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private Dictionary<string, float> values;
-        private Dictionary<string, Dictionary<ModifierType, HashSet<StatModifier>>> modifiers;
+        private uint level;
+
+        StatMap values;
+        StatMap progression;
+        private Dictionary<string, ModifierMap> modifiers;
     }
 }

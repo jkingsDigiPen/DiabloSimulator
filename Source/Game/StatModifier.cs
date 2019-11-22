@@ -24,12 +24,22 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public StatModifier(string statName_, string modSource_, float modValue_, ModifierType type_)
+        // Constructor for modifier
+        public StatModifier(string statName_, string modSource_,
+            ModifierType type_, float modValue_, StatTable modSourceTable_ = null)
         {
             statName = statName_;
             modSource = modSource_;
-            modValue = modValue_;
             type = type_;
+
+            modValue = modValue_;
+            modSourceTable = modSourceTable_;
+        }
+
+        // Retrieve modifier value
+        public float ModValue
+        {
+            get { return modSourceTable == null ? modValue : modSourceTable.GetModifiedValue(modSource) * modValue; }
         }
 
         public static bool operator ==(StatModifier lhs, StatModifier rhs)
@@ -63,7 +73,13 @@ namespace DiabloSimulator.Game
 
         public string statName;
         public string modSource;
-        public float modValue;
         public ModifierType type;
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private float modValue;
+        private StatTable modSourceTable;
     }
 }

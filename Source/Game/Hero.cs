@@ -12,31 +12,26 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public enum HeroClass
-    {
-        Warrior,
-        Rogue,
-        Sorcerer,
-    }
-
     public class Hero : GameObject
     {
         //------------------------------------------------------------------------------
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public Hero(string name_ = "", HeroClass heroClass_ = HeroClass.Warrior)
-            : base(name_, heroClass_.ToString())
+        public Hero(string name_ = "", string heroClass = "Warrior")
+            : base(name_, heroClass)
         {
-            heroClass = heroClass_;
+            inventory = new Inventory();
+            equipment = new Equipment();
         }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public HeroClass heroClass;
-
         public static Hero current = new Hero();
+
+        public Inventory inventory;
+        public Equipment equipment;
     }
 }

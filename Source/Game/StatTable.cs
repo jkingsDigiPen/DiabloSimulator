@@ -23,17 +23,26 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public StatTable(uint level_ = 1, Dictionary<string, float> values_ = null, Dictionary<string, float> progression_ = null)
+        public StatTable(uint level_ = 1)
         {
             level = level_;
-            values = values_;
-            progression = progression_;
+            values = new StatMap();
+            progressions = new StatMap();
             modifiers = new Dictionary<string, Dictionary<ModifierType, HashSet<StatModifier>>>();
+        }
+
+        public float this[string key]
+        {
+            get { return GetModifiedValue(key); }
+            set { SetBaseValue(key, value); }
         }
 
         public float GetBaseValue(string name)
         {
-            return values[name] + progression[name] * (level - 1);
+            float progression = 0.0f;
+            progressions.TryGetValue(name, out progression);
+
+            return values[name] + progression * (level - 1);
         }
 
         public float GetModifiedValue(string name)
@@ -42,19 +51,25 @@ namespace DiabloSimulator.Game
             ModifierMap modMap;
             if (modifiers.TryGetValue(name, out modMap))
             {
-                HashSet<StatModifier> addMods = modMap[ModifierType.Additive];
-                foreach (StatModifier modifier in addMods)
+                HashSet<StatModifier> addMods;
+                if (modMap.TryGetValue(ModifierType.Additive, out addMods))
                 {
-                    baseValue += modifier.modValue;
+                    foreach (StatModifier modifier in addMods)
+                    {
+                        baseValue += modifier.ModValue;
+                    }
                 }
 
-                HashSet<StatModifier> multMods = modMap[ModifierType.Multiplicative];
-                float totalMult = 1.0f;
-                foreach (StatModifier modifier in multMods)
+                HashSet<StatModifier> multMods;
+                if (modMap.TryGetValue(ModifierType.Multiplicative, out multMods))
                 {
-                    totalMult += modifier.modValue;
+                    float totalMult = 1.0f;
+                    foreach (StatModifier modifier in multMods)
+                    {
+                        totalMult += modifier.ModValue;
+                    }
+                    baseValue *= totalMult;
                 }
-                baseValue *= totalMult;
             }
 
             return baseValue;
@@ -72,12 +87,24 @@ namespace DiabloSimulator.Game
 
         public void AddModifier(StatModifier mod)
         {
+            ModifierMap modMap = null;
+            if(!modifiers.TryGetValue(mod.statName, out modMap))
+            {
+                modifiers[mod.statName] = new ModifierMap();
+                modifiers[mod.statName][mod.type] = new HashSet<StatModifier>();
+            }
+
             modifiers[mod.statName][mod.type].Add(mod);
         }
 
         public void RemoveModifier(StatModifier mod)
         {
             modifiers[mod.statName][mod.type].Remove(mod);
+        }
+
+        public void SetProgression(string name, float progression)
+        {
+            progressions[name] = progression;
         }
 
         public uint Level 
@@ -92,8 +119,8 @@ namespace DiabloSimulator.Game
 
         private uint level;
 
-        StatMap values;
-        StatMap progression;
+        private StatMap values;
+        private StatMap progressions;
         private Dictionary<string, ModifierMap> modifiers;
     }
 }

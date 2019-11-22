@@ -22,7 +22,7 @@ namespace DiabloSimulator.Game
         {
             name = name_;
             archetype = archetype_;
-            stats = null;
+            stats = new StatTable();
         }
 
         //------------------------------------------------------------------------------

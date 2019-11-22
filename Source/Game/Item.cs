@@ -39,7 +39,7 @@ namespace DiabloSimulator.Game
     {
         None,
         Junk,
-        Keep,
+        Favorite,
     }
 
     public class Item : GameObject

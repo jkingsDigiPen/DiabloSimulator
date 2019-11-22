@@ -25,6 +25,9 @@ namespace DiabloSimulator.Windows
             // Add stats to list box
             PopulateStats();
 
+            // Add health information
+            PopulateHealth();
+
             // Add equipment to list box
             PopulateEquipment();
 
@@ -37,16 +40,31 @@ namespace DiabloSimulator.Windows
 
         private void PopulateStats()
         {
+            ref var stats = ref Hero.current.stats;
+
             lbStats.Items.Add("Name: " + Hero.current.name);
-            lbStats.Items.Add("Class: " + Hero.current.heroClass);
-            lbStats.Items.Add("Level: " + Hero.current.stats.Level);
+            lbStats.Items.Add("Class: " + Hero.current.archetype);
+            lbStats.Items.Add("Level: " + stats.Level);
             lbStats.Items.Add("");
 
             lbStats.Items.Add("Core Stats");
-            lbStats.Items.Add("Strength: " + Hero.current.stats.GetModifiedValue("Strength"));
-            lbStats.Items.Add("Dexterity: " + Hero.current.stats.GetModifiedValue("Dexterity"));
-            lbStats.Items.Add("Intelligence: " + Hero.current.stats.GetModifiedValue("Intelligence"));
-            lbStats.Items.Add("Vitality: " + Hero.current.stats.GetModifiedValue("Vitality"));
+            lbStats.Items.Add("Strength: " + stats.GetModifiedValue("Strength"));
+            lbStats.Items.Add("Dexterity: " + stats.GetModifiedValue("Dexterity"));
+            lbStats.Items.Add("Intelligence: " + stats.GetModifiedValue("Intelligence"));
+            lbStats.Items.Add("Vitality: " + stats.GetModifiedValue("Vitality"));
+        }
+
+        private void PopulateHealth()
+        {
+            ref var stats = ref Hero.current.stats;
+
+            // Ensure current is not above max
+            if (stats["CurrentHealth"] > stats["MaxHealth"])
+                stats["CurrentHealth"] = stats["MaxHealth"];
+
+            // Fill labels
+            lblHealth.Content = stats["CurrentHealth"].ToString() 
+                + " / " + stats["MaxHealth"].ToString();
         }
 
         private void PopulateEquipment()

@@ -32,5 +32,6 @@ namespace DiabloSimulator.Game
         public string name;
         public string archetype;
         public StatTable stats;
+        public string description;
     }
 }

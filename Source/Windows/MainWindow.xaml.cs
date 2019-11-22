@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 
 using System.Windows;
+using System.Windows.Controls;
 using DiabloSimulator.Game;
 using System.Collections.Generic;
 
@@ -20,13 +21,12 @@ namespace DiabloSimulator.Windows
         public MainWindow()
         {
             InitializeComponent();
-            Hero.current.heroClass = HeroClass.Warrior;
 
             // Event handlers
             btnStart.Click += btnStart_Click;
-            rbClassWarrior.Click += rbClassWarrior_Click;
-            rbClassRogue.Click += rbClassRogue_Click;
-            rbClassSorcerer.Click += rbClassSorcerer_Click;
+            rbClassWarrior.Click += rbClass_Click;
+            rbClassRogue.Click += rbClass_Click;
+            rbClassSorcerer.Click += rbClass_Click;
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
@@ -45,72 +45,68 @@ namespace DiabloSimulator.Windows
             }
         }
 
-        private void rbClassWarrior_Click(object sender, RoutedEventArgs e)
+        private void rbClass_Click(object sender, RoutedEventArgs e)
         {
-            Hero.current.heroClass = HeroClass.Warrior;
-        }
-
-        private void rbClassRogue_Click(object sender, RoutedEventArgs e)
-        {
-            Hero.current.heroClass = HeroClass.Rogue;
-        }
-
-        private void rbClassSorcerer_Click(object sender, RoutedEventArgs e)
-        {
-            Hero.current.heroClass = HeroClass.Sorcerer;
+            Hero.current.archetype = (sender as RadioButton).Content.ToString();
         }
 
         private void PopulateHeroStats()
         {
-            Dictionary<string, float> values = new Dictionary<string, float>();
-            Dictionary<string, float> progression = new Dictionary<string, float>();
+            ref StatTable stats = ref Hero.current.stats;
 
-            switch (Hero.current.heroClass)
+            switch (Hero.current.archetype)
             {
-                case HeroClass.Warrior:
+                case "Warrior":
                     // Set starting stats
-                    values["Strength"] = 10;
-                    values["Dexterity"] = 8;
-                    values["Intelligence"] = 8;
-                    values["Vitality"] = 9;
+                    stats["Strength"] = 10;
+                    stats["Dexterity"] = 8;
+                    stats["Intelligence"] = 8;
+                    stats["Vitality"] = 9;
 
                     // Set stat progression
-                    progression["Strength"] = 3;
-                    progression["Dexterity"] = 1;
-                    progression["Intelligence"] = 1;
-                    progression["Vitality"] = 2;
+                    stats.SetProgression("Strength", 3);
+                    stats.SetProgression("Dexterity", 1);
+                    stats.SetProgression("Intelligence", 1);
+                    stats.SetProgression("Vitality", 2);
                     break;
 
-                case HeroClass.Rogue:
+                case "Rogue":
                     // Set starting stats
-                    values["Strength"] = 8;
-                    values["Dexterity"] = 10;
-                    values["Intelligence"] = 8;
-                    values["Vitality"] = 9;
+                    stats["Strength"] = 8;
+                    stats["Dexterity"] = 10;
+                    stats["Intelligence"] = 8;
+                    stats["Vitality"] = 9;
 
                     // Set stat progression
-                    progression["Strength"] = 1;
-                    progression["Dexterity"] = 3;
-                    progression["Intelligence"] = 1;
-                    progression["Vitality"] = 2;
+                    stats.SetProgression("Strength", 1);
+                    stats.SetProgression("Dexterity", 3);
+                    stats.SetProgression("Intelligence", 1);
+                    stats.SetProgression("Vitality", 2);
                     break;
 
-                case HeroClass.Sorcerer:
+                case "Sorcerer":
                     // Set starting stats
-                    values["Strength"] = 8;
-                    values["Dexterity"] = 8;
-                    values["Intelligence"] = 10;
-                    values["Vitality"] = 9;
+                    stats["Strength"] = 8;
+                    stats["Dexterity"] = 8;
+                    stats["Intelligence"] = 10;
+                    stats["Vitality"] = 9;
 
                     // Set stat progression
-                    progression["Strength"] = 1;
-                    progression["Dexterity"] = 1;
-                    progression["Intelligence"] = 3;
-                    progression["Vitality"] = 2;
+                    stats.SetProgression("Strength", 1);
+                    stats.SetProgression("Dexterity", 1);
+                    stats.SetProgression("Intelligence", 3);
+                    stats.SetProgression("Vitality", 2);
                     break;
             }
 
-            Hero.current.stats = new StatTable(1, values, progression);
+            // Vitality gives 10 health per point
+            stats["MaxHealth"] = 0;
+            stats.AddModifier(new StatModifier("MaxHealth", "Vitality", 
+                ModifierType.Additive, 10, stats));
+
+            // Current health is initialized to max health
+            stats["CurrentHealth"] = stats["MaxHealth"];
+
         }
     }
 }

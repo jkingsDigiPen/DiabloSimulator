@@ -24,6 +24,14 @@ namespace DiabloSimulator.Windows
 
             // Register event handlers
             btnExploreAttack.Click += RefreshUI;
+            btnDefend.Click += RefreshUI;
+            btnUsePotion.Click += RefreshUI;
+            btnItemEquip.Click += RefreshUI;
+            btnItemJunk.Click += RefreshUI;
+            btnItemKeep.Click += RefreshUI;
+            btnItemDiscardSell.Click += RefreshUI;
+            btnUsePotion.Click += RefreshUI;
+
             btnExploreAttack.Click += btnExploreAttack_Click;
 
             // Force UI refresh
@@ -128,6 +136,7 @@ namespace DiabloSimulator.Windows
         {
             ++Turns;
             lbEvents.Items.Add("Explore/attack was clicked. Turns taken: " + Turns + ".");
+            svEvents.ScrollToBottom();
         }
     }
 }

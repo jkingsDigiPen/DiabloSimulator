@@ -168,7 +168,8 @@
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="75"/>
 						</Grid.ColumnDefinitions>
-						<Label Grid.Column="0" Padding="0">
+						<Label Grid.Column="0" sw:ControlDoubleClickBehavior.ExecuteCommand="{StaticResource CloseCommand}"                                               
+							sw:ControlDoubleClickBehavior.ExecuteCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Padding="0">
 							<Image DockPanel.Dock="Left" Style="{StaticResource WindowIcon}" Source="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}},Path=Icon}"                                         
                      Width="16"
 										 sw:ShowSystemMenuBehavior.TargetWindow="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"                                           
@@ -182,6 +183,8 @@
                       Foreground="{StaticResource WindowForeColor}"                                           
                       FontSize="16"
 											sw:WindowDragBehavior.LeftMouseButtonDrag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+											sw:ControlDoubleClickBehavior.ExecuteCommand="{StaticResource MaximizeCommand}"
+                      sw:ControlDoubleClickBehavior.ExecuteCommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
 											sw:ShowSystemMenuBehavior.TargetWindow="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                       sw:ShowSystemMenuBehavior.RightButtonShow="true">
 						</Label>

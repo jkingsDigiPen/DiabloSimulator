@@ -177,7 +177,9 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 						 FontWeight="SemiBold">Events</Label>
-				<ListBox Grid.Row="1" Name="lbEvents"></ListBox>
+				<ScrollViewer Grid.Row="1" Name="svEvents">
+					<ListBox Name="lbEvents"></ListBox>
+				</ScrollViewer>
 			</Grid>
 		</Border>
 

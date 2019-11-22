@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace DiabloSimulator.Game
 {
@@ -20,7 +21,7 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        Inventory()
+        public Inventory()
         {
             goldAmount = 0;
             items = new List<Item>();
@@ -34,6 +35,15 @@ namespace DiabloSimulator.Game
         public void DiscardItem(ref Item item)
         {
             items.Remove(item);
+        }
+
+        public void Display(ListBox itemListView)
+        {
+            itemListView.Items.Clear();
+            foreach(Item item in items)
+            {
+                itemListView.Items.Add(item.name + " (" + item.rarity + " " + item.archetype + ")");
+            }
         }
 
         //------------------------------------------------------------------------------

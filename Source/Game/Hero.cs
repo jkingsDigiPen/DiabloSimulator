@@ -6,6 +6,8 @@
 //
 //------------------------------------------------------------------------------
 
+using System.Windows.Controls;
+
 namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------
@@ -28,8 +30,6 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
-
-        public static Hero current = new Hero();
 
         public Inventory inventory;
         public Equipment equipment;

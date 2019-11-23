@@ -12,7 +12,10 @@ namespace DiabloSimulator.StyleableWindow
             return true;
         }
 
+        // Disable unused event warning
+        #pragma warning disable
         public event EventHandler CanExecuteChanged;
+        #pragma warning restore
 
         public void Execute(object parameter)
         {

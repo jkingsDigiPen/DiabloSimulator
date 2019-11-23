@@ -78,11 +78,13 @@ namespace DiabloSimulator.Game
         public void IncreaseBaseValue(string name, float value)
         {
             values[name] += value;
+            OnPropertyChanged("Property");
         }
 
         public void SetBaseValue(string name, float value)
         {
             values[name] = value;
+            OnPropertyChanged("Property");
         }
 
         public void AddModifier(StatModifier mod)

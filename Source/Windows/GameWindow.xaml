@@ -31,7 +31,7 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="20" 
 						 FontWeight="SemiBold">Character</Label>
-				<ListBox Grid.Row="1" Name="lbStats"></ListBox>
+				<ListBox Grid.Row="1" Name="lbStats" ItemsSource="{Binding HeroStatList, UpdateSourceTrigger=PropertyChanged}"></ListBox>
 				<Grid Grid.Row="2">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*"/>
@@ -117,12 +117,23 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 							 FontWeight="SemiBold">Health</Label>
-				<Label Name="lblHealth" Grid.Row="1" HorizontalAlignment="Center">83 / 100</Label>
-				<Label Grid.Row="2" HorizontalAlignment="Center">3 Potions Remaining</Label>
+				<Label Name="lblHealth" Grid.Row="1" HorizontalAlignment="Center" FontSize="16">
+					<TextBlock>
+						<TextBlock.Text>
+							<MultiBinding StringFormat="{}{0} / {1}">
+								<Binding Path="HeroCurrentHealth"/>
+								<Binding Path="HeroMaxHealth"/>
+							</MultiBinding>
+						</TextBlock.Text>
+					</TextBlock>
+				</Label>
+				<Label Grid.Row="2" HorizontalAlignment="Center" FontSize="14">
+					<TextBlock Text="{Binding HeroPotions, StringFormat={}{0} potions remaining}"></TextBlock>
+				</Label>
 				<Button Grid.Row="3" Name="btnUsePotion">Use Potion</Button>
 			</Grid>
 		</Border>
-
+		
 		<!-- MID RIGHT PANEL -->
 		<Border Grid.Column="1" Grid.Row="1">
 			<Grid>

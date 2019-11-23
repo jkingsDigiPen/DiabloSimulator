@@ -11,13 +11,21 @@ using DiabloSimulator.Game;
 
 namespace DiabloSimulator.Windows
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     public partial class GameWindow : Window
     {
-        public GameWindow()
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
+        public GameWindow(ViewModel viewModel_)
         {
+            viewModel = viewModel_;
+            DataContext = viewModel;
+
             InitializeComponent();
             Application.Current.MainWindow.Close();
             Application.Current.MainWindow = this;
@@ -25,12 +33,11 @@ namespace DiabloSimulator.Windows
             // Register event handlers
             btnExploreAttack.Click += RefreshUI;
             btnDefend.Click += RefreshUI;
-            btnUsePotion.Click += RefreshUI;
+            btnUsePotion.Click += btnUsePotion_Click;
             btnItemEquip.Click += RefreshUI;
             btnItemJunk.Click += RefreshUI;
             btnItemKeep.Click += RefreshUI;
             btnItemDiscardSell.Click += RefreshUI;
-            btnUsePotion.Click += RefreshUI;
 
             btnExploreAttack.Click += btnExploreAttack_Click;
 
@@ -42,6 +49,9 @@ namespace DiabloSimulator.Windows
 
             // Initialize other vars
             Turns = 0;
+
+            // TO DO: REMOVE THIS
+            viewModel.HeroPotions = 3;
         }
 
         // Whether we are in a combat event
@@ -56,36 +66,9 @@ namespace DiabloSimulator.Windows
             get; set;
         }
 
-        private void PopulateStats()
-        {
-            ref var stats = ref Hero.current.stats;
-
-            lbStats.Items.Clear();
-
-            lbStats.Items.Add("Name: " + Hero.current.name);
-            lbStats.Items.Add("Class: " + Hero.current.archetype);
-            lbStats.Items.Add("Level: " + stats.Level);
-            lbStats.Items.Add("");
-
-            lbStats.Items.Add("Core Stats");
-            lbStats.Items.Add("Strength: " + stats.GetModifiedValue("Strength"));
-            lbStats.Items.Add("Dexterity: " + stats.GetModifiedValue("Dexterity"));
-            lbStats.Items.Add("Intelligence: " + stats.GetModifiedValue("Intelligence"));
-            lbStats.Items.Add("Vitality: " + stats.GetModifiedValue("Vitality"));
-        }
-
-        private void PopulateHealth()
-        {
-            ref var stats = ref Hero.current.stats;
-
-            // Ensure current is not above max
-            if (stats["CurrentHealth"] > stats["MaxHealth"])
-                stats["CurrentHealth"] = stats["MaxHealth"];
-
-            // Fill labels
-            lblHealth.Content = stats["CurrentHealth"].ToString() 
-                + " / " + stats["MaxHealth"].ToString();
-        }
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
 
         private void PopulateEquipment()
         {
@@ -119,17 +102,11 @@ namespace DiabloSimulator.Windows
         // Refreshes dynamic elements of the UI
         private void RefreshUI(object sender, RoutedEventArgs e)
         {
-            // Add stats to list box
-            PopulateStats();
-
-            // Add health information
-            PopulateHealth();
-
             // Add equipment to list box
             PopulateEquipment();
 
             // Add inventory to list box
-            Hero.current.inventory.Display(lbInventory);
+            viewModel.HeroInventory.Display(lbInventory);
         }
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
@@ -137,6 +114,19 @@ namespace DiabloSimulator.Windows
             ++Turns;
             lbEvents.Items.Add("Explore/attack was clicked. Turns taken: " + Turns + ".");
             svEvents.ScrollToBottom();
+
+            ++viewModel.HeroLevel;
         }
+
+        private void btnUsePotion_Click(object sender, RoutedEventArgs e)
+        {
+            --viewModel.HeroPotions;
+        }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private readonly ViewModel viewModel;
     }
 }

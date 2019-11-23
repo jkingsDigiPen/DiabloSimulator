@@ -30,7 +30,7 @@
 					<TextBlock TextWrapping="Wrap">
 					Name your character:
 					</TextBlock>
-					<TextBox Margin="10" Name="tbxHeroName">The Vagabond</TextBox>
+					<TextBox Margin="10" Name="tbxHeroName" Text="{Binding HeroName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 					<Separator></Separator>
 					
 					<!-- Start button -->

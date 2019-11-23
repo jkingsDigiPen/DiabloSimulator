@@ -9,18 +9,26 @@
 using System.Windows;
 using System.Windows.Controls;
 using DiabloSimulator.Game;
-using System.Collections.Generic;
 
 namespace DiabloSimulator.Windows
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     public partial class MainWindow : Window
     {
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
         public MainWindow()
         {
             InitializeComponent();
+
+            // Create view model
+            viewModel = new ViewModel();
+            DataContext = viewModel;
 
             // Event handlers
             btnStart.Click += btnStart_Click;
@@ -29,14 +37,17 @@ namespace DiabloSimulator.Windows
             rbClassSorcerer.Click += rbClass_Click;
         }
 
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             // Check to make sure form is filled
-            if(tbxHeroName.Text.Trim() != "")
+            if(viewModel.HeroName.Trim() != "")
             {
-                Hero.current.name = tbxHeroName.Text;
                 PopulateHeroStats();
-                Window gw = new GameWindow();
+                Window gw = new GameWindow(viewModel);
                 gw.Show();
             }
             else
@@ -47,14 +58,14 @@ namespace DiabloSimulator.Windows
 
         private void rbClass_Click(object sender, RoutedEventArgs e)
         {
-            Hero.current.archetype = (sender as RadioButton).Content.ToString();
+            viewModel.HeroClass = (sender as RadioButton).Content.ToString();
         }
 
         private void PopulateHeroStats()
         {
-            ref StatTable stats = ref Hero.current.stats;
+            StatTable stats = viewModel.HeroStats;
 
-            switch (Hero.current.archetype)
+            switch (viewModel.HeroClass)
             {
                 case "Warrior":
                     // Set starting stats
@@ -108,5 +119,11 @@ namespace DiabloSimulator.Windows
             stats["CurrentHealth"] = stats["MaxHealth"];
 
         }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private readonly ViewModel viewModel;
     }
 }

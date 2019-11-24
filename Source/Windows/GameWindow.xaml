@@ -62,23 +62,8 @@
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<!-- Equipment Panel -->
-				<Grid Grid.Row="0">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="100"/>
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition MinWidth="250"/>
-						<ColumnDefinition MinWidth="250"/>
-						<ColumnDefinition MinWidth="250"/>
-					</Grid.ColumnDefinitions>
-					<Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" 
-								 FontSize="18" FontWeight="SemiBold">Equipment</Label>
-					<ListBox Name="lbEquip0" Grid.Row="1" Grid.Column="0"></ListBox>
-					<ListBox Name="lbEquip1" Grid.Row="1" Grid.Column="1"></ListBox>
-					<ListBox Name="lbEquip2" Grid.Row="1" Grid.Column="2"></ListBox>
-				</Grid>
-				
+				<Controls:HeroEquipmentDisplay x:Name="ctrlEquipment"/>
+
 				<!-- Inventory Panel -->
 				<Grid Grid.Row="1">
 					<Grid.RowDefinitions>
@@ -88,7 +73,7 @@
 					</Grid.RowDefinitions>
 					<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 								 FontWeight="SemiBold">Inventory</Label>
-					<ListBox Grid.Row="1" Name="lbInventory"></ListBox>
+					<ListView Grid.Row="1" Name="lbInventory" ItemsSource="{Binding HeroInventory.Items}"></ListView>
 					<Grid Grid.Row="2">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>

@@ -6,8 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace DiabloSimulator.Game
 {
@@ -24,34 +23,21 @@ namespace DiabloSimulator.Game
         public Inventory()
         {
             goldAmount = 0;
-            items = new List<Item>();
+            Items = new ObservableCollection<Item>();
         }
 
         public void AddItem(Item item)
         {
-            items.Add(item);
+            Items.Add(item);
         }
 
         public void DiscardItem(ref Item item)
         {
-            if(item.junkStatus != JunkStatus.Favorite)
-                items.Remove(item);
+            if (item.junkStatus != JunkStatus.Favorite)
+                Items.Remove(item);
         }
 
-        public void Display(ListBox itemListView)
-        {
-            itemListView.Items.Clear();
-            foreach(Item item in items)
-            {
-                string itemView = item.name + " (" + item.rarity + " " + item.archetype + ")";
-                if(item.junkStatus != JunkStatus.None)
-                {
-                    itemView += ", marked as " + item.junkStatus;
-                }
-
-                itemListView.Items.Add(itemView);
-            }
-        }
+        public ObservableCollection<Item> Items { get; }
 
         //------------------------------------------------------------------------------
         // Public Variables:
@@ -59,11 +45,5 @@ namespace DiabloSimulator.Game
 
         public uint goldAmount;
         public uint potionsHeld;
-
-        //------------------------------------------------------------------------------
-        // Private Variables:
-        //------------------------------------------------------------------------------
-
-        private List<Item> items;
     }
 }

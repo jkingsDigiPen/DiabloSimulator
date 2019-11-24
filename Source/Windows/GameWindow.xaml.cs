@@ -8,6 +8,7 @@
 
 using System.Windows;
 using System;
+using DiabloSimulator.Game;
 
 namespace DiabloSimulator.Windows
 {
@@ -32,20 +33,8 @@ namespace DiabloSimulator.Windows
 
             // Register event handlers
             btnExploreAttack.Click += btnExploreAttack_Click;
-            btnExploreAttack.Click += RefreshUI;
-
             btnDefend.Click += btnDefend_Click;
-            btnDefend.Click += RefreshUI;
-
             btnUsePotion.Click += btnUsePotion_Click;
-            btnItemEquip.Click += RefreshUI;
-            btnItemJunk.Click += RefreshUI;
-            btnItemKeep.Click += RefreshUI;
-            btnItemDiscardSell.Click += RefreshUI;
-            
-
-            // Force UI refresh
-            RefreshUI(null, null);
 
             // Add events to list box
             PopulateEvents();
@@ -55,6 +44,13 @@ namespace DiabloSimulator.Windows
 
             // TO DO: REMOVE THIS
             viewModel.HeroPotions = 3;
+
+            // TO DO: REMOVE THIS
+            Item testItem = new Item("Simple Dagger", SlotType.Weapon1H, ItemRarity.Common, "Dagger");
+            testItem.stats["MinDamage"] = 2;
+            testItem.stats["MaxDamage"] = 6;
+            testItem.stats["RequiredLevel"] = 1;
+            viewModel.HeroInventory.AddItem(testItem);
         }
 
         // Whether we are in a combat event
@@ -77,51 +73,22 @@ namespace DiabloSimulator.Windows
         {
             // We know longer need to size to the contents.
             ClearValue(SizeToContentProperty);
+
             // We want our control to shrink/expand with the window.
             ctrlStats.ClearValue(WidthProperty);
             ctrlStats.ClearValue(HeightProperty);
+            ctrlEquipment.ClearValue(WidthProperty);
+            ctrlEquipment.ClearValue(HeightProperty);
+
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);
             SetValue(MinHeightProperty, this.Height);
-        }
-
-        private void PopulateEquipment()
-        {
-            lbEquip0.Items.Clear();
-            lbEquip1.Items.Clear();
-            lbEquip2.Items.Clear();
-
-            lbEquip0.Items.Add("");
-            lbEquip1.Items.Add("Head: " + "Cap");
-            lbEquip2.Items.Add("Amulet: " + "Halcyon's Ascent");
-
-            lbEquip0.Items.Add("Gloves: " + "Thin Gloves");
-            lbEquip1.Items.Add("Chest: " + "Quilted Armor");
-            lbEquip2.Items.Add("Belt: " + "Heavy Belt");
-
-            lbEquip0.Items.Add("Ring 1: " + "Stone of Jordan");
-            lbEquip1.Items.Add("Pants: " + "Hammering Pants");
-            lbEquip2.Items.Add("Ring 2: " + "Hellfire Ring");
-
-            lbEquip0.Items.Add("Weapon: " + "Wirt's Leg");
-            lbEquip1.Items.Add("Boots: " + "Leather Boots");
-            lbEquip2.Items.Add("Off-Hand: " + "Buckler");
         }
 
         private void PopulateEvents()
         {
             lbEvents.Items.Add("Welcome to Sanctuary!");
             lbEvents.Items.Add("You are in the town of Tristram, a place of relative safety.");
-        }
-
-        // Refreshes dynamic elements of the UI
-        private void RefreshUI(object sender, RoutedEventArgs e)
-        {
-            // Add equipment to list box
-            PopulateEquipment();
-
-            // Add inventory to list box
-            viewModel.HeroInventory.Display(lbInventory);
         }
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)

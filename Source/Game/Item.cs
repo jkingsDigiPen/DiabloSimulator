@@ -56,6 +56,17 @@ namespace DiabloSimulator.Game
             junkStatus = JunkStatus.None;
         }
 
+        public override string ToString()
+        {
+            string itemView = name + " (" + rarity + " " + archetype + ")";
+            if (junkStatus != JunkStatus.None)
+            {
+                itemView += ", marked as " + junkStatus;
+            }
+
+            return itemView;
+        }
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------

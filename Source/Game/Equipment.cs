@@ -6,13 +6,19 @@
 //
 //------------------------------------------------------------------------------
 
+using DrWPF.Windows.Data;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------
     // Public Structures:
     //------------------------------------------------------------------------------
+
+    using EquipmentMap = ObservableDictionaryNoThrow<SlotType, Item>;
 
     public class Equipment
     {
@@ -22,7 +28,7 @@ namespace DiabloSimulator.Game
 
         public Equipment()
         {
-            equippedItems = new List<Item>();
+            equippedItems = new EquipmentMap();
         }
 
         public void EquipItem(Item item)
@@ -30,51 +36,52 @@ namespace DiabloSimulator.Game
             // Handle two-handed weapons
             if (item.slot == SlotType.BothHands)
             {
-                equippedItems.Insert((int)SlotType.MainHand, item);
-                equippedItems.Insert((int)SlotType.OffHand, item);
+                equippedItems[SlotType.MainHand] = item;
+                equippedItems[SlotType.OffHand] = item;
             }
             // Handle other slots
             else
             {
-                equippedItems.Insert((int)item.slot, item);
+                equippedItems[item.slot] = item;
             }
-        }
-
-        public List<Item> Items
-        {
-            get => equippedItems;
         }
 
         public Item UnequipItem(SlotType slot)
         {
-            int index = (int)slot;
-
-            if (index >= equippedItems.Count)
+            Item removedItem = null;
+            if (!equippedItems.TryGetValue(slot, out removedItem) 
+                || removedItem is null || removedItem.Name == "NULL")
                 return null;
 
-            Item removedItem = equippedItems[index];
-            equippedItems.RemoveAt(index);
+            // DON'T actually remove - breaks bindings
+            equippedItems[slot] = new Item();
 
             // Handle two-handed weapons
             if (removedItem.slot == SlotType.BothHands)
             {
                 if (slot == SlotType.MainHand)
                 {
-                    equippedItems.RemoveAt((int)SlotType.OffHand);
+                    equippedItems[SlotType.OffHand] = new Item();
                 }
                 else if(slot == SlotType.OffHand)
                 {
-                    equippedItems.RemoveAt((int)SlotType.MainHand);
+                    equippedItems[SlotType.MainHand] = new Item();
                 }
             }
 
             return removedItem;
         }
 
+        public EquipmentMap Items
+        {
+            get => equippedItems;
+        }
+
+
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        readonly private List<Item> equippedItems;
+        private readonly EquipmentMap equippedItems;
     }
 }

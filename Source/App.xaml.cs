@@ -1,4 +1,12 @@
-﻿using System.Windows;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	App.xaml.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System.Windows;
 
 namespace DiabloSimulator
 {

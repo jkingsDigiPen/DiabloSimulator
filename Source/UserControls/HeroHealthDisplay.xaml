@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="DiabloSimulator.UserControls.HeroHealthDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+						 Loaded="Window_Loaded">
+	<Border>
+		<Grid>
+			<!-- Grid Format -->
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<!-- Content -->
+			<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+							 FontWeight="SemiBold">Health</Label>
+			<Label Name="lblHealth" Grid.Row="1" HorizontalAlignment="Center" FontSize="16">
+				<TextBlock>
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}{0} / {1}">
+							<Binding Path="HeroStats.ModifiedValues[CurrentHealth]" UpdateSourceTrigger="PropertyChanged"/>
+							<Binding Path="HeroStats.ModifiedValues[MaxHealth]" UpdateSourceTrigger="PropertyChanged"/>
+						</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+			</Label>
+			<Label Grid.Row="2" HorizontalAlignment="Center" FontSize="14">
+				<TextBlock Text="{Binding HeroPotions, StringFormat={}{0} potions remaining}"></TextBlock>
+			</Label>
+			<Button Grid.Row="3" Name="btnUsePotion">Use Potion</Button>
+		</Grid>
+	</Border>
+</UserControl>

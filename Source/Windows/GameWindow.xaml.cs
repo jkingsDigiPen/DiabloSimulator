@@ -7,8 +7,6 @@
 //------------------------------------------------------------------------------
 
 using System.Windows;
-using System;
-using DiabloSimulator.Game;
 
 namespace DiabloSimulator.Windows
 {
@@ -30,19 +28,6 @@ namespace DiabloSimulator.Windows
             InitializeComponent();
             Application.Current.MainWindow.Close();
             Application.Current.MainWindow = this;
-
-            // Register event handlers
-            btnUsePotion.Click += btnUsePotion_Click;
-
-            // TO DO: REMOVE THIS
-            viewModel.HeroPotions = 3;
-
-            // TO DO: REMOVE THIS
-            Item testItem = new Item("Simple Dagger", SlotType.Weapon1H, ItemRarity.Common, "Dagger");
-            testItem.stats["MinDamage"] = 2;
-            testItem.stats["MaxDamage"] = 6;
-            testItem.stats["RequiredLevel"] = 1;
-            viewModel.HeroInventory.AddItem(testItem);
         }
 
         // Whether we are in a combat event
@@ -69,22 +54,12 @@ namespace DiabloSimulator.Windows
             ctrlInventory.ClearValue(HeightProperty);
             ctrlEvents.ClearValue(WidthProperty);
             ctrlEvents.ClearValue(HeightProperty);
+            ctrlHealth.ClearValue(WidthProperty);
+            ctrlHealth.ClearValue(HeightProperty);
 
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);
             SetValue(MinHeightProperty, this.Height);
-        }
-
-        private void btnUsePotion_Click(object sender, RoutedEventArgs e)
-        {
-            if (viewModel.HeroPotions == 0)
-                return;
-
-            --viewModel.HeroPotions;
-
-            // Increase health, but keep below max
-            viewModel.HeroStats["CurrentHealth"] = Math.Min(viewModel.HeroStats.BaseValues["CurrentHealth"] + 50,
-                0);
         }
 
         //------------------------------------------------------------------------------

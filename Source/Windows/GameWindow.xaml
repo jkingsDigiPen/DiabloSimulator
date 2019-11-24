@@ -68,36 +68,8 @@
 		</Border>
 
 		<!-- MID LEFT PANEL -->
-		<Border Grid.Column="0" Grid.Row="1">
-			<Grid>
-				<!-- Grid Format -->
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<!-- Content -->
-				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
-							 FontWeight="SemiBold">Health</Label>
-				<Label Name="lblHealth" Grid.Row="1" HorizontalAlignment="Center" FontSize="16">
-					<TextBlock>
-						<TextBlock.Text>
-							<MultiBinding StringFormat="{}{0} / {1}">
-								<Binding Path="HeroStats.ModifiedValues[CurrentHealth]" UpdateSourceTrigger="PropertyChanged"/>
-								<Binding Path="HeroStats.ModifiedValues[MaxHealth]" UpdateSourceTrigger="PropertyChanged"/>
-							</MultiBinding>
-						</TextBlock.Text>
-					</TextBlock>
-				</Label>
-				<Label Grid.Row="2" HorizontalAlignment="Center" FontSize="14">
-					<TextBlock Text="{Binding HeroPotions, StringFormat={}{0} potions remaining}"></TextBlock>
-				</Label>
-				<Button Grid.Row="3" Name="btnUsePotion">Use Potion</Button>
-			</Grid>
-		</Border>
-		
+		<Controls:HeroHealthDisplay x:Name="ctrlHealth" Grid.Column="0" Grid.Row="1"/>
+
 		<!-- MID RIGHT PANEL -->
 		<Border Grid.Column="1" Grid.Row="1">
 			<Grid>

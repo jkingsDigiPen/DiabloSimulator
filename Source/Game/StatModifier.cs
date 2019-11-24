@@ -39,7 +39,7 @@ namespace DiabloSimulator.Game
         // Retrieve modifier value
         public float ModValue
         {
-            get { return modSourceTable == null ? modValue : modSourceTable.GetModifiedValue(modSource) * modValue; }
+            get { return modSourceTable == null ? modValue : modSourceTable.ModifiedValues[modSource] * modValue; }
         }
 
         public static bool operator ==(StatModifier lhs, StatModifier rhs)

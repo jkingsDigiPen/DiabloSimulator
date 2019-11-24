@@ -115,7 +115,7 @@ namespace DiabloSimulator.Game
             string itemView = Name + " (" + rarity + " " + archetype + ")";
             if (junkStatus != JunkStatus.None)
             {
-                itemView += ", marked as " + junkStatus;
+                itemView += " [" + junkStatus + "]";
             }
 
             return itemView;

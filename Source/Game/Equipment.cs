@@ -6,6 +6,8 @@
 //
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------
@@ -18,12 +20,32 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
+        public Equipment()
+        {
+            equippedItems = new List<Item>();
+        }
 
+        public void EquipItem(Item item)
+        {
+            equippedItems[(int)item.slot] = item;
+        }
+
+        public List<Item> Items
+        {
+            get => equippedItems;
+        }
+
+        public Item UnequipItem(SlotType slot)
+        {
+            Item removedItem = equippedItems[(int)slot];
+            equippedItems.RemoveAt((int)slot);
+            return removedItem;
+        }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-
+        readonly private List<Item> equippedItems;
     }
 }

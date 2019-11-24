@@ -30,6 +30,9 @@ namespace DiabloSimulator.Windows
             viewModel = new ViewModel();
             DataContext = viewModel;
 
+            // Stock hero description
+            viewModel.HeroDescription = "A wandering adventurer, seeking fame and fortune.";
+
             // Event handlers
             btnStart.Click += btnStart_Click;
             rbClassWarrior.Click += rbClass_Click;
@@ -115,9 +118,12 @@ namespace DiabloSimulator.Windows
             stats.AddModifier(new StatModifier("MaxHealth", "Vitality", 
                 ModifierType.Additive, 10, stats));
 
-            // Current health is initialized to max health
-            stats["CurrentHealth"] = stats["MaxHealth"];
+            stats["CurrentHealth"] = 0;
+            stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
+                ModifierType.Additive, 1, stats));
 
+            // Current health is initialized to max health
+            //stats["CurrentHealth"] = stats["MaxHealth"];
         }
 
         //------------------------------------------------------------------------------

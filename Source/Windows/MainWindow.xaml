@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Diablo Simulator" Height="375" Width="300"
+        Title="Diablo Simulator" Height="650" Width="300"
 				Style="{StaticResource CustomWindowStyle}">
 	<Grid>
 		<StackPanel HorizontalAlignment="Center" Margin="10">
@@ -24,15 +24,23 @@
 						<RadioButton Name="rbClassRogue">Rogue</RadioButton>
 						<RadioButton Name="rbClassSorcerer">Sorcerer</RadioButton>
 					</StackPanel>
-					<Separator></Separator>
-					
+					<Separator/>
+
 					<!-- Character name -->
 					<TextBlock TextWrapping="Wrap">
 					Name your character:
 					</TextBlock>
 					<TextBox Margin="10" Name="tbxHeroName" Text="{Binding HeroName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-					<Separator></Separator>
-					
+					<Separator/>
+
+					<!-- Character description -->
+					<TextBlock TextWrapping="Wrap">
+					Describe your character:
+					</TextBlock>
+					<TextBox TextWrapping="Wrap" Height="200" Margin="10" Name="tbxHeroDesc" 
+							Text="{Binding HeroDescription, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+					<Separator/>
+
 					<!-- Start button -->
 					<TextBlock TextWrapping="Wrap">
 					Click below to enter the world of Sanctuary.
@@ -40,7 +48,6 @@
 				</StackPanel>
 				<Button DockPanel.Dock ="Bottom" Name="btnStart" Margin="10" >
 					Start</Button>
-				
 			</DockPanel>
 		</StackPanel>
 	</Grid>

@@ -20,16 +20,13 @@ namespace DiabloSimulator.Game
 
         public GameObject(string name_, string archetype_ = "")
         {
-            name = name_;
+            Name = name_;
             archetype = archetype_;
             stats = new StatTable();
         }
 
-        //------------------------------------------------------------------------------
-        // Public Variables:
-        //------------------------------------------------------------------------------
+        public string Name { get; set; }
 
-        public string name;
         public string archetype;
         public StatTable stats;
         public string description;

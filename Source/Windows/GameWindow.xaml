@@ -15,9 +15,9 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="*" MinHeight="430"/>
 			<RowDefinition Height="150"/>
-			<RowDefinition Height="200"/>
+			<RowDefinition Height="*" MinHeight="200"/>
 		</Grid.RowDefinitions>
 
 		<!-- UPPER LEFT PANEL -->

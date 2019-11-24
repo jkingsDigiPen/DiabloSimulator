@@ -12,7 +12,7 @@ using DrWPF.Windows.Data;
 
 namespace DiabloSimulator.Game
 {
-    using StatMap = ObservableDictionary<string, float>;
+    using StatMap = ObservableDictionaryNoThrow<string, float>;
     using StatDependantMap = Dictionary<string, List<string>>;
     using ModifierMap = Dictionary<ModifierType, HashSet<StatModifier>>;
 

@@ -58,7 +58,7 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         public uint goldAmount;
-        public int potionsHeld;
+        public uint potionsHeld;
 
         //------------------------------------------------------------------------------
         // Private Variables:

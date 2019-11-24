@@ -30,12 +30,12 @@ namespace DiabloSimulator
 
         public string HeroName
         {
-            get { return hero.name; }
+            get { return hero.Name; }
             set 
             { 
-                if(hero.name != value)
+                if(hero.Name != value)
                 {
-                    hero.name = value;
+                    hero.Name = value;
                     OnPropertyChange("HeroName");
                 }
             }

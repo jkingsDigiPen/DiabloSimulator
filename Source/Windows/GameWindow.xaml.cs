@@ -73,6 +73,18 @@ namespace DiabloSimulator.Windows
         // Private Functions:
         //------------------------------------------------------------------------------
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // We know longer need to size to the contents.
+            ClearValue(SizeToContentProperty);
+            // We want our control to shrink/expand with the window.
+            ctrlStats.ClearValue(WidthProperty);
+            ctrlStats.ClearValue(HeightProperty);
+            // Don't want our window to be able to get any smaller than this.
+            SetValue(MinWidthProperty, this.Width);
+            SetValue(MinHeightProperty, this.Height);
+        }
+
         private void PopulateEquipment()
         {
             lbEquip0.Items.Clear();

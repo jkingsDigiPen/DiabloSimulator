@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:Controls="clr-namespace:DiabloSimulator.UserControls"
         mc:Ignorable="d"
-        Title="Diablo Simulator" Height="768" Width="1024"
+        Title="Diablo Simulator"
+				SizeToContent="WidthAndHeight" Loaded="Window_Loaded"
 				Style="{StaticResource CustomWindowStyle}">
 	<!-- MASTER PANEL -->
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -32,7 +33,7 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="20" 
 						 FontWeight="SemiBold">Character</Label>
-				<Controls:HeroStatDisplay Grid.Row="1"/>
+				<Controls:HeroStatDisplay x:Name="ctrlStats" Grid.Row="1"/>
 				<Grid Grid.Row="2">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*"/>
@@ -67,9 +68,9 @@
 						<RowDefinition Height="100"/>
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="250"/>
-						<ColumnDefinition Width="250"/>
-						<ColumnDefinition Width="250"/>
+						<ColumnDefinition MinWidth="250"/>
+						<ColumnDefinition MinWidth="250"/>
+						<ColumnDefinition MinWidth="250"/>
 					</Grid.ColumnDefinitions>
 					<Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" 
 								 FontSize="18" FontWeight="SemiBold">Equipment</Label>

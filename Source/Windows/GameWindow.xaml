@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:Controls="clr-namespace:DiabloSimulator.UserControls"
         mc:Ignorable="d"
         Title="Diablo Simulator" Height="768" Width="1024"
 				Style="{StaticResource CustomWindowStyle}">
@@ -31,7 +32,7 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="20" 
 						 FontWeight="SemiBold">Character</Label>
-				<ListBox Grid.Row="1" Name="lbStats" ItemsSource="{Binding HeroStatList, UpdateSourceTrigger=PropertyChanged}"></ListBox>
+				<Controls:HeroStatDisplay Grid.Row="1"/>
 				<Grid Grid.Row="2">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*"/>
@@ -121,8 +122,8 @@
 					<TextBlock>
 						<TextBlock.Text>
 							<MultiBinding StringFormat="{}{0} / {1}">
-								<Binding Path="HeroCurrentHealth"/>
-								<Binding Path="HeroMaxHealth"/>
+								<Binding Path="HeroStats.ModifiedValues[CurrentHealth]" UpdateSourceTrigger="PropertyChanged"/>
+								<Binding Path="HeroStats.ModifiedValues[MaxHealth]" UpdateSourceTrigger="PropertyChanged"/>
 							</MultiBinding>
 						</TextBlock.Text>
 					</TextBlock>

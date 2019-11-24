@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 
 using System.Windows;
-using DiabloSimulator.Game;
+using System;
 
 namespace DiabloSimulator.Windows
 {
@@ -31,15 +31,18 @@ namespace DiabloSimulator.Windows
             Application.Current.MainWindow = this;
 
             // Register event handlers
+            btnExploreAttack.Click += btnExploreAttack_Click;
             btnExploreAttack.Click += RefreshUI;
+
+            btnDefend.Click += btnDefend_Click;
             btnDefend.Click += RefreshUI;
+
             btnUsePotion.Click += btnUsePotion_Click;
             btnItemEquip.Click += RefreshUI;
             btnItemJunk.Click += RefreshUI;
             btnItemKeep.Click += RefreshUI;
             btnItemDiscardSell.Click += RefreshUI;
-
-            btnExploreAttack.Click += btnExploreAttack_Click;
+            
 
             // Force UI refresh
             RefreshUI(null, null);
@@ -115,12 +118,29 @@ namespace DiabloSimulator.Windows
             lbEvents.Items.Add("Explore/attack was clicked. Turns taken: " + Turns + ".");
             svEvents.ScrollToBottom();
 
-            ++viewModel.HeroLevel;
+            viewModel.HeroStats.Level = viewModel.HeroStats.Level + 1;
+            viewModel.HeroStats["CurrentHealth"] = viewModel.HeroStats.BaseValues["CurrentHealth"] - 10;
+        }
+
+        private void btnDefend_Click(object sender, RoutedEventArgs e)
+        {
+            ++Turns;
+            lbEvents.Items.Add("Defend was clicked. Turns taken: " + Turns + ".");
+            svEvents.ScrollToBottom();
+
+            viewModel.HeroStats["CurrentHealth"] = viewModel.HeroStats.BaseValues["CurrentHealth"] - 5;
         }
 
         private void btnUsePotion_Click(object sender, RoutedEventArgs e)
         {
+            if (viewModel.HeroPotions == 0)
+                return;
+
             --viewModel.HeroPotions;
+
+            // Increase health, but keep below max
+            viewModel.HeroStats["CurrentHealth"] = Math.Min(viewModel.HeroStats.BaseValues["CurrentHealth"] + 50,
+                0);
         }
 
         //------------------------------------------------------------------------------

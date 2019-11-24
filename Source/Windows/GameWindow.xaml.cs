@@ -32,15 +32,7 @@ namespace DiabloSimulator.Windows
             Application.Current.MainWindow = this;
 
             // Register event handlers
-            btnExploreAttack.Click += btnExploreAttack_Click;
-            btnDefend.Click += btnDefend_Click;
             btnUsePotion.Click += btnUsePotion_Click;
-
-            // Add events to list box
-            PopulateEvents();
-
-            // Initialize other vars
-            Turns = 0;
 
             // TO DO: REMOVE THIS
             viewModel.HeroPotions = 3;
@@ -55,12 +47,6 @@ namespace DiabloSimulator.Windows
 
         // Whether we are in a combat event
         public bool InCombat
-        {
-            get; set;
-        }
-
-        // The number of turns taken so far in the game
-        public uint Turns
         {
             get; set;
         }
@@ -81,35 +67,12 @@ namespace DiabloSimulator.Windows
             ctrlEquipment.ClearValue(HeightProperty);
             ctrlInventory.ClearValue(WidthProperty);
             ctrlInventory.ClearValue(HeightProperty);
+            ctrlEvents.ClearValue(WidthProperty);
+            ctrlEvents.ClearValue(HeightProperty);
 
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);
             SetValue(MinHeightProperty, this.Height);
-        }
-
-        private void PopulateEvents()
-        {
-            lbEvents.Items.Add("Welcome to Sanctuary!");
-            lbEvents.Items.Add("You are in the town of Tristram, a place of relative safety.");
-        }
-
-        private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
-        {
-            ++Turns;
-            lbEvents.Items.Add("Explore/attack was clicked. Turns taken: " + Turns + ".");
-            svEvents.ScrollToBottom();
-
-            viewModel.HeroStats.Level = viewModel.HeroStats.Level + 1;
-            viewModel.HeroStats["CurrentHealth"] = viewModel.HeroStats.BaseValues["CurrentHealth"] - 10;
-        }
-
-        private void btnDefend_Click(object sender, RoutedEventArgs e)
-        {
-            ++Turns;
-            lbEvents.Items.Add("Defend was clicked. Turns taken: " + Turns + ".");
-            svEvents.ScrollToBottom();
-
-            viewModel.HeroStats["CurrentHealth"] = viewModel.HeroStats.BaseValues["CurrentHealth"] - 5;
         }
 
         private void btnUsePotion_Click(object sender, RoutedEventArgs e)

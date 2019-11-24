@@ -18,7 +18,6 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="150"/>
 			<RowDefinition Height="200"/>
-			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
 		<!-- UPPER LEFT PANEL -->
@@ -123,68 +122,31 @@
 		</Border>
 		
 		<!-- LOWER LEFT PANEL -->
-		<Border Grid.Column="0" Grid.Row="2">
-			<Grid>
-				<!-- Grid Format -->
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<!-- Content -->
-				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
-						 FontWeight="SemiBold">Monster Stats</Label>
-				<Label Grid.Row="1" HorizontalAlignment="Center">Fallen Shaman</Label>
-				<Label Grid.Row="2" HorizontalAlignment="Center">(Common)</Label>
-				<Label Grid.Row="3" HorizontalAlignment="Center">76% Health</Label>
-			</Grid>
-		</Border>
+		<DockPanel Grid.Column="0" Grid.Row="2">
+			<Border DockPanel.Dock="Top" Height="160">
+				<Grid>
+					<!-- Grid Format -->
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<!-- Content -->
+					<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+									FontWeight="SemiBold">Monster Stats</Label>
+					<Label Grid.Row="1" HorizontalAlignment="Center">Fallen Shaman</Label>
+					<Label Grid.Row="2" HorizontalAlignment="Center">(Common)</Label>
+					<Label Grid.Row="3" HorizontalAlignment="Center">76% Health</Label>
+				</Grid>
+			</Border>
+			<Border DockPanel.Dock="Bottom" Height="auto">
+				<Label Grid.Column="0" HorizontalAlignment="Center" FontSize="16">300 Exp until next level</Label>
+			</Border>
+		</DockPanel>
 
 		<!-- LOWER RIGHT PANEL -->
-		<Border Grid.Column="1" Grid.Row="2">
-			<Grid>
-				<!-- Grid Format -->
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<!-- Content -->
-				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
-						 FontWeight="SemiBold">Events</Label>
-				<ScrollViewer Grid.Row="1" Name="svEvents">
-					<ListBox Name="lbEvents"></ListBox>
-				</ScrollViewer>
-			</Grid>
-		</Border>
-
-		<!-- LOWEST LEFT PANEL -->
-		<Border Grid.Column="0" Grid.Row="3">
-			<Grid>
-				<!-- Grid Format -->
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<!-- Content -->
-				<Label Grid.Column="0" HorizontalAlignment="Center" FontSize="16">300 Exp until next level</Label>
-			</Grid>
-		</Border>
-
-		<!-- LOWEST RIGHT PANEL -->
-		<Border Grid.Column="1" Grid.Row="3">
-			<Grid>
-				<!-- Grid Format -->
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<!-- Content -->
-				<Button Grid.Column="0" Name="btnExploreAttack">Explore / Attack</Button>
-				<Button Grid.Column="1" Name="btnDefend">Defend</Button>
-				<Button Grid.Column="2" Name="btnFleeTown">Flee / Town Portal</Button>
-			</Grid>
-		</Border>
+		<Controls:WorldEventDisplay x:Name="ctrlEvents" Grid.Column="1" Grid.Row="2"/>
 	</Grid>
 </Window>

@@ -22,8 +22,7 @@ namespace DiabloSimulator.Game
 
     public enum SlotType
     {
-        Weapon1H,
-        Weapon2H,
+        MainHand,
         OffHand,
         Head,
         Torso,
@@ -33,6 +32,7 @@ namespace DiabloSimulator.Game
         Feet,
         Ring,
         Amulet,
+        BothHands,
     }
 
     public enum JunkStatus

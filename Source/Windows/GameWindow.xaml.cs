@@ -79,6 +79,8 @@ namespace DiabloSimulator.Windows
             ctrlStats.ClearValue(HeightProperty);
             ctrlEquipment.ClearValue(WidthProperty);
             ctrlEquipment.ClearValue(HeightProperty);
+            ctrlInventory.ClearValue(WidthProperty);
+            ctrlInventory.ClearValue(HeightProperty);
 
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);

@@ -62,31 +62,9 @@
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<!-- Equipment Panel -->
-				<Controls:HeroEquipmentDisplay x:Name="ctrlEquipment"/>
-
+				<Controls:HeroEquipmentDisplay Grid.Row="0" x:Name="ctrlEquipment"/>
 				<!-- Inventory Panel -->
-				<Grid Grid.Row="1">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="*"/>
-						<RowDefinition Height="auto"/>
-					</Grid.RowDefinitions>
-					<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
-								 FontWeight="SemiBold">Inventory</Label>
-					<ListView Grid.Row="1" Name="lbInventory" ItemsSource="{Binding HeroInventory.Items}"></ListView>
-					<Grid Grid.Row="2">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-						<Button Grid.Column="0" Name="btnItemEquip">Equip</Button>
-						<Button Grid.Column="1" Name="btnItemKeep">Keep</Button>
-						<Button Grid.Column="2" Name="btnItemJunk">Junk</Button>
-						<Button Grid.Column="3" Name="btnItemDiscardSell">Discard / Sell</Button>
-					</Grid>
-				</Grid>
+				<Controls:HeroInventoryDisplay Grid.Row="1" x:Name="ctrlInventory"/>
 			</Grid>
 		</Border>
 

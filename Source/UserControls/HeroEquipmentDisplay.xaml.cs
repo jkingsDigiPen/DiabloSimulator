@@ -6,8 +6,12 @@
 //
 //------------------------------------------------------------------------------
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using DiabloSimulator.Game;
 
 namespace DiabloSimulator.UserControls
 {
@@ -24,6 +28,31 @@ namespace DiabloSimulator.UserControls
         public HeroEquipmentDisplay()
         {
             InitializeComponent();
+
+            liMainHand.MouseDoubleClick += liMainHand_DoubleClick;
+            liOffHand.MouseDoubleClick += liOffHand_DoubleClick;
+            liHead.MouseDoubleClick += liHead_DoubleClick;
+            liTorso.MouseDoubleClick += liTorso_DoubleClick;
+            liLegs.MouseDoubleClick += liLegs_DoubleClick;
+            liWaist.MouseDoubleClick += liWaist_DoubleClick;
+            liGloves.MouseDoubleClick += liGloves_DoubleClick;
+            liFeet.MouseDoubleClick += liFeet_DoubleClick;
+            liAmulet.MouseDoubleClick += liAmulet_DoubleClick;
+            liRing1.MouseDoubleClick += liRing1_DoubleClick;
+            liRing2.MouseDoubleClick += liRing2_DoubleClick;
+        }
+
+        // Allows events to reach other parts of UI
+        public event RoutedPropertyChangedEventHandler<string> EquipmentChanged
+        {
+            add
+            {
+                AddHandler(HeroInventoryDisplay.EquipmentChangedEvent, value);
+            }
+            remove
+            {
+                RemoveHandler(HeroInventoryDisplay.EquipmentChangedEvent, value);
+            }
         }
 
         //------------------------------------------------------------------------------
@@ -32,26 +61,87 @@ namespace DiabloSimulator.UserControls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // TO DO: REMOVE THIS
-            lbEquip0.Items.Clear();
-            lbEquip1.Items.Clear();
-            lbEquip2.Items.Clear();
+        }
 
-            lbEquip0.Items.Add("");
-            lbEquip1.Items.Add("Head: " + "Cap");
-            lbEquip2.Items.Add("Amulet: " + "Halcyon's Ascent");
+        private Item UnequipItem(SlotType slot)
+        {
+            // Unequip item
+            Item unequipped = View.HeroEquipment.UnequipItem(slot);
 
-            lbEquip0.Items.Add("Gloves: " + "Thin Gloves");
-            lbEquip1.Items.Add("Chest: " + "Quilted Armor");
-            lbEquip2.Items.Add("Belt: " + "Heavy Belt");
+            // Add to inventory
+            if (unequipped is null)
+                return null;
 
-            lbEquip0.Items.Add("Ring 1: " + "Stone of Jordan");
-            lbEquip1.Items.Add("Pants: " + "Hammering Pants");
-            lbEquip2.Items.Add("Ring 2: " + "Hellfire Ring");
+            View.HeroInventory.AddItem(unequipped);
 
-            lbEquip0.Items.Add("Weapon: " + "Wirt's Leg");
-            lbEquip1.Items.Add("Boots: " + "Leather Boots");
-            lbEquip2.Items.Add("Off-Hand: " + "Buckler");
+            return unequipped;
+        }
+
+        private void liMainHand_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Item unequipped = UnequipItem(SlotType.MainHand);
+
+            if (unequipped is null)
+                return;
+
+            if (unequipped.slot == SlotType.BothHands)
+                UnequipItem(SlotType.OffHand);
+        }
+
+        private void liOffHand_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Item unequipped = UnequipItem(SlotType.OffHand);
+
+            if (unequipped is null)
+                return;
+
+            if (unequipped.slot == SlotType.BothHands)
+                UnequipItem(SlotType.MainHand);
+        }
+
+        private void liTorso_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Torso);
+        }
+
+        private void liWaist_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Waist);
+        }
+
+        private void liLegs_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Legs);
+        }
+
+        private void liGloves_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Hands);
+        }
+
+        private void liFeet_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Feet);
+        }
+
+        private void liHead_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Head);
+        }
+
+        private void liAmulet_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Amulet);
+        }
+
+        private void liRing1_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Ring1);
+        }
+
+        private void liRing2_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            UnequipItem(SlotType.Ring2);
         }
 
         private ViewModel View

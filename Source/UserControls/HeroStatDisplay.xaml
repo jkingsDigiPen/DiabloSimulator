@@ -39,5 +39,11 @@
 			<TextBlock>Vitality:</TextBlock>
 			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Vitality]}"/>
 		</DockPanel>
+		<TextBlock HorizontalAlignment="Center">Offensive Stats</TextBlock>
+		<TextBlock HorizontalAlignment="Center">Defensive Stats</TextBlock>
+		<DockPanel>
+			<TextBlock>Armor:</TextBlock>
+			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Armor]}"/>
+		</DockPanel>
 	</ListView>
 </UserControl>

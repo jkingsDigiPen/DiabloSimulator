@@ -144,9 +144,21 @@
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
 		</Style>
 
+		<Style TargetType="{x:Type ListView}">
+			<Setter Property="Background" Value="{StaticResource WindowBackColor}"/>
+			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+		</Style>
+
 		<Style TargetType="{x:Type ListBoxItem}">
 			<Setter Property="Background" Value="{StaticResource WindowToolbarColor}"/>
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+		</Style>
+
+		<Style TargetType="{x:Type ListViewItem}">
+			<Setter Property="Background" Value="{StaticResource WindowToolbarColor}"/>
+			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
 		</Style>
 
 		<Style TargetType="{x:Type Border}">

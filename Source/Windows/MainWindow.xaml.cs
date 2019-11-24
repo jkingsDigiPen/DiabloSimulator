@@ -122,6 +122,10 @@ namespace DiabloSimulator.Windows
             stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
                 ModifierType.Additive, 1, stats));
 
+            // Damage
+            stats["MinDamage"] = 0;
+            stats["MaxDamage"] = 0;
+
             // Current health is initialized to max health
             //stats["CurrentHealth"] = stats["MaxHealth"];
         }

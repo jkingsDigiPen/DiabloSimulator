@@ -18,8 +18,14 @@
 		</Grid.ColumnDefinitions>
 		<Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" 
 									 FontSize="18" FontWeight="SemiBold">Equipment</Label>
-		<ListBox Name="lbEquip0" Grid.Row="1" Grid.Column="0"></ListBox>
-		<ListBox Name="lbEquip1" Grid.Row="1" Grid.Column="1"></ListBox>
-		<ListBox Name="lbEquip2" Grid.Row="1" Grid.Column="2"></ListBox>
+		<ListView Name="lbEquip0" Grid.Row="1" Grid.Column="0">
+			
+		</ListView>
+		<ListView Name="lbEquip1" Grid.Row="1" Grid.Column="1">
+			
+		</ListView>
+		<ListView Name="lbEquip2" Grid.Row="1" Grid.Column="2">
+			
+		</ListView>
 	</Grid>
 </UserControl>

@@ -27,7 +27,17 @@ namespace DiabloSimulator.Game
 
         public void EquipItem(Item item)
         {
-            equippedItems[(int)item.slot] = item;
+            // Handle two-handed weapons
+            if (item.slot == SlotType.BothHands)
+            {
+                equippedItems.Insert((int)SlotType.MainHand, item);
+                equippedItems.Insert((int)SlotType.OffHand, item);
+            }
+            // Handle other slots
+            else
+            {
+                equippedItems.Insert((int)item.slot, item);
+            }
         }
 
         public List<Item> Items
@@ -37,8 +47,27 @@ namespace DiabloSimulator.Game
 
         public Item UnequipItem(SlotType slot)
         {
-            Item removedItem = equippedItems[(int)slot];
-            equippedItems.RemoveAt((int)slot);
+            int index = (int)slot;
+
+            if (index >= equippedItems.Count)
+                return null;
+
+            Item removedItem = equippedItems[index];
+            equippedItems.RemoveAt(index);
+
+            // Handle two-handed weapons
+            if (removedItem.slot == SlotType.BothHands)
+            {
+                if (slot == SlotType.MainHand)
+                {
+                    equippedItems.RemoveAt((int)SlotType.OffHand);
+                }
+                else if(slot == SlotType.OffHand)
+                {
+                    equippedItems.RemoveAt((int)SlotType.MainHand);
+                }
+            }
+
             return removedItem;
         }
 

@@ -21,7 +21,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
-				<ColumnDefinition MinWidth="150"/>
+				<ColumnDefinition Width="*" MinWidth="150"/>
 			</Grid.ColumnDefinitions>
 			<Button Grid.Column="0" Name="btnItemEquip">Equip</Button>
 			<Button Grid.Column="1" Name="btnItemKeep">Keep</Button>

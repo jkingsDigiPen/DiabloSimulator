@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DiabloSimulator.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-	<DockPanel>
-		<Border DockPanel.Dock="Top" Height="160">
+             d:DesignHeight="330" d:DesignWidth="600">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Border Grid.Row="0" MinHeight="300">
 			<Grid>
 				<!-- Grid Format -->
 				<Grid.RowDefinitions>
@@ -17,24 +21,24 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 						 FontWeight="SemiBold">Events</Label>
-				<ScrollViewer Grid.Row="1" Name="svEvents">
-					<ListBox Name="lbEvents"></ListBox>
-				</ScrollViewer>
+				<StackPanel Grid.Row="1"  Name="wrap" Width="auto" Height="auto">
+				<ListView MaxHeight="{Binding ActualHeight, ElementName=wrap}" Name="lvEvents"/>
+				</StackPanel>
 			</Grid>
 		</Border>
-		<Border DockPanel.Dock="Bottom" Height="auto">
+		<Border Grid.Row="1" MaxHeight="30">
 			<Grid>
 				<!-- Grid Format -->
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*" MinWidth="200"/>
+					<ColumnDefinition Width="*" MinWidth="200"/>
+					<ColumnDefinition Width="*" MinWidth="200"/>
 				</Grid.ColumnDefinitions>
 				<!-- Content -->
-				<Button Grid.Column="0" Name="btnExploreAttack">Explore / Attack</Button>
-				<Button Grid.Column="1" Name="btnDefend">Defend</Button>
+				<Button Grid.Column="0" Name="btnExploreAttack">Attack / Explore</Button>
+				<Button Grid.Column="1" Name="btnDefend">Defend / Back</Button>
 				<Button Grid.Column="2" Name="btnFleeTown">Flee / Town Portal</Button>
 			</Grid>
 		</Border>
-	</DockPanel>
+	</Grid>
 </UserControl>

@@ -7,17 +7,20 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel;
+using DrWPF.Windows.Data;
 
 namespace DiabloSimulator.Game
 {
-    using StatMap = Dictionary<string, float>;
+    using StatMap = ObservableDictionary<string, float>;
+    using StatDependantMap = Dictionary<string, List<string>>;
     using ModifierMap = Dictionary<ModifierType, HashSet<StatModifier>>;
 
     //------------------------------------------------------------------------------
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class StatTable
+    public class StatTable : INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -25,29 +28,134 @@ namespace DiabloSimulator.Game
 
         public StatTable(uint level_ = 1)
         {
-            level = level_;
-            values = new StatMap();
+            BaseValues = new StatMap();
+            LeveledValues = new StatMap();
+            ModifiedValues = new StatMap();
             progressions = new StatMap();
-            modifiers = new Dictionary<string, Dictionary<ModifierType, HashSet<StatModifier>>>();
+            modifiers = new Dictionary<string, ModifierMap>();
+            dependants = new StatDependantMap();
+            level = level_;
         }
 
         public float this[string key]
         {
-            get { return GetModifiedValue(key); }
-            set { SetBaseValue(key, value); }
+            set
+            {
+                BaseValues[key] = value;
+                LeveledValues[key] = 0.0f;
+                ModifiedValues[key] = 0.0f;
+                UpdateLeveledValue(key);
+                UpdateModifiedValue(key);
+
+                OnPropertyChange("BaseValues");
+                OnPropertyChange("LeveledValues");
+                OnPropertyChange("ModifiedValues");
+            }
         }
 
-        public float GetBaseValue(string name)
+        public StatMap BaseValues { get; }
+
+        public StatMap LeveledValues { get; }
+
+        public StatMap ModifiedValues { get; }
+
+        public void AddModifier(StatModifier mod)
+        {
+            // Add the mod to the list of modifiers for this stat
+            ModifierMap modMap = null;
+            if(!modifiers.TryGetValue(mod.statName, out modMap))
+            {
+                modifiers[mod.statName] = new ModifierMap();
+                modifiers[mod.statName][mod.type] = new HashSet<StatModifier>();
+            }
+            modifiers[mod.statName][mod.type].Add(mod);
+
+            // Add the mod stat as a dependant of the mod source
+            List<string> depList;
+            if(!dependants.TryGetValue(mod.modSource, out depList))
+            {
+                dependants[mod.modSource] = new List<string>();
+            }
+            dependants[mod.modSource].Add(mod.statName);
+
+            UpdateModifiedValue(mod.statName);
+            OnPropertyChange("ModifiedValues");
+        }
+
+        public void RemoveModifier(StatModifier mod)
+        {
+            // Remove mod
+            modifiers[mod.statName][mod.type].Remove(mod);
+            UpdateModifiedValue(mod.statName);
+
+            // Remove mod stat as dependant
+            dependants[mod.modSource].Remove(mod.statName);
+
+            OnPropertyChange("ModifiedValues");
+        }
+
+        public void SetProgression(string name, float progression)
+        {
+            progressions[name] = progression;
+            UpdateLeveledValue(name);
+            UpdateModifiedValue(name);
+            OnPropertyChange("LeveledValues");
+            OnPropertyChange("ModifiedValues");
+        }
+
+        public uint Level 
+        { 
+            get { return level; }
+            set
+            {
+                if (value != level)
+                {
+                    level = value;
+                    UpdateAllLeveledValues();
+                    UpdateAllModifiedValues();
+                    OnPropertyChange("Level");
+                }
+            }
+        }
+
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        private void UpdateAllLeveledValues()
+        {
+            foreach (KeyValuePair<string, float> pair in BaseValues)
+            {
+                UpdateLeveledValue(pair.Key);
+            }
+            OnPropertyChange("LeveledValues");
+        }
+
+        private void UpdateLeveledValue(string name)
         {
             float progression = 0.0f;
             progressions.TryGetValue(name, out progression);
-
-            return values[name] + progression * (level - 1);
+            LeveledValues[name] = BaseValues[name] + progression * (Level - 1);
         }
 
-        public float GetModifiedValue(string name)
+        private void UpdateAllModifiedValues()
         {
-            float baseValue = GetBaseValue(name);
+            foreach(KeyValuePair<string, float> pair in LeveledValues)
+            {
+                UpdateModifiedValue(pair.Key);
+            }
+            OnPropertyChange("ModifiedValues");
+        }
+
+        private void UpdateModifiedValue(string name)
+        {
+            ModifiedValues[name] = LeveledValues[name];
             ModifierMap modMap;
             if (modifiers.TryGetValue(name, out modMap))
             {
@@ -56,7 +164,7 @@ namespace DiabloSimulator.Game
                 {
                     foreach (StatModifier modifier in addMods)
                     {
-                        baseValue += modifier.ModValue;
+                        ModifiedValues[name] += modifier.ModValue;
                     }
                 }
 
@@ -68,61 +176,31 @@ namespace DiabloSimulator.Game
                     {
                         totalMult += modifier.ModValue;
                     }
-                    baseValue *= totalMult;
+                    ModifiedValues[name] *= totalMult;
                 }
             }
 
-            return baseValue;
-        }
-
-        public void IncreaseBaseValue(string name, float value)
-        {
-            values[name] += value;
-            OnPropertyChanged("Property");
-        }
-
-        public void SetBaseValue(string name, float value)
-        {
-            values[name] = value;
-            OnPropertyChanged("Property");
-        }
-
-        public void AddModifier(StatModifier mod)
-        {
-            ModifierMap modMap = null;
-            if(!modifiers.TryGetValue(mod.statName, out modMap))
+            // Propagate changes to dependant stats
+            List<string> depList;
+            if(dependants.TryGetValue(name, out depList))
             {
-                modifiers[mod.statName] = new ModifierMap();
-                modifiers[mod.statName][mod.type] = new HashSet<StatModifier>();
+                foreach(string dependant in depList)
+                {
+                    UpdateModifiedValue(dependant);
+                }
             }
 
-            modifiers[mod.statName][mod.type].Add(mod);
+            OnPropertyChange(name);
         }
 
-        public void RemoveModifier(StatModifier mod)
+        private void OnPropertyChange(string propertyName)
         {
-            modifiers[mod.statName][mod.type].Remove(mod);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void SetProgression(string name, float progression)
-        {
-            progressions[name] = progression;
-        }
-
-        public uint Level 
-        { 
-            get { return level; } 
-            set { level = value; }
-        }
-
-        //------------------------------------------------------------------------------
-        // Private Variables:
-        //------------------------------------------------------------------------------
-
-        private uint level;
-
-        private StatMap values;
         private StatMap progressions;
+        private StatDependantMap dependants;
+        private uint level;
         private Dictionary<string, ModifierMap> modifiers;
     }
 }

@@ -94,29 +94,7 @@
 		</Border>
 		
 		<!-- LOWER LEFT PANEL -->
-		<DockPanel Grid.Column="0" Grid.Row="2">
-			<Border DockPanel.Dock="Top" Height="160">
-				<Grid>
-					<!-- Grid Format -->
-					<Grid.RowDefinitions>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="auto"/>
-						<RowDefinition Height="*"/>
-					</Grid.RowDefinitions>
-					<!-- Content -->
-					<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
-									FontWeight="SemiBold">Monster Stats</Label>
-					<Label Grid.Row="1" HorizontalAlignment="Center">Fallen Shaman</Label>
-					<Label Grid.Row="2" HorizontalAlignment="Center">(Common)</Label>
-					<Label Grid.Row="3" HorizontalAlignment="Center">76% Health</Label>
-				</Grid>
-			</Border>
-			<Border DockPanel.Dock="Bottom" Height="auto">
-				<Label Grid.Column="0" HorizontalAlignment="Center" FontSize="16">300 Exp until next level</Label>
-			</Border>
-		</DockPanel>
+		<Controls:MonsterStatDisplay Grid.Column="0" Grid.Row="2"/>
 
 		<!-- LOWER RIGHT PANEL -->
 		<Controls:WorldEventDisplay x:Name="ctrlEvents" Grid.Column="1" Grid.Row="2"/>

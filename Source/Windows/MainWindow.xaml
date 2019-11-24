@@ -4,11 +4,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Diablo Simulator" Height="650" Width="300"
+        Title="Diablo Simulator" SizeToContent="WidthAndHeight" Loaded="Window_Loaded"
 				Style="{StaticResource CustomWindowStyle}">
 	<Grid>
 		<StackPanel HorizontalAlignment="Center" Margin="10">
-			<TextBlock TextWrapping="Wrap">
+			<TextBlock TextWrapping="Wrap" Width="300">
 				Welcome to the Diablo Simulator! Stay a while and listen.
 			</TextBlock>
 			<Separator></Separator>
@@ -30,14 +30,14 @@
 					<TextBlock TextWrapping="Wrap">
 					Name your character:
 					</TextBlock>
-					<TextBox Margin="10" Name="tbxHeroName" Text="{Binding HeroName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+					<TextBox Margin="10" Width="300" Name="tbxHeroName" Text="{Binding HeroName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 					<Separator/>
 
 					<!-- Character description -->
 					<TextBlock TextWrapping="Wrap">
 					Describe your character:
 					</TextBlock>
-					<TextBox TextWrapping="Wrap" Height="200" Margin="10" Name="tbxHeroDesc" 
+					<TextBox TextWrapping="Wrap" Width="300" MinHeight="200" Margin="10" Name="tbxHeroDesc" 
 							Text="{Binding HeroDescription, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 					<Separator/>
 

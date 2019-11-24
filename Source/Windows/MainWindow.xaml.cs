@@ -44,6 +44,16 @@ namespace DiabloSimulator.Windows
         // Private Functions:
         //------------------------------------------------------------------------------
 
+        private void Window_Loaded(object sender, RoutedEventArgs args)
+        {
+            // We know longer need to size to the contents.
+            ClearValue(SizeToContentProperty);
+
+            // Don't want our window to be able to get any smaller than this.
+            SetValue(MinWidthProperty, this.Width);
+            SetValue(MinHeightProperty, this.Height);
+        }
+
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             // Check to make sure form is filled

@@ -57,11 +57,11 @@
 			<Grid>
 				<!-- Grid Format -->
 				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<!-- Equipment Panel -->
-				<Controls:HeroEquipmentDisplay Grid.Row="0" x:Name="ctrlEquipment"/>
+				<Controls:HeroEquipmentDisplay Grid.Row="0" x:Name="ctrlEquipment" HorizontalContentAlignment="Stretch"/>
 				<!-- Inventory Panel -->
 				<Controls:HeroInventoryDisplay Grid.Row="1" x:Name="ctrlInventory"/>
 			</Grid>

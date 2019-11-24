@@ -6,8 +6,10 @@
 //
 //------------------------------------------------------------------------------
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace DiabloSimulator.UserControls
 {
@@ -46,27 +48,35 @@ namespace DiabloSimulator.UserControls
 
         private void PopulateEvents()
         {
-            lbEvents.Items.Add("Welcome to Sanctuary!");
-            lbEvents.Items.Add("You are in the town of Tristram, a place of relative safety.");
+            AddWorldEvent("Welcome to Sanctuary!", false);
+            AddWorldEvent("You are in the town of Tristram, a place of relative safety.", false);
         }
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
         {
-            ++Turns;
-            lbEvents.Items.Add("Explore/attack was clicked. Turns taken: " + Turns + ".");
-            svEvents.ScrollToBottom();
+            AddWorldEvent("Explore/attack was clicked. Turns taken: " + Turns + ".");
 
+            // TO DO: Remove this
             View.HeroStats.Level = View.HeroStats.Level + 1;
             View.HeroStats["CurrentHealth"] = View.HeroStats.BaseValues["CurrentHealth"] - 10;
         }
 
         private void btnDefend_Click(object sender, RoutedEventArgs e)
         {
-            ++Turns;
-            lbEvents.Items.Add("Defend was clicked. Turns taken: " + Turns + ".");
-            svEvents.ScrollToBottom();
+            AddWorldEvent("Defend was clicked. Turns taken: " + Turns + ".");
 
+            // TO DO: Remove this
             View.HeroStats["CurrentHealth"] = View.HeroStats.BaseValues["CurrentHealth"] - 5;
+        }
+
+        private void AddWorldEvent(string worldEvent, bool advanceTime = true)
+        {
+            if(advanceTime)
+                ++Turns;
+
+            lvEvents.Items.Add(worldEvent);
+            lvEvents.Items.MoveCurrentToLast();
+            lvEvents.ScrollIntoView(lvEvents.Items.CurrentItem);
         }
 
         private ViewModel View

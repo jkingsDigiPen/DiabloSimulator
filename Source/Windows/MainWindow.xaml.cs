@@ -122,22 +122,6 @@ namespace DiabloSimulator.Windows
                     stats.SetProgression("Vitality", 2);
                     break;
             }
-
-            // Vitality gives 10 health per point
-            stats["MaxHealth"] = 0;
-            stats.AddModifier(new StatModifier("MaxHealth", "Vitality", 
-                ModifierType.Additive, 10, stats));
-
-            stats["CurrentHealth"] = 0;
-            stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
-                ModifierType.Additive, 1, stats));
-
-            // Damage
-            stats["MinDamage"] = 0;
-            stats["MaxDamage"] = 0;
-
-            // Current health is initialized to max health
-            //stats["CurrentHealth"] = stats["MaxHealth"];
         }
 
         //------------------------------------------------------------------------------

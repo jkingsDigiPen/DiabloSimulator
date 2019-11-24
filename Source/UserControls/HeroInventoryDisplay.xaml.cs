@@ -10,6 +10,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using DiabloSimulator.Game;
 
 namespace DiabloSimulator.UserControls
@@ -32,6 +33,7 @@ namespace DiabloSimulator.UserControls
             btnItemDiscardSell.Click += btnItemDiscardSell_Click;
             btnItemJunk.Click += btnItemJunk_Click;
             btnItemKeep.Click += btnItemKeep_Click;
+            lbInventory.MouseDoubleClick += btnItemEquip_Click;
         }
 
         // Allows events to reach other parts of UI
@@ -98,7 +100,7 @@ namespace DiabloSimulator.UserControls
             if (selection == -1)
                 return;
             View.HeroInventory.JunkItem(selection);
-            //lbInventory.SelectedIndex = selection;
+            lbInventory.SelectedIndex = selection;
         }
 
         private void btnItemKeep_Click(object sender, RoutedEventArgs e)
@@ -107,7 +109,7 @@ namespace DiabloSimulator.UserControls
             if (selection == -1)
                 return;
             View.HeroInventory.KeepItem(selection);
-            //lbInventory.SelectedIndex = selection;
+            lbInventory.SelectedIndex = selection;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

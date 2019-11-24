@@ -32,10 +32,15 @@ namespace DiabloSimulator.Game
             Items.Add(item);
         }
 
+        public void RemoveItem(Item item)
+        {
+            Items.Remove(item);
+        }
+
         public void DiscardItem(Item item)
         {
             if (item.junkStatus != JunkStatus.Favorite)
-                Items.Remove(item);
+                RemoveItem(item);
         }
 
         public void JunkItem(int selection)

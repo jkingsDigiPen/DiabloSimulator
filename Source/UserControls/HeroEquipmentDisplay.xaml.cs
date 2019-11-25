@@ -6,10 +6,9 @@
 //
 //------------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using DiabloSimulator.Game;
 
@@ -18,6 +17,8 @@ namespace DiabloSimulator.UserControls
     //------------------------------------------------------------------------------
     // Public Structures
     //------------------------------------------------------------------------------
+
+    using ModifierMap = Dictionary<ModifierType, HashSet<StatModifier>>;
 
     public partial class HeroEquipmentDisplay : UserControl
     {
@@ -59,22 +60,10 @@ namespace DiabloSimulator.UserControls
         // Private Functions:
         //------------------------------------------------------------------------------
 
+        #region eventHandlers
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-        }
-
-        private Item UnequipItem(SlotType slot)
-        {
-            // Unequip item
-            Item unequipped = View.HeroEquipment.UnequipItem(slot);
-
-            // Add to inventory
-            if (unequipped is null)
-                return null;
-
-            View.HeroInventory.AddItem(unequipped);
-
-            return unequipped;
         }
 
         private void liMainHand_DoubleClick(object sender, MouseButtonEventArgs e)
@@ -144,9 +133,56 @@ namespace DiabloSimulator.UserControls
             UnequipItem(SlotType.Ring2);
         }
 
+        #endregion
+
+        #region helperFunctions
+
+        private Item UnequipItem(SlotType slot)
+        {
+            // Unequip item
+            Item unequipped = View.HeroEquipment.UnequipItem(slot);
+
+            // Add to inventory
+            if (unequipped is null)
+                return null;
+
+            View.HeroInventory.AddItem(unequipped);
+
+            RemoveItemModsFromHeroStats(unequipped);
+
+            return unequipped;
+        }
+
+        private void RemoveItemModsFromHeroStats(Item unequipped)
+        {
+            // Remove stats from item from hero stat mods
+            foreach (KeyValuePair<string, float> mod in unequipped.stats.LeveledValues)
+            {
+                View.HeroStats.RemoveModifier(new StatModifier(mod.Key,
+                    unequipped.Name, ModifierType.Additive, mod.Value));
+            }
+
+            foreach (KeyValuePair<string, ModifierMap> modMap in unequipped.stats.Modifiers)
+            {
+                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
+                {
+                    foreach (StatModifier mod in modSet.Value)
+                    {
+                        View.HeroStats.RemoveModifier(mod);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region properties
+
         private ViewModel View
         {
             get => (DataContext as ViewModel);
         }
+
+        #endregion
     }
 }

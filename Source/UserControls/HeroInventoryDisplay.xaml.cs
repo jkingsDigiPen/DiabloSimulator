@@ -7,10 +7,9 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using DiabloSimulator.Game;
 
 namespace DiabloSimulator.UserControls
@@ -18,6 +17,8 @@ namespace DiabloSimulator.UserControls
     //------------------------------------------------------------------------------
     // Public Structures:
     //------------------------------------------------------------------------------
+
+    using ModifierMap = Dictionary<ModifierType, HashSet<StatModifier>>;
 
     public partial class HeroInventoryDisplay : UserControl
     {
@@ -44,6 +45,8 @@ namespace DiabloSimulator.UserControls
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
+
+        #region eventHandlers
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -105,6 +108,9 @@ namespace DiabloSimulator.UserControls
                 inventory.AddItem(itemToRemove);
             }
 
+            AddItemModsToHeroStats(itemToEquip);
+
+            // Bubble event to equipment panel
             RaiseEvent(new RoutedEventArgs(EquipmentChangedEvent));
         }
 
@@ -141,9 +147,40 @@ namespace DiabloSimulator.UserControls
             lbInventory.SelectedIndex = selection;
         }
 
+        #endregion
+
+        #region helperFunctions
+
+        private void AddItemModsToHeroStats(Item itemToEquip)
+        {
+            // Add stats from item to hero stat mods
+            foreach (KeyValuePair<string, float> mod in itemToEquip.stats.LeveledValues)
+            {
+                View.HeroStats.AddModifier(new StatModifier(mod.Key,
+                    itemToEquip.Name, ModifierType.Additive, mod.Value));
+            }
+
+            foreach (KeyValuePair<string, ModifierMap> modMap in itemToEquip.stats.Modifiers)
+            {
+                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
+                {
+                    foreach (StatModifier mod in modSet.Value)
+                    {
+                        View.HeroStats.AddModifier(mod);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region properties
+
         private ViewModel View
         {
             get => (DataContext as ViewModel);
         }
+
+        #endregion
     }
 }

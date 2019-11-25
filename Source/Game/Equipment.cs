@@ -6,12 +6,6 @@
 //
 //------------------------------------------------------------------------------
 
-using DrWPF.Windows.Data;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-
 namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------

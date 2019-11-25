@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using System;
 using System.Windows;
 
 namespace DiabloSimulator.Windows
@@ -24,10 +25,13 @@ namespace DiabloSimulator.Windows
         {
             viewModel = viewModel_;
             DataContext = viewModel;
-
             InitializeComponent();
+
             Application.Current.MainWindow.Close();
             Application.Current.MainWindow = this;
+
+            // Register events
+            ctrlEvents.MonsterChanged += ctrlEvents_MonsterChanged;
         }
 
         // Whether we are in a combat event
@@ -60,6 +64,12 @@ namespace DiabloSimulator.Windows
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);
             SetValue(MinHeightProperty, this.Height);
+        }
+
+        private void ctrlEvents_MonsterChanged(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Derp");
+            ctrlMonster.RaiseEvent(e);
         }
 
         //------------------------------------------------------------------------------

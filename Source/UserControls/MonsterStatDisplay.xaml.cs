@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DiabloSimulator.UserControls
@@ -8,13 +9,8 @@ namespace DiabloSimulator.UserControls
     /// </summary>
     public partial class MonsterStatDisplay : UserControl
     {
-        public MonsterStatDisplay()
-        {
-            InitializeComponent();
-        }
-
         // Allows events to reach other parts of UI
-        public event RoutedPropertyChangedEventHandler<string> MonsterChanged
+        public event RoutedEventHandler MonsterChanged
         {
             add
             {
@@ -24,6 +20,20 @@ namespace DiabloSimulator.UserControls
             {
                 RemoveHandler(WorldEventDisplay.MonsterChangedEvent, value);
             }
+        }
+
+        public MonsterStatDisplay()
+        {
+            InitializeComponent();
+
+            MonsterChanged += OnMonsterChanged;
+        }
+
+        private void OnMonsterChanged(object sender, RoutedEventArgs e)
+        {
+            tbMonsterName.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            //tbMonsterType.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            tbMonsterHealth.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
         }
     }
 }

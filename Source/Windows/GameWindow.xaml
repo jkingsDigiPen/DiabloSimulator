@@ -74,9 +74,9 @@
 		<Controls:HeroWeaponDisplay Grid.Column="1" Grid.Row="1"/>
 
 		<!-- LOWER LEFT PANEL -->
-		<Controls:MonsterStatDisplay Grid.Column="0" Grid.Row="2"/>
+		<Controls:MonsterStatDisplay x:Name="ctrlMonster" Grid.Column="0" Grid.Row="2"/>
 
 		<!-- LOWER RIGHT PANEL -->
-		<Controls:WorldEventDisplay VerticalContentAlignment="Stretch" x:Name="ctrlEvents" Grid.Column="1" Grid.Row="2"/>
+		<Controls:WorldEventDisplay x:Name="ctrlEvents" VerticalContentAlignment="Stretch" Grid.Column="1" Grid.Row="2"/>
 	</Grid>
 </Window>

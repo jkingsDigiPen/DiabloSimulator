@@ -45,7 +45,20 @@ namespace DiabloSimulator.UserControls
         // Allows events to reach other parts of UI
         public static readonly RoutedEvent MonsterChangedEvent =
             EventManager.RegisterRoutedEvent("MonsterChanged", RoutingStrategy.Bubble,
-                typeof(RoutedPropertyChangedEventHandler<string>), typeof(Control));
+                typeof(RoutedEventHandler), typeof(WorldEventDisplay));
+
+        // Allows events to reach other parts of UI
+        public event RoutedEventHandler MonsterChanged
+        {
+            add
+            {
+                AddHandler(MonsterChangedEvent, value);
+            }
+            remove
+            {
+                RemoveHandler(MonsterChangedEvent, value);
+            }
+        }
 
         //------------------------------------------------------------------------------
         // Private Functions:
@@ -85,7 +98,10 @@ namespace DiabloSimulator.UserControls
             {
                 Turns = 0;
                 AddWorldEvent(View.GenerateMonster());
-                RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
+
+                // Force monster stat update
+                if (!View.IsMonsterNullOrDead())
+                    RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
             }
         }
 
@@ -104,8 +120,10 @@ namespace DiabloSimulator.UserControls
                 }
 
                 // TO DO: Remove bonus dodge chance
+
+                AdvanceTime();
             }
-            else if(!View.IsHeroDead())
+            else if (!View.IsHeroDead())
             {
                 // Add regen - additive and multiplicative
                 StatModifier regenMultBonus = new StatModifier("HealthRegen",
@@ -120,9 +138,9 @@ namespace DiabloSimulator.UserControls
                 // Remove temporary regen
                 View.HeroStats.RemoveModifier(regenMultBonus);
                 View.HeroStats.RemoveModifier(regenAddBonus);
-            }
 
-            AdvanceTime();
+                AdvanceTime();
+            }
         }
 
         private void AddWorldEvent(string worldEvent)
@@ -147,6 +165,10 @@ namespace DiabloSimulator.UserControls
 
                 if(View.InCombat())
                 {
+                    // Force monster stat update
+                    if (!View.IsMonsterNullOrDead())
+                        RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
+
                     ++Turns;
                     AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
                 }

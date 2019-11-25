@@ -45,5 +45,9 @@
 			<TextBlock>Armor:</TextBlock>
 			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Armor]}"/>
 		</DockPanel>
+		<DockPanel>
+			<TextBlock>Life regen:</TextBlock>
+			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[HealthRegen], StringFormat={}{0} per turn}"/>
+		</DockPanel>
 	</ListView>
 </UserControl>

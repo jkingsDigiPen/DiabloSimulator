@@ -71,12 +71,30 @@ namespace DiabloSimulator.UserControls
 
         private void AddWorldEvent(string worldEvent, bool advanceTime = true)
         {
-            if(advanceTime)
-                ++Turns;
+            if (advanceTime)
+            {
+                AdvanceTime();
+            }
 
             lvEvents.Items.Add(worldEvent);
             lvEvents.Items.MoveCurrentToLast();
             lvEvents.ScrollIntoView(lvEvents.Items.CurrentItem);
+        }
+
+        private void AdvanceTime()
+        {
+            ++Turns;
+
+            // Check for player death
+            if (View.HeroStats.ModifiedValues["CurrentHealth"] == 0)
+            {
+                AddWorldEvent(View.HeroName + " has died!");
+            }
+            // Regen
+            else
+            {
+                View.HealHero(View.HeroStats.ModifiedValues["HealthRegen"]);
+            }
         }
 
         private ViewModel View

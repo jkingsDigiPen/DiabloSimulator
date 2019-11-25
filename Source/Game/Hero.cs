@@ -15,7 +15,7 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class Hero : GameObject, CombatActor
+    public class Hero : GameObject, ICombatActor
     {
         //------------------------------------------------------------------------------
         // Public Functions:

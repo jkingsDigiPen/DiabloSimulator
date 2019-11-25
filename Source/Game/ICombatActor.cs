@@ -37,7 +37,7 @@ namespace DiabloSimulator.Game
         public DamageType damageType;
     }
 
-    public interface CombatActor
+    public interface ICombatActor
     {
         //------------------------------------------------------------------------------
         // Public Functions:

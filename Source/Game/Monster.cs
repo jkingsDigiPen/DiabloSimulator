@@ -22,7 +22,7 @@ namespace DiabloSimulator.Game
         Legendary
     }
 
-    public class Monster : GameObject, CombatActor
+    public class Monster : GameObject, ICombatActor
     {
         //------------------------------------------------------------------------------
         // Public Functions:

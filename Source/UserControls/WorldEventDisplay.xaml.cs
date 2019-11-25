@@ -55,7 +55,7 @@ namespace DiabloSimulator.UserControls
             // TO DO: Remove this
             //View.HeroStats.Level = View.HeroStats.Level + 1;
 
-            float damageDealt = View.GetHeroAttackDamage();
+            float damageDealt = View.GetHeroAttackDamage()[0].amount;
             AddWorldEvent("You take " + damageDealt + " damage.", false);
             View.DamageHero(damageDealt);
             AddWorldEvent("Explore/attack was clicked. Turns taken: " + Turns + ".");

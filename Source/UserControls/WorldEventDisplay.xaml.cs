@@ -64,11 +64,6 @@ namespace DiabloSimulator.UserControls
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void clMonsterChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void PopulateEvents()
         {
             AddWorldEvent("Welcome to Sanctuary!");

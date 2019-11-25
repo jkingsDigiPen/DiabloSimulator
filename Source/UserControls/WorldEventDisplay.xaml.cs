@@ -6,10 +6,8 @@
 //
 //------------------------------------------------------------------------------
 
-using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace DiabloSimulator.UserControls
 {
@@ -54,12 +52,13 @@ namespace DiabloSimulator.UserControls
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
         {
-            AddWorldEvent("Explore/attack was clicked. Turns taken: " + Turns + ".");
-
             // TO DO: Remove this
             //View.HeroStats.Level = View.HeroStats.Level + 1;
 
-            View.DamageHero(View.GetHeroAttackDamage());
+            float damageDealt = View.GetHeroAttackDamage();
+            AddWorldEvent("You take " + damageDealt + " damage.", false);
+            View.DamageHero(damageDealt);
+            AddWorldEvent("Explore/attack was clicked. Turns taken: " + Turns + ".");
         }
 
         private void btnDefend_Click(object sender, RoutedEventArgs e)
@@ -87,9 +86,14 @@ namespace DiabloSimulator.UserControls
             ++Turns;
 
             // Check for player death
-            if (View.HeroStats.ModifiedValues["CurrentHealth"] == 0)
+            if (View.HeroStats.ModifiedValues["CurrentHealth"] <= 0)
             {
-                AddWorldEvent(View.HeroName + " has died!");
+                View.KillHero();
+                AddWorldEvent(View.HeroName + " has been vanquished by the forces of evil!", false);
+                AddWorldEvent("You have lost all of your gold.", false);
+                MessageBox.Show("You have died. You will be revived in town.");
+                AddWorldEvent("You are in the town of Tristram, a place of relative safety.", false);
+                View.ReviveHero();
             }
             // Regen
             else

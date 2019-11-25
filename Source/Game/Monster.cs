@@ -61,7 +61,7 @@ namespace DiabloSimulator.Game
                 stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
                     -stats.ModifiedValues["MaxHealth"]);
 
-                result += Name + " took " + damage.amount;
+                result += Name + " takes " + damage.amount;
                 if (damage.damageType != DamageType.Physical)
                     result += " " + damage.damageType.ToString();
                 result += " damage.";

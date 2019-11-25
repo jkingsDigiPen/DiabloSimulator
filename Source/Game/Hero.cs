@@ -6,7 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
-using System.Windows.Controls;
+using System;
 
 namespace DiabloSimulator.Game
 {
@@ -14,7 +14,7 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class Hero : GameObject
+    public class Hero : GameObject, CombatActor
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -27,6 +27,22 @@ namespace DiabloSimulator.Game
             equipment = new Equipment();
 
             InitializeStats();
+        }
+
+        public void Heal(float amount)
+        {
+            // Increase health, but keep below max
+            stats["CurrentHealth"] = Math.Min(stats.BaseValues["CurrentHealth"] + amount, 0);
+        }
+
+        public void Damage(float amount)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public float GetAttackDamage()
+        {
+            throw new System.NotImplementedException();
         }
 
         //------------------------------------------------------------------------------

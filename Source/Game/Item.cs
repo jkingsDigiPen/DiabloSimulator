@@ -50,7 +50,7 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         public Item()
-            : base("NULL")
+            : base(EmptyItemText)
         {
         }
 
@@ -78,7 +78,7 @@ namespace DiabloSimulator.Game
             if (lhs.slot != rhs.slot)
                 return false;
 
-            if (lhs.archetype != rhs.archetype)
+            if (lhs.Archetype != rhs.Archetype)
                 return false;
 
             if (lhs.rarity != rhs.rarity)
@@ -103,16 +103,16 @@ namespace DiabloSimulator.Game
 
         public override int GetHashCode()
         {
-            return (slot.ToString() + archetype + Name + rarity.ToString()).GetHashCode();
+            return (slot.ToString() + Archetype + Name + rarity.ToString()).GetHashCode();
         }
 
         public override string ToString()
         {
             // Default/empty item - return empty string
-            if (Name == "NULL")
+            if (Name == EmptyItemText)
                 return "";
 
-            string itemView = Name + " (" + rarity + " " + archetype + ")";
+            string itemView = Name + " (" + rarity + " " + Archetype + ")";
             if (junkStatus != JunkStatus.None)
             {
                 itemView += " [" + junkStatus + "]";
@@ -124,6 +124,8 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
+
+        public const string EmptyItemText = "No Item Equipped";
 
         public SlotType slot;
         public ItemRarity rarity;

@@ -154,7 +154,8 @@ namespace DiabloSimulator
         public string GenerateMonster()
         {
             monster = monsterFactory.CreateMonster(hero);
-            return "A " + monster.Archetype + " appeared!";
+            return monster.Name + " (a level " 
+                + monster.stats.Level + " " + monster.Archetype + ") appeared!";
         }
 
         public Inventory GetMonsterLoot()

@@ -6,6 +6,8 @@
 //
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------
@@ -13,6 +15,7 @@ namespace DiabloSimulator.Game
     //------------------------------------------------------------------------------
 
     using EquipmentMap = ObservableDictionaryNoThrow<SlotType, Item>;
+    using ModifierMap = Dictionary<ModifierType, HashSet<StatModifier>>;
 
     public class Equipment
     {
@@ -22,60 +25,104 @@ namespace DiabloSimulator.Game
 
         public Equipment()
         {
-            equippedItems = new EquipmentMap();
+            Items = new EquipmentMap();
         }
 
-        public void EquipItem(Item item)
+        public void EquipItem(Item item, StatTable heroStats)
         {
             // Handle two-handed weapons
             if (item.slot == SlotType.BothHands)
             {
-                equippedItems[SlotType.MainHand] = item;
-                equippedItems[SlotType.OffHand] = item;
+                Items[SlotType.MainHand] = item;
+                Items[SlotType.OffHand] = item;
             }
             // Handle other slots
             else
             {
-                equippedItems[item.slot] = item;
+                Items[item.slot] = item;
             }
+
+            AddItemModsToHeroStats(item, heroStats);
         }
 
-        public Item UnequipItem(SlotType slot)
+        public Item UnequipItem(SlotType slot, StatTable heroStats)
         {
             Item removedItem = null;
-            if (!equippedItems.TryGetValue(slot, out removedItem) 
-                || removedItem is null || removedItem.Name == "NULL")
+            if (!Items.TryGetValue(slot, out removedItem) 
+                || removedItem is null || removedItem.Name == Item.EmptyItemText)
                 return null;
 
             // DON'T actually remove - breaks bindings
-            equippedItems[slot] = new Item();
+            Items[slot] = new Item();
 
             // Handle two-handed weapons
             if (removedItem.slot == SlotType.BothHands)
             {
                 if (slot == SlotType.MainHand)
                 {
-                    equippedItems[SlotType.OffHand] = new Item();
+                    Items[SlotType.OffHand] = new Item();
                 }
                 else if(slot == SlotType.OffHand)
                 {
-                    equippedItems[SlotType.MainHand] = new Item();
+                    Items[SlotType.MainHand] = new Item();
                 }
             }
+
+            RemoveItemModsFromHeroStats(removedItem, heroStats);
 
             return removedItem;
         }
 
-        public EquipmentMap Items
+        public EquipmentMap Items { get; }
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        private void AddItemModsToHeroStats(Item itemToEquip, StatTable heroStats)
         {
-            get => equippedItems;
+            // Add stats from item to hero stat mods
+            foreach (KeyValuePair<string, float> mod in itemToEquip.stats.LeveledValues)
+            {
+                // Ignore "required level"
+                if (mod.Key == "RequiredLevel")
+                    continue;
+
+                heroStats.AddModifier(new StatModifier(mod.Key,
+                    itemToEquip.Name, ModifierType.Additive, mod.Value));
+            }
+
+            foreach (KeyValuePair<string, ModifierMap> modMap in itemToEquip.stats.Modifiers)
+            {
+                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
+                {
+                    foreach (StatModifier mod in modSet.Value)
+                    {
+                        heroStats.AddModifier(mod);
+                    }
+                }
+            }
         }
 
+        private void RemoveItemModsFromHeroStats(Item unequipped, StatTable heroStats)
+        {
+            // Remove stats from item from hero stat mods
+            foreach (KeyValuePair<string, float> mod in unequipped.stats.LeveledValues)
+            {
+                heroStats.RemoveModifier(new StatModifier(mod.Key,
+                    unequipped.Name, ModifierType.Additive, mod.Value));
+            }
 
-        //------------------------------------------------------------------------------
-        // Private Variables:
-        //------------------------------------------------------------------------------
-
-        private readonly EquipmentMap equippedItems;
+            foreach (KeyValuePair<string, ModifierMap> modMap in unequipped.stats.Modifiers)
+            {
+                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
+                {
+                    foreach (StatModifier mod in modSet.Value)
+                    {
+                        heroStats.RemoveModifier(mod);
+                    }
+                }
+            }
+        }
     }
 }

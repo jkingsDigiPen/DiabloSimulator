@@ -57,8 +57,9 @@ namespace DiabloSimulator.UserControls
             AddWorldEvent("Explore/attack was clicked. Turns taken: " + Turns + ".");
 
             // TO DO: Remove this
-            View.HeroStats.Level = View.HeroStats.Level + 1;
-            View.HeroStats["CurrentHealth"] = View.HeroStats.BaseValues["CurrentHealth"] - 10;
+            //View.HeroStats.Level = View.HeroStats.Level + 1;
+
+            View.DamageHero(View.GetHeroAttackDamage());
         }
 
         private void btnDefend_Click(object sender, RoutedEventArgs e)
@@ -66,7 +67,7 @@ namespace DiabloSimulator.UserControls
             AddWorldEvent("Defend was clicked. Turns taken: " + Turns + ".");
 
             // TO DO: Remove this
-            View.HeroStats["CurrentHealth"] = View.HeroStats.BaseValues["CurrentHealth"] - 5;
+            //View.HeroStats["CurrentHealth"] = View.HeroStats.BaseValues["CurrentHealth"] - 5;
         }
 
         private void AddWorldEvent(string worldEvent, bool advanceTime = true)

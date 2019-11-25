@@ -3,9 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DiabloSimulator.UserControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="330" d:DesignWidth="600">
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="600">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -36,7 +35,7 @@
 				</Grid.ColumnDefinitions>
 				<!-- Content -->
 				<Button Grid.Column="0" Name="btnExploreAttack">Attack / Explore</Button>
-				<Button Grid.Column="1" Name="btnDefend">Defend / Back</Button>
+				<Button Grid.Column="1" Name="btnDefend">Defend / Rest</Button>
 				<Button Grid.Column="2" Name="btnFleeTown">Flee / Town Portal</Button>
 			</Grid>
 		</Border>

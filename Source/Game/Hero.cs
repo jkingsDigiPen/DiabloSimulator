@@ -46,15 +46,27 @@ namespace DiabloSimulator.Game
             // TO DO: Calculate actual damage based on damage, resist
 
             // Decrease health, but keep above 0
+            int i = 0;
             foreach (DamageArgs damage in damageList)
             {
-                stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
-                    -stats.ModifiedValues["MaxHealth"]);
+                if (i != 0)
+                    result += "\n";
+                ++i;
 
-                result += Name + " took " + damage.amount;
+                stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
+                -stats.ModifiedValues["MaxHealth"]);
+
+                result += "You take " + damage.amount;
                 if (damage.damageType != DamageType.Physical)
                     result += " " + damage.damageType.ToString();
-                result += " damage./n";
+                result += " damage.";
+            }
+
+            if (IsDead())
+            {
+                result += "\n";
+                Kill();
+                result += "You have been vanquished by the forces of evil!\n You have lost all of your gold.";
             }
 
             return result;

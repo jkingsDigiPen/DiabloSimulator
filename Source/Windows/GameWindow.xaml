@@ -15,9 +15,9 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*" MinHeight="430"/>
-			<RowDefinition Height="150"/>
-			<RowDefinition Height="*" MinHeight="200"/>
+			<RowDefinition Height="*" MinHeight="430" MaxHeight="430"/>
+			<RowDefinition MinHeight="130" MaxHeight="130"/>
+			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
 		<!-- UPPER LEFT PANEL -->
@@ -77,6 +77,6 @@
 		<Controls:MonsterStatDisplay Grid.Column="0" Grid.Row="2"/>
 
 		<!-- LOWER RIGHT PANEL -->
-		<Controls:WorldEventDisplay x:Name="ctrlEvents" Grid.Column="1" Grid.Row="2"/>
+		<Controls:WorldEventDisplay VerticalContentAlignment="Stretch" x:Name="ctrlEvents" Grid.Column="1" Grid.Row="2"/>
 	</Grid>
 </Window>

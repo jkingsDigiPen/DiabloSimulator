@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	CombatActor.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
 
 namespace DiabloSimulator.Game
 {
     interface CombatActor
     {
-        void Heal(float amount);
+        public void Heal(float amount);
 
-        void Damage(float amount);
+        public void Damage(float amount);
 
-        float GetAttackDamage();
+        public float GetAttackDamage();
+
+        public void Revive();
     }
 }

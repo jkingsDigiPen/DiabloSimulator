@@ -30,9 +30,9 @@ namespace DiabloSimulator
 
         #region heroFunctions
 
-        public void HealHero(float amount)
+        public string HealHero(float amount)
         {
-            hero.Heal(amount);
+            return hero.Heal(amount);
         }
 
         public void KillHero()
@@ -45,12 +45,19 @@ namespace DiabloSimulator
             hero.Revive();
         }
 
-        public void DamageHero(float amount)
+        public string DamageHero(float amount)
         {
-            hero.Damage(amount);
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(amount));
+            return DamageHero(damageList);
+        }
+
+        public string DamageHero(List<DamageArgs> damageList)
+        {
+            return hero.Damage(damageList);
         }
         
-        public float GetHeroAttackDamage()
+        public List<DamageArgs> GetHeroAttackDamage()
         {
             return hero.GetAttackDamage();
         }
@@ -128,15 +135,75 @@ namespace DiabloSimulator
 
         #endregion
 
+        #region monsterFunctions
+
+        // Returns a message describing
+        // the monster's entrance.
+        public string GenerateMonster()
+        {
+            monster = new Monster("Fallen Imp", 1, "Fallen Imp");
+            return "A monster appeared!";
+        }
+
+        public Inventory GetMonsterLoot()
+        {
+            return new Inventory();
+        }
+
+        public void KillMonster()
+        {
+            monster.Kill();
+            monster = null;
+        }
+
+        public string DamageMonster(float amount)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(amount));
+            return DamageMonster(damageList);
+        }
+
+        public string DamageMonster(List<DamageArgs> damageList)
+        {
+            return monster.Damage(damageList);
+        }
+
+        public List<DamageArgs> GetMonsterAttackDamage()
+        {
+            return monster.GetAttackDamage();
+        }
+
+        #endregion
+
+        #region monsterProperties
+
+        public string MonsterName
+        {
+            get { return monster.Name; }
+        }
+
+        public string MonsterType
+        {
+            get { return monster.Archetype; }
+        }
+
+        public string MonsterDescription
+        {
+            get { return monster.Description; }
+        }
+
+        public StatTable MonsterStats
+        {
+            get { return monster.stats; }
+        }
+
+        #endregion
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        //------------------------------------------------------------------------------
-        // Private Structures:
-        //------------------------------------------------------------------------------
 
         //------------------------------------------------------------------------------
         // Private Functions:
@@ -155,5 +222,6 @@ namespace DiabloSimulator
         //------------------------------------------------------------------------------
 
         private Hero hero;
+        private Monster monster;
     }
 }

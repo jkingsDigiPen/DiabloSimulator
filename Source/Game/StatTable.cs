@@ -32,7 +32,7 @@ namespace DiabloSimulator.Game
             LeveledValues = new StatMap();
             ModifiedValues = new StatMap();
             progressions = new StatMap();
-            modifiers = new Dictionary<string, ModifierMap>();
+            Modifiers = new Dictionary<string, ModifierMap>();
             dependants = new StatDependantMap();
             level = level_;
         }
@@ -59,16 +59,18 @@ namespace DiabloSimulator.Game
 
         public StatMap ModifiedValues { get; }
 
+        public Dictionary<string, ModifierMap> Modifiers { get; }
+
         public void AddModifier(StatModifier mod)
         {
             // Add the mod to the list of modifiers for this stat
             ModifierMap modMap = null;
-            if(!modifiers.TryGetValue(mod.statName, out modMap))
+            if(!Modifiers.TryGetValue(mod.statName, out modMap))
             {
-                modifiers[mod.statName] = new ModifierMap();
-                modifiers[mod.statName][mod.type] = new HashSet<StatModifier>();
+                Modifiers[mod.statName] = new ModifierMap();
+                Modifiers[mod.statName][mod.type] = new HashSet<StatModifier>();
             }
-            modifiers[mod.statName][mod.type].Add(mod);
+            Modifiers[mod.statName][mod.type].Add(mod);
 
             // Add the mod stat as a dependant of the mod source
             List<string> depList;
@@ -85,7 +87,7 @@ namespace DiabloSimulator.Game
         public void RemoveModifier(StatModifier mod)
         {
             // Remove mod
-            modifiers[mod.statName][mod.type].Remove(mod);
+            Modifiers[mod.statName][mod.type].Remove(mod);
             UpdateModifiedValue(mod.statName);
 
             // Remove mod stat as dependant
@@ -157,7 +159,7 @@ namespace DiabloSimulator.Game
         {
             ModifiedValues[name] = LeveledValues[name];
             ModifierMap modMap;
-            if (modifiers.TryGetValue(name, out modMap))
+            if (Modifiers.TryGetValue(name, out modMap))
             {
                 HashSet<StatModifier> addMods;
                 if (modMap.TryGetValue(ModifierType.Additive, out addMods))
@@ -201,6 +203,5 @@ namespace DiabloSimulator.Game
         private StatMap progressions;
         private StatDependantMap dependants;
         private uint level;
-        private Dictionary<string, ModifierMap> modifiers;
     }
 }

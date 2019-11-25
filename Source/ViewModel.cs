@@ -28,6 +28,27 @@ namespace DiabloSimulator
             hero = new Hero("The Vagabond");
         }
 
+        #region heroFunctions
+
+        public void HealHero(float amount)
+        {
+            hero.Heal(amount);
+        }
+
+        public void DamageHero(float amount)
+        {
+            hero.Damage(amount);
+        }
+        
+        public float GetHeroAttackDamage()
+        {
+            return hero.GetAttackDamage();
+        }
+
+        #endregion
+
+        #region heroProperties
+
         public string HeroName
         {
             get { return hero.Name; }
@@ -94,6 +115,8 @@ namespace DiabloSimulator
                 }
             }
         }
+
+        #endregion
 
         //------------------------------------------------------------------------------
         // Public Variables:

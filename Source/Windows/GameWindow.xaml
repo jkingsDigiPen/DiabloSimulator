@@ -71,28 +71,8 @@
 		<Controls:HeroHealthDisplay x:Name="ctrlHealth" Grid.Column="0" Grid.Row="1"/>
 
 		<!-- MID RIGHT PANEL -->
-		<Border Grid.Column="1" Grid.Row="1">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
-							 FontWeight="SemiBold">Weapon</Label>
-				<Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">Dirk</Label>
-				<Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center">Dagger (common)</Label>
-				<Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center">2 - 5 fire damage</Label>
-				<Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center">10% critical hit chance</Label>
-			</Grid>
-		</Border>
-		
+		<Controls:HeroWeaponDisplay Grid.Column="1" Grid.Row="1"/>
+
 		<!-- LOWER LEFT PANEL -->
 		<Controls:MonsterStatDisplay Grid.Column="0" Grid.Row="2"/>
 

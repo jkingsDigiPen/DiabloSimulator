@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace DiabloSimulator.Game
 {
@@ -30,24 +31,44 @@ namespace DiabloSimulator.Game
             InitializeStats();
         }
 
-        public void Heal(float amount)
+        public string Heal(float amount)
         {
             // Increase health, but keep below max
             stats["CurrentHealth"] = Math.Min(stats.BaseValues["CurrentHealth"] + amount, 0);
+
+            return amount.ToString();
         }
 
-        public void Damage(float amount)
+        public string Damage(List<DamageArgs> damageList)
         {
+            string result = "";
+
+            // TO DO: Calculate actual damage based on damage, resist
+
             // Decrease health, but keep above 0
-            stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - amount,
-                -stats.ModifiedValues["MaxHealth"]);
+            foreach (DamageArgs damage in damageList)
+            {
+                stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
+                    -stats.ModifiedValues["MaxHealth"]);
+
+                result += Name + " took " + damage.amount;
+                if (damage.damageType != DamageType.Physical)
+                    result += " " + damage.damageType.ToString();
+                result += " damage./n";
+            }
+
+            return result;
         }
 
-        public float GetAttackDamage()
+        public List<DamageArgs> GetAttackDamage()
         {
+            var damageList = new List<DamageArgs>();
+
             int minValue = (int)stats.ModifiedValues["MinDamage"];
             int maxValue = (int)stats.ModifiedValues["MaxDamage"];
-            return random.Next(minValue, maxValue + 1);
+
+            damageList.Add(new DamageArgs(random.Next(minValue, maxValue + 1)));
+            return damageList;
         }
 
         public void Kill()
@@ -65,6 +86,11 @@ namespace DiabloSimulator.Game
         public void Revive()
         {
             stats["CurrentHealth"] = 0;
+        }
+
+        public bool IsDead()
+        {
+            return stats.ModifiedValues["CurrentHealth"] == 0;
         }
 
         //------------------------------------------------------------------------------

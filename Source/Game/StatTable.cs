@@ -8,7 +8,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using DrWPF.Windows.Data;
 
 namespace DiabloSimulator.Game
 {
@@ -86,8 +85,13 @@ namespace DiabloSimulator.Game
 
         public void RemoveModifier(StatModifier mod)
         {
+            // Attempt to find modifier
+            ModifierMap modMap;
+            if (!Modifiers.TryGetValue(mod.statName, out modMap))
+                return;
+
             // Remove mod
-            Modifiers[mod.statName][mod.type].Remove(mod);
+            modMap[mod.type].Remove(mod);
             UpdateModifiedValue(mod.statName);
 
             // Remove mod stat as dependant

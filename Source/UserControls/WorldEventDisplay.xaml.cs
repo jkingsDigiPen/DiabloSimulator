@@ -8,6 +8,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using DiabloSimulator.Game;
 
 namespace DiabloSimulator.UserControls
@@ -57,8 +58,8 @@ namespace DiabloSimulator.UserControls
 
         private void PopulateEvents()
         {
-            AddWorldEvent("Welcome to Sanctuary!", false);
-            AddWorldEvent("You are in the town of Tristram, a place of relative safety.", false);
+            AddWorldEvent("Welcome to Sanctuary!");
+            AddWorldEvent("You are in the town of Tristram, a place of relative safety.");
         }
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
@@ -70,26 +71,21 @@ namespace DiabloSimulator.UserControls
             {
                 float damageDealt = View.GetHeroAttackDamage()[0].amount;
                 string damageDealtString = View.DamageMonster(damageDealt);
-                AddWorldEvent("You attack the " + View.MonsterType + ". " + damageDealtString, false);
+                AddWorldEvent("You attack the " + View.MonsterType + ". " + damageDealtString);
 
                 if (!View.IsMonsterNullOrDead())
                 {
                     damageDealtString = View.DamageHero(View.GetMonsterAttackDamage());
-                    AddWorldEvent(View.MonsterName + " attacks you. " + damageDealtString, false);
+                    AddWorldEvent(View.MonsterName + " attacks you. " + damageDealtString);
                 }
 
-                AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
+                AdvanceTime();
             }
             else if(!View.IsHeroDead())
             {
-                AddWorldEvent(View.GenerateMonster());
                 Turns = 0;
+                AddWorldEvent(View.GenerateMonster());
                 RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
-            }
-            // Game over
-            else
-            {
-                GameOver();
             }
         }
 
@@ -99,17 +95,15 @@ namespace DiabloSimulator.UserControls
             if (View.InCombat())
             {
                 // TO DO: Add bonus dodge chance
-                AddWorldEvent("You steel yourself, waiting for your enemy to attack.", false);
+                AddWorldEvent("You steel yourself, waiting for your enemy to attack.");
 
                 if (!View.IsMonsterNullOrDead())
                 {
                     string damageDealtString = View.DamageHero(View.GetMonsterAttackDamage());
-                    AddWorldEvent(View.MonsterName + " attacks you. " + damageDealtString, false);
+                    AddWorldEvent(View.MonsterName + " attacks you. " + damageDealtString);
                 }
 
                 // TO DO: Remove bonus dodge chance
-
-                AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
             }
             else if(!View.IsHeroDead())
             {
@@ -127,44 +121,55 @@ namespace DiabloSimulator.UserControls
                 View.HeroStats.RemoveModifier(regenMultBonus);
                 View.HeroStats.RemoveModifier(regenAddBonus);
             }
+
+            AdvanceTime();
+        }
+
+        private void AddWorldEvent(string worldEvent)
+        {
+            lvEvents.Items.Add(worldEvent);
+
+            // FIX THIS DAMN SCROLLING
+            if (VisualTreeHelper.GetChildrenCount(lvEvents) > 0)
+            {
+                Border border = (Border)VisualTreeHelper.GetChild(lvEvents, 0);
+                ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
+                scrollViewer.ScrollToBottom();
+            }
+        }
+
+        private void AdvanceTime()
+        {
+            // Check for player death
+            if (!View.IsHeroDead())
+            {
+                HeroLifeRegen();
+
+                if(View.InCombat())
+                {
+                    ++Turns;
+                    AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
+                }
+            }
             else
             {
                 GameOver();
             }
         }
 
-        private void AddWorldEvent(string worldEvent, bool advanceTime = true)
+        private void HeroLifeRegen()
         {
-            lvEvents.Items.Add(worldEvent);
-
-            if (advanceTime)
+            float lifeRegenAmount = View.HeroStats.ModifiedValues["HealthRegen"];
+            if (lifeRegenAmount != 0)
             {
-                AdvanceTime();
-            }
-
-            lvEvents.SelectedIndex = lvEvents.Items.Count - 1;
-            lvEvents.ScrollIntoView(lvEvents.SelectedItem);
-        }
-
-        private void AdvanceTime()
-        {
-            ++Turns;
-
-            // Check for player death
-            if (!View.IsHeroDead())
-            {
-                float lifeRegenAmount = View.HeroStats.ModifiedValues["HealthRegen"];
-                if(lifeRegenAmount != 0)
-                {
-                    AddWorldEvent(View.HealHero(lifeRegenAmount) + " from magical life regeneration.", false);
-                }
+                AddWorldEvent(View.HealHero(lifeRegenAmount) + " from natural healing.");
             }
         }
 
         private void GameOver()
         {
             MessageBox.Show("You have died. You will be revived in town.");
-            AddWorldEvent("You are in the town of Tristram, a place of relative safety.", false);
+            AddWorldEvent("You are in the town of Tristram, a place of relative safety.");
             View.ReviveHero();
         }
 

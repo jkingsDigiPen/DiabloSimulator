@@ -54,9 +54,7 @@ namespace DiabloSimulator.UserControls
 
             --View.HeroPotions;
 
-            // Increase health, but keep below max
-            View.HeroStats["CurrentHealth"] = Math.Min(
-                View.HeroStats.BaseValues["CurrentHealth"] + 50, 0);
+            View.HealHero(25);
         }
 
         private ViewModel View

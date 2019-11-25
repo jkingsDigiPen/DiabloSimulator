@@ -28,6 +28,13 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
+        public Monster()
+            : base("No Monster Detected")
+        {
+            rarity = MonsterRarity.Common;
+            stats.Level = 0;
+        }
+
         public Monster(string name_, uint level_, string baseMonster_ = "", 
             MonsterRarity rarity_ = MonsterRarity.Common) 
             : base(name_, baseMonster_)
@@ -44,15 +51,27 @@ namespace DiabloSimulator.Game
             // TO DO: Calculate actual damage based on damage, resist
 
             // Decrease health, but keep above 0
+            int i = 0;
             foreach(DamageArgs damage in damageList)
             {
+                if (i != 0)
+                    result += "\n";
+                ++i;
+
                 stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
                     -stats.ModifiedValues["MaxHealth"]);
 
                 result += Name + " took " + damage.amount;
                 if (damage.damageType != DamageType.Physical)
                     result += " " + damage.damageType.ToString();
-                result += " damage./n";
+                result += " damage.";
+            }
+
+            if (IsDead())
+            {
+                result += "\n";
+                Kill();
+                result += Name + " has been been slain!";
             }
 
             return result;
@@ -62,10 +81,19 @@ namespace DiabloSimulator.Game
         {
             var damageList = new List<DamageArgs>();
 
+            // Physical
             int minValue = (int)stats.ModifiedValues["MinDamage"];
             int maxValue = (int)stats.ModifiedValues["MaxDamage"];
+            if(minValue != 0 && maxValue != 0)
+                damageList.Add(new DamageArgs(random.Next(minValue, maxValue + 1)));
 
-            damageList.Add(new DamageArgs(random.Next(minValue, maxValue + 1)));
+            // Fire
+            minValue = (int)stats.ModifiedValues["MinFireDamage"];
+            maxValue = (int)stats.ModifiedValues["MaxFireDamage"];
+            if(minValue != 0 && maxValue != 0)
+                damageList.Add(new DamageArgs(
+                    random.Next(minValue, maxValue + 1), DamageType.Fire));
+
             return damageList;
         }
 
@@ -96,6 +124,8 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
+
+        public const string EmptyMonster = "No Monster Detected";
 
         public MonsterRarity rarity;
 

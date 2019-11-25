@@ -67,6 +67,11 @@ namespace DiabloSimulator.Game
             if(!Modifiers.TryGetValue(mod.statName, out modMap))
             {
                 Modifiers[mod.statName] = new ModifierMap();
+            }
+
+            HashSet<StatModifier> modSet;
+            if(!Modifiers[mod.statName].TryGetValue(mod.type, out modSet))
+            {
                 Modifiers[mod.statName][mod.type] = new HashSet<StatModifier>();
             }
             Modifiers[mod.statName][mod.type].Add(mod);

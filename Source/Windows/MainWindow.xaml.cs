@@ -59,7 +59,6 @@ namespace DiabloSimulator.Windows
             // Check to make sure form is filled
             if(viewModel.HeroName.Trim() != "")
             {
-                PopulateHeroStats();
                 Window gw = new GameWindow(viewModel);
                 gw.Show();
             }
@@ -72,56 +71,6 @@ namespace DiabloSimulator.Windows
         private void rbClass_Click(object sender, RoutedEventArgs e)
         {
             viewModel.HeroClass = (sender as RadioButton).Content.ToString();
-        }
-
-        private void PopulateHeroStats()
-        {
-            StatTable stats = viewModel.HeroStats;
-
-            switch (viewModel.HeroClass)
-            {
-                case "Warrior":
-                    // Set starting stats
-                    stats["Strength"] = 10;
-                    stats["Dexterity"] = 8;
-                    stats["Intelligence"] = 8;
-                    stats["Vitality"] = 9;
-
-                    // Set stat progression
-                    stats.SetProgression("Strength", 3);
-                    stats.SetProgression("Dexterity", 1);
-                    stats.SetProgression("Intelligence", 1);
-                    stats.SetProgression("Vitality", 2);
-                    break;
-
-                case "Rogue":
-                    // Set starting stats
-                    stats["Strength"] = 8;
-                    stats["Dexterity"] = 10;
-                    stats["Intelligence"] = 8;
-                    stats["Vitality"] = 9;
-
-                    // Set stat progression
-                    stats.SetProgression("Strength", 1);
-                    stats.SetProgression("Dexterity", 3);
-                    stats.SetProgression("Intelligence", 1);
-                    stats.SetProgression("Vitality", 2);
-                    break;
-
-                case "Sorcerer":
-                    // Set starting stats
-                    stats["Strength"] = 8;
-                    stats["Dexterity"] = 8;
-                    stats["Intelligence"] = 10;
-                    stats["Vitality"] = 9;
-
-                    // Set stat progression
-                    stats.SetProgression("Strength", 1);
-                    stats.SetProgression("Dexterity", 1);
-                    stats.SetProgression("Intelligence", 3);
-                    stats.SetProgression("Vitality", 2);
-                    break;
-            }
         }
 
         //------------------------------------------------------------------------------

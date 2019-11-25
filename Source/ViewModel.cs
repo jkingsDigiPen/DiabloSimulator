@@ -153,7 +153,7 @@ namespace DiabloSimulator
         // the monster's entrance.
         public string GenerateMonster()
         {
-            monster = monsterFactory.CreateMonster(hero);
+            monster = monsterFactory.Create(hero);
             return monster.Name + " (a level " 
                 + monster.stats.Level + " " + monster.Archetype + ") appeared!";
         }

@@ -37,12 +37,22 @@ namespace DiabloSimulator.Game
 
         public void Damage(float amount)
         {
-            throw new System.NotImplementedException();
+            // Decrease health, but keep above 0
+            stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - amount, 
+                -stats.BaseValues["MaxHealth"]);
         }
 
         public float GetAttackDamage()
         {
-            throw new System.NotImplementedException();
+            Random random = new Random();
+
+            return random.Next((int)stats.ModifiedValues["MinDamage"], 
+                (int)stats.ModifiedValues["MaxDamage"]);
+        }
+
+        public void Revive()
+        {
+            stats["CurrentHealth"] = 0;
         }
 
         //------------------------------------------------------------------------------
@@ -56,7 +66,7 @@ namespace DiabloSimulator.Game
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        void InitializeStats()
+        private void InitializeStats()
         {
             // Vitality gives health per point
             stats["MaxHealth"] = 0;

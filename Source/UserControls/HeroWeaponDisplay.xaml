@@ -29,7 +29,7 @@
 							 Text="{Binding HeroEquipment.Items[MainHand].Archetype, FallbackValue=Unarmed}"/>
 				<TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
 					<TextBlock.Text>
-						<MultiBinding StringFormat="{}{0} - {1} Damage">
+						<MultiBinding StringFormat="{}{0:F0} - {1:F0} Damage">
 							<Binding Path="HeroStats.ModifiedValues[MinDamage]"/>
 							<Binding Path="HeroStats.ModifiedValues[MaxDamage]"/>
 						</MultiBinding>
@@ -37,7 +37,7 @@
 				</TextBlock>
 				<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"
 							 Text="{Binding HeroStats.ModifiedValues[CriticalHitChance], 
-								StringFormat={}{0:P} Critical Hit Chance}"/>
+								StringFormat={}{0:P1} Critical Hit Chance}"/>
 			</Grid>
 		</Grid>
 	</Border>

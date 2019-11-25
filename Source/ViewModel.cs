@@ -43,12 +43,12 @@ namespace DiabloSimulator
 
         public string HeroClass
         {
-            get { return hero.archetype;  }
+            get { return hero.Archetype;  }
             set
             {
-                if(hero.archetype != value)
+                if(hero.Archetype != value)
                 {
-                    hero.archetype = value;
+                    hero.Archetype = value;
                     OnPropertyChange("HeroClass");
                 }
             }
@@ -56,12 +56,12 @@ namespace DiabloSimulator
 
         public string HeroDescription
         {
-            get { return hero.description; }
+            get { return hero.Description; }
             set
             {
-                if (hero.description != value)
+                if (hero.Description != value)
                 {
-                    hero.description = value;
+                    hero.Description = value;
                     OnPropertyChange("HeroDescription");
                 }
             }

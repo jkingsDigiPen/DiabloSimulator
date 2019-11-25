@@ -1,4 +1,12 @@
-﻿using System.Windows;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	ShowSystemMenuBehavior.cs
+// Author(s):	MSDN Code Gallery
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Input;
 

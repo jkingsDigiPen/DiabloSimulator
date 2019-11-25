@@ -1,8 +1,14 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	WindowMaximizeBehavior.cs
+// Author(s):	MSDN Code Gallery
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System;
 using System.Windows;
 using System.Windows.Input;
-
-
 
 namespace DiabloSimulator.StyleableWindow
 {

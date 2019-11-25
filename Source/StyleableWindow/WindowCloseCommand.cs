@@ -1,4 +1,12 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	WindowCloseCommand.cs
+// Author(s):	MSDN Code Gallery
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System;
 using System.Windows;
 using System.Windows.Input;
 

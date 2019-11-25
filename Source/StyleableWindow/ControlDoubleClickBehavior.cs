@@ -1,4 +1,12 @@
-﻿using System.Windows;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	ControlDoubleClickBehavior.cs
+// Author(s):	MSDN Code Gallery
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 

@@ -1,4 +1,12 @@
-﻿using System.Windows;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	WindowDragBehavior.cs
+// Author(s):	MSDN Code Gallery
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System.Windows;
 
 namespace DiabloSimulator.StyleableWindow
 {

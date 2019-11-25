@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Diablo Simulator" SizeToContent="WidthAndHeight" Loaded="Window_Loaded"
-				Style="{StaticResource CustomWindowStyle}">
+				Style="{StaticResource FixedWindowStyle}">
 	<Grid>
 		<StackPanel HorizontalAlignment="Center" Margin="10">
 			<TextBlock TextWrapping="Wrap" Width="300">

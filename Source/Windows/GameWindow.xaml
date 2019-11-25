@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Diablo Simulator"
 				SizeToContent="WidthAndHeight" Loaded="Window_Loaded"
-				Style="{StaticResource CustomWindowStyle}">
+				Style="{StaticResource MaxWindowStyle}">
 	<!-- MASTER PANEL -->
 	<Grid>
 		<Grid.ColumnDefinitions>

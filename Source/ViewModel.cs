@@ -7,9 +7,9 @@
 //------------------------------------------------------------------------------
 
 using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using DiabloSimulator.Game;
+using DiabloSimulator.Game.Factories;
 
 namespace DiabloSimulator
 {
@@ -26,6 +26,13 @@ namespace DiabloSimulator
         public ViewModel()
         {
             hero = new Hero("The Vagabond");
+            monster = new Monster();
+            monsterFactory = new MonsterFactory();
+        }
+
+        public bool InCombat()
+        {
+            return !IsHeroDead() && !IsMonsterNullOrDead();
         }
 
         #region heroFunctions
@@ -60,6 +67,11 @@ namespace DiabloSimulator
         public List<DamageArgs> GetHeroAttackDamage()
         {
             return hero.GetAttackDamage();
+        }
+
+        public bool IsHeroDead()
+        {
+            return hero.IsDead();
         }
 
         #endregion
@@ -141,8 +153,8 @@ namespace DiabloSimulator
         // the monster's entrance.
         public string GenerateMonster()
         {
-            monster = new Monster("Fallen Imp", 1, "Fallen Imp");
-            return "A monster appeared!";
+            monster = monsterFactory.CreateMonster(hero);
+            return "A " + monster.Archetype + " appeared!";
         }
 
         public Inventory GetMonsterLoot()
@@ -173,28 +185,60 @@ namespace DiabloSimulator
             return monster.GetAttackDamage();
         }
 
+        public bool IsMonsterNullOrDead()
+        {
+            return monster.Name == Monster.EmptyMonster || monster.IsDead();
+        }
+
+
         #endregion
 
         #region monsterProperties
 
         public string MonsterName
         {
-            get { return monster.Name; }
+            get 
+            {
+                return monster.Name; 
+            }
+        }
+
+        public string MonsterRarity
+        {
+            get
+            {
+                return monster.rarity.ToString();
+            }
         }
 
         public string MonsterType
         {
-            get { return monster.Archetype; }
+            get 
+            {
+                return monster.Archetype; 
+            }
         }
 
         public string MonsterDescription
         {
-            get { return monster.Description; }
+            get 
+            {
+                return monster.Description; 
+            }
         }
 
         public StatTable MonsterStats
         {
             get { return monster.stats; }
+        }
+
+        public float MonsterHealthPercent
+        {
+            get 
+            {
+                return monster.stats.ModifiedValues["CurrentHealth"] /
+                    monster.stats.ModifiedValues["MaxHealth"];
+            }
         }
 
         #endregion
@@ -223,5 +267,6 @@ namespace DiabloSimulator
 
         private Hero hero;
         private Monster monster;
+        private MonsterFactory monsterFactory;
     }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DiabloSimulator.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="200" d:DesignWidth="300">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -24,10 +24,20 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 									FontWeight="SemiBold">Monster Stats</Label>
-				<Label Grid.Row="1" HorizontalAlignment="Center">Fallen Shaman</Label>
-				<Label Grid.Row="2" HorizontalAlignment="Center">(Common)</Label>
-				<Label Grid.Row="3" HorizontalAlignment="Center">76% Health</Label>
-				<Label Grid.Row="4"/>
+				<TextBlock Grid.Row="1" HorizontalAlignment="Center" Text="{Binding MonsterName, 
+										UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBlock Grid.Row="2" HorizontalAlignment="Center">
+					<TextBlock.Text>
+						<MultiBinding StringFormat="{}({0} {1})">
+							<Binding Path="MonsterRarity" UpdateSourceTrigger="PropertyChanged"/>
+							<Binding Path="MonsterType" UpdateSourceTrigger="PropertyChanged"/>
+						</MultiBinding>
+					</TextBlock.Text>
+				</TextBlock>
+				<TextBlock Grid.Row="3" HorizontalAlignment="Center" Text=
+									 "{Binding MonsterHealthPercent, StringFormat={}{0:P0} Health Remaining, 
+										UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBlock Grid.Row="4"/>
 			</Grid>
 		</Border>
 		<Border Height="auto" Grid.Row="1">

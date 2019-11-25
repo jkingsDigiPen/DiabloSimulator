@@ -42,14 +42,21 @@ namespace DiabloSimulator.Game
 
         void InitializeStats()
         {
-            // Vitality gives 10 health per point
+            // Vitality gives health per point
             stats["MaxHealth"] = 0;
             stats.AddModifier(new StatModifier("MaxHealth", "Vitality",
-                ModifierType.Additive, 10, stats));
+                ModifierType.Additive, 3, stats));
 
+            // Current/Max Health
             stats["CurrentHealth"] = 0;
             stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
                 ModifierType.Additive, 1, stats));
+
+            // Damage
+            stats["MinDamage"] = 2;
+            stats["MaxDamage"] = 3;
+            stats["CriticalHitChance"] = 0.05f;
+            stats["CriticalHitDamage"] = 1.5f;
         }
     }
 }

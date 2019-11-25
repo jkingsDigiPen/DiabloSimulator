@@ -21,14 +21,14 @@ namespace DiabloSimulator.Game
         public GameObject(string name_, string archetype_ = "")
         {
             Name = name_;
-            archetype = archetype_;
+            Archetype = archetype_;
             stats = new StatTable();
         }
 
         public string Name { get; set; }
+        public string Archetype { get; set; }
+        public string Description { get; set; }
 
-        public string archetype;
         public StatTable stats;
-        public string description;
     }
 }

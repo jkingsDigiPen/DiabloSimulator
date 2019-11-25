@@ -34,11 +34,6 @@ namespace DiabloSimulator.UserControls
             lbInventory.MouseDoubleClick += btnItemEquip_Click;
         }
 
-        // Allows events to reach other parts of UI
-        public static readonly RoutedEvent EquipmentChangedEvent =
-            EventManager.RegisterRoutedEvent("EquipmentChanged", RoutingStrategy.Bubble,
-                typeof(RoutedPropertyChangedEventHandler<string>), typeof(Control));
-
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
@@ -105,9 +100,6 @@ namespace DiabloSimulator.UserControls
             {
                 inventory.AddItem(itemToRemove);
             }
-
-            // Bubble event to equipment panel
-            RaiseEvent(new RoutedEventArgs(EquipmentChangedEvent));
         }
 
         private void btnItemDiscardSell_Click(object sender, RoutedEventArgs e)

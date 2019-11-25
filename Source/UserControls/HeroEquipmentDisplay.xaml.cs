@@ -40,19 +40,6 @@ namespace DiabloSimulator.UserControls
             liRing2.MouseDoubleClick += liRing2_DoubleClick;
         }
 
-        // Allows events to reach other parts of UI
-        public event RoutedPropertyChangedEventHandler<string> EquipmentChanged
-        {
-            add
-            {
-                AddHandler(HeroInventoryDisplay.EquipmentChangedEvent, value);
-            }
-            remove
-            {
-                RemoveHandler(HeroInventoryDisplay.EquipmentChangedEvent, value);
-            }
-        }
-
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------

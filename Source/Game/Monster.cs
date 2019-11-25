@@ -28,6 +28,8 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
+        #region constructors
+
         public Monster()
             : base("No Monster Detected")
         {
@@ -43,6 +45,16 @@ namespace DiabloSimulator.Game
             stats.Level = level_;
             random = new Random();
         }
+
+        public Monster(Monster other)
+            : base(other.Name, other.Archetype)
+        {
+            rarity = other.rarity;
+            stats = new StatTable(other.stats);
+            random = new Random();
+        }
+
+        #endregion
 
         public string Damage(List<DamageArgs> damageList)
         {

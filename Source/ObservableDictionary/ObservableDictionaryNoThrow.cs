@@ -19,13 +19,24 @@ namespace DiabloSimulator
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class ObservableDictionaryNoThrow<TKey, TValue> : 
-        IDictionary<TKey, TValue>, 
+    public class ObservableDictionaryNoThrow<TKey, TValue> :
+        IDictionary<TKey, TValue>,
         INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
         //------------------------------------------------------------------------------
+
+        public ObservableDictionaryNoThrow()
+            : base()
+        {
+        }
+
+        public ObservableDictionaryNoThrow(ObservableDictionaryNoThrow<TKey, TValue> other)
+            : base()
+        {
+            dictionary = new ObservableDictionary<TKey, TValue>(other.dictionary);
+        }
 
         public TValue this[TKey key]
         {

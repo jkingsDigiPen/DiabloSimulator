@@ -36,6 +36,24 @@ namespace DiabloSimulator.Game
             level = level_;
         }
 
+        public StatTable(StatTable other)
+        {
+            // Base values must be copied
+            BaseValues = new StatMap(other.BaseValues);
+
+            // Don't need to copy these directly, as changing level will propagate changes
+            LeveledValues = new StatMap();
+            ModifiedValues = new StatMap();
+
+            // Progressions, modifiers, dependants must be copied
+            progressions = new StatMap(other.progressions);
+            Modifiers = new Dictionary<string, ModifierMap>(other.Modifiers);
+            dependants = new StatDependantMap(other.dependants);
+
+            // Using property fills out leveled and modified values
+            Level = other.Level;
+        }
+
         public float this[string key]
         {
             set

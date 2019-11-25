@@ -36,7 +36,7 @@ namespace DiabloSimulator.Game
             // Increase health, but keep below max
             stats["CurrentHealth"] = Math.Min(stats.BaseValues["CurrentHealth"] + amount, 0);
 
-            return amount.ToString();
+            return "You heal " + amount + " damage";
         }
 
         public string Damage(List<DamageArgs> damageList)

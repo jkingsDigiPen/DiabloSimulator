@@ -156,7 +156,7 @@ namespace DiabloSimulator.UserControls
                 float lifeRegenAmount = View.HeroStats.ModifiedValues["HealthRegen"];
                 if(lifeRegenAmount != 0)
                 {
-                    AddWorldEvent(View.HealHero(lifeRegenAmount), false);
+                    AddWorldEvent(View.HealHero(lifeRegenAmount) + " from magical life regeneration.", false);
                 }
             }
         }

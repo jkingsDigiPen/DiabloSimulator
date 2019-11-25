@@ -36,8 +36,15 @@ namespace DiabloSimulator.UserControls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // TO DO: REMOVE THIS
-            View.HeroPotions = 3;
+            try
+            {
+                // TO DO: REMOVE THIS
+                View.HeroPotions = 3;
+            }
+            catch
+            {
+                Console.WriteLine("Bleargh?!");
+            }
         }
 
         private void btnUsePotion_Click(object sender, RoutedEventArgs e)

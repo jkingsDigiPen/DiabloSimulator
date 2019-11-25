@@ -47,24 +47,31 @@ namespace DiabloSimulator.UserControls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // TO DO: REMOVE THIS
-            Item testItem = new Item("Simple Dagger", SlotType.MainHand, ItemRarity.Common, "Dagger");
-            testItem.stats["MinDamage"] = 2;
-            testItem.stats["MaxDamage"] = 6;
-            testItem.stats["RequiredLevel"] = 1;
-            View.HeroInventory.AddItem(testItem);
+            try 
+            { 
+                // TO DO: REMOVE THIS
+                Item testItem = new Item("Simple Dagger", SlotType.MainHand, ItemRarity.Common, "Dagger");
+                testItem.stats["MinDamage"] = 2;
+                testItem.stats["MaxDamage"] = 6;
+                testItem.stats["RequiredLevel"] = 1;
+                View.HeroInventory.AddItem(testItem);
 
-            testItem = new Item("Short Sword", SlotType.MainHand, ItemRarity.Common, "1-Handed Sword");
-            testItem.stats["MinDamage"] = 1;
-            testItem.stats["MaxDamage"] = 7;
-            testItem.stats["RequiredLevel"] = 1;
-            View.HeroInventory.AddItem(testItem);
+                testItem = new Item("Short Sword", SlotType.MainHand, ItemRarity.Common, "1-Handed Sword");
+                testItem.stats["MinDamage"] = 1;
+                testItem.stats["MaxDamage"] = 7;
+                testItem.stats["RequiredLevel"] = 1;
+                View.HeroInventory.AddItem(testItem);
 
-            testItem = new Item("Leather Hood", SlotType.Head, ItemRarity.Magic, "Helm");
-            testItem.stats["Armor"] = 21;
-            testItem.stats["Vitality"] = 4;
-            testItem.stats["RequiredLevel"] = 4;
-            View.HeroInventory.AddItem(testItem);
+                testItem = new Item("Leather Hood", SlotType.Head, ItemRarity.Magic, "Helm");
+                testItem.stats["Armor"] = 21;
+                testItem.stats["Vitality"] = 4;
+                testItem.stats["RequiredLevel"] = 4;
+                View.HeroInventory.AddItem(testItem);
+            }
+            catch
+            {
+                Console.WriteLine("Bleargh?!");
+            }
         }
 
         private void btnItemEquip_Click(object sender, RoutedEventArgs e)

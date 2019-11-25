@@ -65,6 +65,7 @@ namespace DiabloSimulator.UserControls
                 testItem = new Item("Leather Hood", SlotType.Head, ItemRarity.Magic, "Helm");
                 testItem.stats["Armor"] = 21;
                 testItem.stats["Vitality"] = 4;
+                testItem.stats["HealthRegen"] = 2;
                 testItem.stats["RequiredLevel"] = 4;
                 View.HeroInventory.AddItem(testItem);
             }

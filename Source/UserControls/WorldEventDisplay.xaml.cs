@@ -142,8 +142,8 @@ namespace DiabloSimulator.UserControls
                 AdvanceTime();
             }
 
-            lvEvents.Items.MoveCurrentToLast();
-            lvEvents.ScrollIntoView(lvEvents.Items.CurrentItem);
+            lvEvents.SelectedIndex = lvEvents.Items.Count - 1;
+            lvEvents.ScrollIntoView(lvEvents.SelectedItem);
         }
 
         private void AdvanceTime()

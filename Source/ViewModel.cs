@@ -35,6 +35,16 @@ namespace DiabloSimulator
             hero.Heal(amount);
         }
 
+        public void KillHero()
+        {
+            hero.Kill();
+        }
+
+        public void ReviveHero()
+        {
+            hero.Revive();
+        }
+
         public void DamageHero(float amount)
         {
             hero.Damage(amount);

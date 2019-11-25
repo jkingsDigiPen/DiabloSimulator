@@ -16,6 +16,8 @@ namespace DiabloSimulator.Game
 
         public float GetAttackDamage();
 
+        public void Kill();
+
         public void Revive();
     }
 }

@@ -25,6 +25,7 @@ namespace DiabloSimulator.Game
         {
             inventory = new Inventory();
             equipment = new Equipment();
+            random = new Random();
 
             InitializeStats();
         }
@@ -38,16 +39,27 @@ namespace DiabloSimulator.Game
         public void Damage(float amount)
         {
             // Decrease health, but keep above 0
-            stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - amount, 
-                -stats.BaseValues["MaxHealth"]);
+            stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - amount,
+                -stats.ModifiedValues["MaxHealth"]);
         }
 
         public float GetAttackDamage()
         {
-            Random random = new Random();
+            int minValue = (int)stats.ModifiedValues["MinDamage"];
+            int maxValue = (int)stats.ModifiedValues["MaxDamage"];
+            return random.Next(minValue, maxValue + 1);
+        }
 
-            return random.Next((int)stats.ModifiedValues["MinDamage"], 
-                (int)stats.ModifiedValues["MaxDamage"]);
+        public void Kill()
+        {
+            // Reduce health
+            stats["CurrentHealth"] = -stats.ModifiedValues["MaxHealth"];
+
+            // Lose gold
+            inventory.goldAmount = 0;
+
+            // TO DO: Remove temp buffs
+
         }
 
         public void Revive()
@@ -84,5 +96,11 @@ namespace DiabloSimulator.Game
             stats["CriticalHitChance"] = 0.05f;
             stats["CriticalHitDamage"] = 1.5f;
         }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private Random random;
     }
 }

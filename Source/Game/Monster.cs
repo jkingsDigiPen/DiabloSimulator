@@ -34,6 +34,7 @@ namespace DiabloSimulator.Game
         {
             rarity = rarity_;
             stats.Level = level_;
+            random = new Random();
         }
 
         public string Damage(List<DamageArgs> damageList)

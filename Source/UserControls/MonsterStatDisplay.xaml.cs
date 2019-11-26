@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace DiabloSimulator.UserControls
 {
@@ -32,7 +33,8 @@ namespace DiabloSimulator.UserControls
         private void OnMonsterChanged(object sender, RoutedEventArgs e)
         {
             tbMonsterName.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
-            //tbMonsterType.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            var multiBind = BindingOperations.GetMultiBindingExpression(tbMonsterType, TextBlock.TextProperty);
+            multiBind.UpdateTarget();
             tbMonsterHealth.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
         }
     }

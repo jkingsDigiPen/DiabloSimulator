@@ -72,9 +72,6 @@ namespace DiabloSimulator.UserControls
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
         {
-            // TO DO: Remove this
-            //View.HeroStats.Level = View.HeroStats.Level + 1;
-
             if(View.InCombat())
             {
                 float damageDealt = View.GetHeroAttackDamage()[0].amount;
@@ -93,10 +90,8 @@ namespace DiabloSimulator.UserControls
             {
                 Turns = 0;
                 AddWorldEvent(View.GenerateMonster());
-
                 // Force monster stat update
-                if (!View.IsMonsterNullOrDead())
-                    RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
+                RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
             }
         }
 
@@ -130,11 +125,12 @@ namespace DiabloSimulator.UserControls
                 View.HeroStats.AddModifier(regenAddBonus);
                 AddWorldEvent("You rest for a short while. You feel healthier!");
 
+                // Step time forward to heal
+                AdvanceTime();
+
                 // Remove temporary regen
                 View.HeroStats.RemoveModifier(regenMultBonus);
                 View.HeroStats.RemoveModifier(regenAddBonus);
-
-                AdvanceTime();
             }
         }
 
@@ -142,7 +138,6 @@ namespace DiabloSimulator.UserControls
         {
             lvEvents.Items.Add(worldEvent);
 
-            // FIX THIS DAMN SCROLLING
             if (VisualTreeHelper.GetChildrenCount(lvEvents) > 0)
             {
                 Border border = (Border)VisualTreeHelper.GetChild(lvEvents, 0);
@@ -158,20 +153,19 @@ namespace DiabloSimulator.UserControls
             {
                 HeroLifeRegen();
 
-                if(View.InCombat())
+                if (View.InCombat())
                 {
-                    // Force monster stat update
-                    if (!View.IsMonsterNullOrDead())
-                        RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
-
                     ++Turns;
                     AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
                 }
+
+                // Force monster stat update
+                RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
             }
             else
             {
                 GameOver();
-            }
+            } 
         }
 
         private void HeroLifeRegen()
@@ -188,6 +182,10 @@ namespace DiabloSimulator.UserControls
             MessageBox.Show("You have died. You will be revived in town.");
             AddWorldEvent("You are in the town of Tristram, a place of relative safety.");
             View.ReviveHero();
+            View.KillMonster();
+
+            // Force monster stat update
+            RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
         }
 
         private ViewModel View

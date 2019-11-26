@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -49,6 +50,18 @@ namespace DiabloSimulator.Game
             progressions = new StatMap(other.progressions);
             Modifiers = new Dictionary<string, ModifierMap>(other.Modifiers);
             dependants = new StatDependantMap(other.dependants);
+
+            // Redo mod sources
+            foreach(KeyValuePair<string, ModifierMap> modMap in Modifiers)
+            {
+                foreach(KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
+                {
+                    foreach(StatModifier mod in modSet.Value)
+                    {
+                        mod.UpdateSourceTable(other, this);
+                    }
+                }
+            }
 
             // Using property fills out leveled and modified values
             Level = other.Level;

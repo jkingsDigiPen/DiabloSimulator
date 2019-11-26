@@ -67,6 +67,14 @@ namespace DiabloSimulator.Game
             return (statName + modSource + type.ToString()).GetHashCode();
         }
 
+        public void UpdateSourceTable(StatTable check, StatTable change)
+        {
+            if(modSourceTable == check)
+            {
+                modSourceTable = change;
+            }
+        }
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------

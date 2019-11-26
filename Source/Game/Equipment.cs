@@ -28,6 +28,11 @@ namespace DiabloSimulator.Game
             Items = new EquipmentMap();
         }
 
+        public Equipment(Equipment other)
+        {
+            Items = new EquipmentMap(other.Items);
+        }
+
         public void EquipItem(Item item, StatTable heroStats)
         {
             // Handle two-handed weapons

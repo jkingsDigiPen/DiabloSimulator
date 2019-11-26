@@ -27,6 +27,12 @@ namespace DiabloSimulator.Game
             Items = new ObservableCollection<Item>();
         }
 
+        public Inventory(Inventory other)
+        {
+            goldAmount = other.goldAmount;
+            Items = new ObservableCollection<Item>(other.Items);
+        }
+
         public void AddItem(Item item)
         {
             Items.Add(item);

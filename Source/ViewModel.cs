@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using DiabloSimulator.Game;
 using DiabloSimulator.Game.Factories;
+using System;
 
 namespace DiabloSimulator
 {
@@ -28,6 +29,7 @@ namespace DiabloSimulator
             hero = new Hero("The Vagabond");
             monster = new Monster();
             monsterFactory = new MonsterFactory();
+            heroFactory = new HeroFactory();
         }
 
         public bool InCombat()
@@ -36,6 +38,11 @@ namespace DiabloSimulator
         }
 
         #region heroFunctions
+
+        public void CreateHero()
+        {
+            hero = heroFactory.Create(hero);
+        }
 
         public string HealHero(float amount)
         {
@@ -166,7 +173,7 @@ namespace DiabloSimulator
         public void KillMonster()
         {
             monster.Kill();
-            monster = null;
+            monster = new Monster();
         }
 
         public string DamageMonster(float amount)
@@ -237,8 +244,18 @@ namespace DiabloSimulator
         {
             get 
             {
-                return monster.stats.ModifiedValues["CurrentHealth"] /
-                    monster.stats.ModifiedValues["MaxHealth"];
+                float currentMonsterHealth = monster.stats.ModifiedValues["CurrentHealth"];
+                float maxMonsterHealth = monster.stats.ModifiedValues["MaxHealth"];
+
+                if (maxMonsterHealth == 0.0f)
+                    return 0.0f;
+
+                if(currentMonsterHealth < 0.0f)
+                {
+                    throw new Exception("Monster health wat");
+                }
+
+                return currentMonsterHealth / maxMonsterHealth;
             }
         }
 
@@ -269,5 +286,6 @@ namespace DiabloSimulator
         private Hero hero;
         private Monster monster;
         private MonsterFactory monsterFactory;
+        private HeroFactory heroFactory;
     }
 }

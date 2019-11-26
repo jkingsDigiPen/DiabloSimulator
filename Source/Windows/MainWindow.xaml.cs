@@ -59,6 +59,9 @@ namespace DiabloSimulator.Windows
             // Check to make sure form is filled
             if(viewModel.HeroName.Trim() != "")
             {
+                // We have everything we need to create the hero
+                viewModel.CreateHero();
+
                 Window gw = new GameWindow(viewModel);
                 gw.Show();
             }

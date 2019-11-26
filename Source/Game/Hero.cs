@@ -27,8 +27,15 @@ namespace DiabloSimulator.Game
             inventory = new Inventory();
             equipment = new Equipment();
             random = new Random();
+        }
 
-            InitializeStats();
+        public Hero(Hero other)
+            : base(other.Name, other.Archetype)
+        {
+            inventory = new Inventory(other.inventory);
+            equipment = new Equipment(other.equipment);
+            random = new Random();
+            stats = new StatTable(other.stats);
         }
 
         public string Heal(float amount)
@@ -118,112 +125,7 @@ namespace DiabloSimulator.Game
 
         private void InitializeStats()
         {
-            // Damage
-            stats["MinDamage"] = 2;
-            stats["MaxDamage"] = 3;
-            stats["CriticalHitChance"] = 0.05f;
-            stats["CriticalHitDamage"] = 1.5f;
-
-            // Class-specific stats
-            switch (Archetype)
-            {
-                case "Warrior":
-                    // Set starting stats
-                    stats["Strength"] = 10;
-                    stats["Dexterity"] = 8;
-                    stats["Intelligence"] = 8;
-                    stats["Vitality"] = 9;
-
-                    // Set stat progression
-                    stats.SetProgression("Strength", 3);
-                    stats.SetProgression("Dexterity", 1);
-                    stats.SetProgression("Intelligence", 1);
-                    stats.SetProgression("Vitality", 2);
-
-                    // Add modifiers
-                    stats.AddModifier(new StatModifier("MinDamage", "Strength",
-                        ModifierType.Multiplicative, 0.01f, stats));
-                    stats.AddModifier(new StatModifier("MaxDamage", "Strength",
-                        ModifierType.Multiplicative, 0.01f, stats));
-                    break;
-
-                case "Rogue":
-                    // Set starting stats
-                    stats["Strength"] = 8;
-                    stats["Dexterity"] = 10;
-                    stats["Intelligence"] = 8;
-                    stats["Vitality"] = 9;
-
-                    // Set stat progression
-                    stats.SetProgression("Strength", 1);
-                    stats.SetProgression("Dexterity", 3);
-                    stats.SetProgression("Intelligence", 1);
-                    stats.SetProgression("Vitality", 2);
-
-                    // Add modifiers
-                    stats.AddModifier(new StatModifier("MinDamage", "Dexterity",
-                        ModifierType.Multiplicative, 0.01f, stats));
-                    stats.AddModifier(new StatModifier("MaxDamage", "Dexterity",
-                        ModifierType.Multiplicative, 0.01f, stats));
-                    break;
-
-                case "Sorcerer":
-                    // Set starting stats
-                    stats["Strength"] = 8;
-                    stats["Dexterity"] = 8;
-                    stats["Intelligence"] = 10;
-                    stats["Vitality"] = 9;
-
-                    // Set stat progression
-                    stats.SetProgression("Strength", 1);
-                    stats.SetProgression("Dexterity", 1);
-                    stats.SetProgression("Intelligence", 3);
-                    stats.SetProgression("Vitality", 2);
-
-                    // Add modifiers
-                    stats.AddModifier(new StatModifier("MinDamage", "Intelligence",
-                        ModifierType.Multiplicative, 0.01f, stats));
-                    stats.AddModifier(new StatModifier("MaxDamage", "Intelligence",
-                        ModifierType.Multiplicative, 0.01f, stats));
-                    break;
-            }
-
-            // Vitality gives health per point
-            stats["MaxHealth"] = 0;
-            stats.AddModifier(new StatModifier("MaxHealth", "Vitality",
-                ModifierType.Additive, 3, stats));
-
-            // Current/Max Health
-            stats["CurrentHealth"] = 0;
-            stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
-                ModifierType.Additive, 1, stats));
-
-            // Strength gives armor per point
-            stats["Armor"] = 0;
-            stats.AddModifier(new StatModifier("Armor", "Strength", 
-                ModifierType.Additive, 1, stats));
-
-            // Dexterity gives dodge chance per point
-            stats["DodgeChance"] = 0;
-            stats.AddModifier(new StatModifier("DodgeChance", "Dexterity",
-                ModifierType.Additive, 0.001f, stats));
-
-            // Intelligence gives resistances per point
-            stats["FireResist"] = 0;
-            stats["ColdResist"] = 0;
-            stats["LightningResist"] = 0;
-            stats["PoisionResist"] = 0;
-            stats.AddModifier(new StatModifier("FireResist", "Intelligence",
-                ModifierType.Additive, 0.1f, stats));
-            stats.AddModifier(new StatModifier("ColdResist", "Intelligence",
-                ModifierType.Additive, 0.1f, stats));
-            stats.AddModifier(new StatModifier("LightningResist", "Intelligence",
-                ModifierType.Additive, 0.1f, stats));
-            stats.AddModifier(new StatModifier("PoisonResist", "Intelligence",
-                ModifierType.Additive, 0.1f, stats));
-
-            // Experience
-            stats["Experience"] = 0;
+           
         }
 
         //------------------------------------------------------------------------------

@@ -7,7 +7,6 @@
 //------------------------------------------------------------------------------
 
 using System;
-using DiabloSimulator.Game;
 
 namespace DiabloSimulator.Game.Factories
 {
@@ -15,7 +14,7 @@ namespace DiabloSimulator.Game.Factories
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class MonsterFactory : IFactory<DiabloSimulator.Game.Monster>
+    public class MonsterFactory : IFactory<Monster>
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -36,7 +35,7 @@ namespace DiabloSimulator.Game.Factories
 
             // Generate level, based on hero level (+/- 2 levels)
             int level = random.Next(Math.Max(1, (int)hero.stats.Level - 2), 
-                ((int)hero.stats.Level + 2) + 1);
+                 ((int)hero.stats.Level + 2) + 1);
 
             Monster monster = null;
 
@@ -61,7 +60,7 @@ namespace DiabloSimulator.Game.Factories
         }
 
         //------------------------------------------------------------------------------
-        // Protected:
+        // Protected Functions:
         //------------------------------------------------------------------------------
 
         protected override Monster CloneArchetype(string name)
@@ -89,19 +88,19 @@ namespace DiabloSimulator.Game.Factories
                 ModifierType.Additive, 1, monster.stats));
             AddArchetype(monster);
 
-            monster = new Monster("Fallen Shaman", 1, "Demon");
-            monster.stats["MaxHealth"] = 30;
-            monster.stats.SetProgression("MaxHealth", 20);
-            monster.stats["MinFireDamage"] = 2;
-            monster.stats["MaxFireDamage"] = 8;
-            monster.stats.SetProgression("MinFireDamage", 2);
-            monster.stats.SetProgression("MaxFireDamage", 2);
-            monster.stats["Experience"] = 20;
-            monster.stats.SetProgression("Experience", 10);
-            monster.stats["CurrentHealth"] = 0;
-            monster.stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
-                ModifierType.Additive, 1, monster.stats));
-            AddArchetype(monster);
+            Monster monster2 = new Monster("Fallen Shaman", 1, "Demon");
+            monster2.stats["MaxHealth"] = 30;
+            monster2.stats.SetProgression("MaxHealth", 20);
+            monster2.stats["MinFireDamage"] = 2;
+            monster2.stats["MaxFireDamage"] = 8;
+            monster2.stats.SetProgression("MinFireDamage", 2);
+            monster2.stats.SetProgression("MaxFireDamage", 2);
+            monster2.stats["Experience"] = 20;
+            monster2.stats.SetProgression("Experience", 10);
+            monster2.stats["CurrentHealth"] = 0;
+            monster2.stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
+                ModifierType.Additive, 1, monster2.stats));
+            AddArchetype(monster2);
         }
 
         //------------------------------------------------------------------------------

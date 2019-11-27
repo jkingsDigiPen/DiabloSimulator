@@ -24,6 +24,7 @@ namespace DiabloSimulator.Game
         public Hero(string name_ = "", string heroClass = "Warrior")
             : base(name_, heroClass)
         {
+            StatPriorities = new List<string>();
             inventory = new Inventory();
             equipment = new Equipment();
             random = new Random();
@@ -32,6 +33,7 @@ namespace DiabloSimulator.Game
         public Hero(Hero other)
             : base(other)
         {
+            StatPriorities = new List<string>(other.StatPriorities);
             inventory = new Inventory(other.Inventory);
             equipment = new Equipment(other.Equipment);
             random = new Random();
@@ -124,6 +126,7 @@ namespace DiabloSimulator.Game
 
         public Inventory Inventory { get => inventory; }
         public Equipment Equipment { get => equipment; }
+        public List<string> StatPriorities { get; set; }
 
         //------------------------------------------------------------------------------
         // Private Variables:

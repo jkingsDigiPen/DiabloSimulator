@@ -72,11 +72,11 @@ namespace DiabloSimulator.UserControls
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
         {
-            if(View.InCombat())
+            if(View.InCombat)
             {
                 float damageDealt = View.Hero.GetAttackDamage()[0].amount;
                 string damageDealtString = View.DamageMonster(damageDealt);
-                AddWorldEvent("You attack the " + View.Monster.Archetype + ". " + damageDealtString);
+                AddWorldEvent("You attack the " + View.Monster.Race + ". " + damageDealtString);
 
                 if (!View.Monster.IsDead())
                 {
@@ -90,6 +90,7 @@ namespace DiabloSimulator.UserControls
             {
                 Turns = 0;
                 AddWorldEvent(View.CreateMonster());
+                View.InCombat = true;
                 // Force monster stat update
                 RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
             }
@@ -97,8 +98,7 @@ namespace DiabloSimulator.UserControls
 
         private void btnDefend_Click(object sender, RoutedEventArgs e)
         {
-
-            if (View.InCombat())
+            if (View.InCombat)
             {
                 // TO DO: Add bonus dodge chance
                 AddWorldEvent("You steel yourself, waiting for your enemy to attack.");
@@ -148,24 +148,32 @@ namespace DiabloSimulator.UserControls
 
         private void AdvanceTime()
         {
-            // Check for player death
-            if (!View.Hero.IsDead())
-            {
-                HeroLifeRegen();
+            bool heroDead = View.Hero.IsDead();
+            bool monsterDead = View.Monster.IsDead();
 
-                if (View.InCombat())
+            if(heroDead || monsterDead)
+            {
+                View.InCombat = false;
+
+                // Check for player death
+                if (heroDead)
                 {
-                    ++Turns;
-                    AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
+                    GameOver();
                 }
+            }
+            else
+            {
+                ++Turns;
+                AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
 
                 // Force monster stat update
                 RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
             }
-            else
+
+            if(!heroDead)
             {
-                GameOver();
-            } 
+                HeroLifeRegen();
+            }
         }
 
         private void HeroLifeRegen()

@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using DiabloSimulator.Game;
 using DiabloSimulator.Game.Factories;
 
@@ -16,7 +17,7 @@ namespace DiabloSimulator
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public sealed class ViewModel
+    public sealed class ViewModel : INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -30,9 +31,17 @@ namespace DiabloSimulator
             heroFactory = new HeroFactory();
         }
 
-        public bool InCombat()
+        public bool InCombat
         {
-            return !Hero.IsDead() && !Monster.IsDead();
+            get => inCombat;
+            set
+            {
+                if (inCombat != value)
+                {
+                    inCombat = value;
+                    OnPropertyChange("InCombat");
+                }
+            }
         }
 
         #region heroFunctions
@@ -56,7 +65,7 @@ namespace DiabloSimulator
         {
             monster = monsterFactory.Create(Hero);
             return Monster.Name + " (a level " 
-                + Monster.Stats.Level + " " + Monster.Archetype + ") appeared!";
+                + Monster.Stats.Level + " " + Monster.Race + ") appeared!";
         }
 
         public void DestroyMonster()
@@ -74,13 +83,24 @@ namespace DiabloSimulator
 
         #endregion
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
+
+        private void OnPropertyChange(string property)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
+            }
+        }
 
         private MonsterFactory monsterFactory;
         private HeroFactory heroFactory;
         private Monster monster;
         private Hero hero;
+        private bool inCombat;
     }
 }

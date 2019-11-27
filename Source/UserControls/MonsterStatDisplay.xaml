@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DiabloSimulator.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300">
 	<Grid>
@@ -25,18 +24,50 @@
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 									FontWeight="SemiBold">Monster Stats</Label>
 				<TextBlock Name="tbMonsterName" Grid.Row="1" HorizontalAlignment="Center" Text="{Binding Monster.Name, 
-										UpdateSourceTrigger=PropertyChanged, FallbackValue=No Monster Detected}"/>
+										UpdateSourceTrigger=PropertyChanged, FallbackValue=No Monster Detected}">
+					<TextBlock.Resources>
+						<Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding InCombat, UpdateSourceTrigger=PropertyChanged}" Value="True">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Resources>
+				</TextBlock>
 				<TextBlock Name="tbMonsterType" Grid.Row="2" HorizontalAlignment="Center">
+					<TextBlock.Resources>
+						<Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding InCombat, UpdateSourceTrigger=PropertyChanged}" Value="True">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Resources>
 					<TextBlock.Text>
 						<MultiBinding StringFormat="{}({0} {1})">
 							<Binding x:Name="bMonsterRarity" Path="Monster.Rarity" UpdateSourceTrigger="PropertyChanged" FallbackValue=""/>
-							<Binding x:Name="bMonsterType" Path="Monster.Archetype" UpdateSourceTrigger="PropertyChanged" FallbackValue=""/>
+							<Binding x:Name="bMonsterType" Path="Monster.Race" UpdateSourceTrigger="PropertyChanged" FallbackValue=""/>
 						</MultiBinding>
 					</TextBlock.Text>
 				</TextBlock>
 				<TextBlock Name="tbMonsterHealth" Grid.Row="3" HorizontalAlignment="Center" Text=
 									 "{Binding Monster.HealthPercent, StringFormat={}{0:P0} Health Remaining, 
-										UpdateSourceTrigger=PropertyChanged, FallbackValue=0%}"/>
+										UpdateSourceTrigger=PropertyChanged, FallbackValue=0%}">
+					<TextBlock.Resources>
+						<Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+							<Setter Property="Visibility" Value="Hidden"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding InCombat, UpdateSourceTrigger=PropertyChanged}" Value="True">
+									<Setter Property="Visibility" Value="Visible"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</TextBlock.Resources>
+				</TextBlock>
 				<TextBlock Grid.Row="4"/>
 			</Grid>
 		</Border>

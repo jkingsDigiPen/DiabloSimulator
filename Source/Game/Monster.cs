@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DiabloSimulator.Game
 {
@@ -37,11 +38,13 @@ namespace DiabloSimulator.Game
             Stats.Level = 0;
         }
 
-        public Monster(string name_, uint level_, string baseMonster_ = "", 
-            MonsterRarity rarity_ = MonsterRarity.Common) 
+        public Monster(string name_, uint level_, MonsterRarity rarity_ = MonsterRarity.Common, 
+            string race_ = "", string family_ = "", string baseMonster_ = "") 
             : base(name_, baseMonster_)
         {
             rarity = rarity_;
+            Race = race_;
+            family = family_;
             Stats.Level = level_;
             random = new Random();
         }
@@ -50,6 +53,8 @@ namespace DiabloSimulator.Game
             : base(other)
         {
             rarity = other.Rarity;
+            Race = other.Race;
+            family = other.Family;
             random = new Random();
         }
 
@@ -152,12 +157,26 @@ namespace DiabloSimulator.Game
                 return currentMonsterHealth / maxMonsterHealth;
             }
         }
+        public string Race
+        {
+            get => race;
+            set
+            {
+                if (race != value)
+                {
+                    race = value;
+                    base.OnPropertyChange("Race");
+                }
+            }
+        }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
         public MonsterRarity Rarity { get => rarity; }
+
+        public string Family { get => family; }
 
         public const string EmptyMonster = "No Monster Detected";
 
@@ -167,5 +186,7 @@ namespace DiabloSimulator.Game
 
         private Random random;
         private MonsterRarity rarity;
+        private string race;
+        private string family;
     }
 }

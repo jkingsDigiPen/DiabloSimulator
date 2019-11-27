@@ -74,7 +74,8 @@ namespace DiabloSimulator.Game.Factories
 
         private void AddMonsterArchetypes()
         {
-            Monster monster = new Monster("Fallen Imp", 1, "Demon");
+            Monster monster = new Monster("Fallen Imp", 1, 
+                MonsterRarity.Common, "Demon", "Fallen");
             monster.Stats["MaxHealth"] = 10;
             monster.Stats.SetProgression("MaxHealth", 12);
             monster.Stats["MinDamage"] = 1;
@@ -88,7 +89,8 @@ namespace DiabloSimulator.Game.Factories
                 ModifierType.Additive, 1, monster.Stats));
             AddArchetype(monster);
 
-            monster = new Monster("Fallen Shaman", 1, "Demon");
+            monster = new Monster("Fallen Shaman", 1,
+                MonsterRarity.Common, "Demon", "Fallen");
             monster.Stats["MaxHealth"] = 30;
             monster.Stats.SetProgression("MaxHealth", 20);
             monster.Stats["MinFireDamage"] = 2;

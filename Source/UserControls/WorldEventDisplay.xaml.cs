@@ -74,19 +74,19 @@ namespace DiabloSimulator.UserControls
         {
             if(View.InCombat())
             {
-                float damageDealt = View.GetHeroAttackDamage()[0].amount;
+                float damageDealt = View.Hero.GetAttackDamage()[0].amount;
                 string damageDealtString = View.DamageMonster(damageDealt);
-                AddWorldEvent("You attack the " + View.MonsterType + ". " + damageDealtString);
+                AddWorldEvent("You attack the " + View.Monster.Archetype + ". " + damageDealtString);
 
-                if (!View.IsMonsterNullOrDead())
+                if (!View.Monster.IsDead())
                 {
-                    damageDealtString = View.DamageHero(View.GetMonsterAttackDamage());
-                    AddWorldEvent(View.MonsterName + " attacks you. " + damageDealtString);
+                    damageDealtString = View.Hero.Damage(View.Monster.GetAttackDamage());
+                    AddWorldEvent(View.Monster.Name + " attacks you. " + damageDealtString);
                 }
 
                 AdvanceTime();
             }
-            else if(!View.IsHeroDead())
+            else if(!View.Hero.IsDead())
             {
                 Turns = 0;
                 AddWorldEvent(View.GenerateMonster());
@@ -103,17 +103,17 @@ namespace DiabloSimulator.UserControls
                 // TO DO: Add bonus dodge chance
                 AddWorldEvent("You steel yourself, waiting for your enemy to attack.");
 
-                if (!View.IsMonsterNullOrDead())
+                if (!View.Monster.IsDead())
                 {
-                    string damageDealtString = View.DamageHero(View.GetMonsterAttackDamage());
-                    AddWorldEvent(View.MonsterName + " attacks you. " + damageDealtString);
+                    string damageDealtString = View.Hero.Damage(View.Monster.GetAttackDamage());
+                    AddWorldEvent(View.Monster.Name + " attacks you. " + damageDealtString);
                 }
 
                 // TO DO: Remove bonus dodge chance
 
                 AdvanceTime();
             }
-            else if (!View.IsHeroDead())
+            else if (!View.Hero.IsDead())
             {
                 // Add regen - additive and multiplicative
                 StatModifier regenMultBonus = new StatModifier("HealthRegen",
@@ -121,16 +121,16 @@ namespace DiabloSimulator.UserControls
                 StatModifier regenAddBonus = new StatModifier("HealthRegen",
                     "Rest", Game.ModifierType.Additive, 2);
 
-                View.HeroStats.AddModifier(regenMultBonus);
-                View.HeroStats.AddModifier(regenAddBonus);
+                View.Hero.stats.AddModifier(regenMultBonus);
+                View.Hero.stats.AddModifier(regenAddBonus);
                 AddWorldEvent("You rest for a short while. You feel healthier!");
 
                 // Step time forward to heal
                 AdvanceTime();
 
                 // Remove temporary regen
-                View.HeroStats.RemoveModifier(regenMultBonus);
-                View.HeroStats.RemoveModifier(regenAddBonus);
+                View.Hero.stats.RemoveModifier(regenMultBonus);
+                View.Hero.stats.RemoveModifier(regenAddBonus);
             }
         }
 
@@ -149,7 +149,7 @@ namespace DiabloSimulator.UserControls
         private void AdvanceTime()
         {
             // Check for player death
-            if (!View.IsHeroDead())
+            if (!View.Hero.IsDead())
             {
                 HeroLifeRegen();
 
@@ -170,10 +170,10 @@ namespace DiabloSimulator.UserControls
 
         private void HeroLifeRegen()
         {
-            float lifeRegenAmount = View.HeroStats.ModifiedValues["HealthRegen"];
+            float lifeRegenAmount = View.Hero.stats.ModifiedValues["HealthRegen"];
             if (lifeRegenAmount != 0)
             {
-                AddWorldEvent(View.HealHero(lifeRegenAmount) + " from natural healing.");
+                AddWorldEvent(View.Hero.Heal(lifeRegenAmount) + " from natural healing.");
             }
         }
 
@@ -181,7 +181,7 @@ namespace DiabloSimulator.UserControls
         {
             MessageBox.Show("You have died. You will be revived in town.");
             AddWorldEvent("You are in the town of Tristram, a place of relative safety.");
-            View.ReviveHero();
+            View.Hero.Revive();
             View.KillMonster();
 
             // Force monster stat update

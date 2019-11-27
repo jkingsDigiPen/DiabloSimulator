@@ -49,20 +49,20 @@ namespace DiabloSimulator.UserControls
                 testItem.stats["MinDamage"] = 2;
                 testItem.stats["MaxDamage"] = 6;
                 testItem.stats["RequiredLevel"] = 1;
-                View.HeroInventory.AddItem(testItem);
+                View.Hero.Inventory.AddItem(testItem);
 
                 testItem = new Item("Short Sword", SlotType.MainHand, ItemRarity.Common, "1-Handed Sword");
                 testItem.stats["MinDamage"] = 1;
                 testItem.stats["MaxDamage"] = 7;
                 testItem.stats["RequiredLevel"] = 1;
-                View.HeroInventory.AddItem(testItem);
+                View.Hero.Inventory.AddItem(testItem);
 
                 testItem = new Item("Leather Hood", SlotType.Head, ItemRarity.Magic, "Helm");
                 testItem.stats["Armor"] = 21;
                 testItem.stats["Vitality"] = 4;
                 testItem.stats["HealthRegen"] = 2;
                 testItem.stats["RequiredLevel"] = 4;
-                View.HeroInventory.AddItem(testItem);
+                View.Hero.Inventory.AddItem(testItem);
             }
             catch
             {
@@ -76,8 +76,8 @@ namespace DiabloSimulator.UserControls
             if (selection == -1)
                 return;
 
-            Inventory inventory = View.HeroInventory;
-            Equipment equipment = View.HeroEquipment;
+            Inventory inventory = View.Hero.Inventory;
+            Equipment equipment = View.Hero.Equipment;
             Item itemToEquip = inventory.Items[selection];
 
             // Don't equip junk items
@@ -87,10 +87,10 @@ namespace DiabloSimulator.UserControls
             // TO DO: Handle rings
 
             // Remove currently equipped item
-            Item itemToRemove = equipment.UnequipItem(itemToEquip.slot, View.HeroStats);
+            Item itemToRemove = equipment.UnequipItem(itemToEquip.slot, View.Hero.stats);
 
             // Equip item in slot
-            View.HeroEquipment.EquipItem(itemToEquip, View.HeroStats);
+            equipment.EquipItem(itemToEquip, View.Hero.stats);
 
             // Remove item from inventory
             inventory.RemoveItem(itemToEquip);
@@ -108,7 +108,7 @@ namespace DiabloSimulator.UserControls
             if (selection == -1)
                 return;
 
-            Inventory inventory = View.HeroInventory;
+            Inventory inventory = View.Hero.Inventory;
 
             // Remove item from inventory
             Item itemToRemove = inventory.Items[selection];
@@ -122,7 +122,7 @@ namespace DiabloSimulator.UserControls
             int selection = lbInventory.SelectedIndex;
             if (selection == -1)
                 return;
-            View.HeroInventory.JunkItem(selection);
+            View.Hero.Inventory.JunkItem(selection);
             lbInventory.SelectedIndex = selection;
         }
 
@@ -131,7 +131,7 @@ namespace DiabloSimulator.UserControls
             int selection = lbInventory.SelectedIndex;
             if (selection == -1)
                 return;
-            View.HeroInventory.KeepItem(selection);
+            View.Hero.Inventory.KeepItem(selection);
             lbInventory.SelectedIndex = selection;
         }
 

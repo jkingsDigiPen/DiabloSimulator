@@ -32,8 +32,8 @@ namespace DiabloSimulator.Game
         public Hero(Hero other)
             : base(other.Name, other.Archetype)
         {
-            inventory = new Inventory(other.inventory);
-            equipment = new Equipment(other.equipment);
+            inventory = new Inventory(other.Inventory);
+            equipment = new Equipment(other.Equipment);
             random = new Random();
             stats = new StatTable(other.stats);
         }
@@ -96,7 +96,7 @@ namespace DiabloSimulator.Game
             stats["CurrentHealth"] = -stats.ModifiedValues["MaxHealth"];
 
             // Lose gold
-            inventory.goldAmount = 0;
+            Inventory.GoldAmount = 0;
 
             // TO DO: Remove temp buffs
 
@@ -116,22 +116,15 @@ namespace DiabloSimulator.Game
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public Inventory inventory;
-        public Equipment equipment;
-
-        //------------------------------------------------------------------------------
-        // Private Functions:
-        //------------------------------------------------------------------------------
-
-        private void InitializeStats()
-        {
-           
-        }
+        public Inventory Inventory { get => inventory; }
+        public Equipment Equipment { get => equipment; }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private Random random;
+        private Inventory inventory;
+        private Equipment equipment;
     }
 }

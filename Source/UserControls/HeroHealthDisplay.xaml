@@ -24,14 +24,14 @@
 				<TextBlock>
 					<TextBlock.Text>
 						<MultiBinding StringFormat="{}{0} / {1}">
-							<Binding Path="HeroStats.ModifiedValues[CurrentHealth]" UpdateSourceTrigger="PropertyChanged"/>
-							<Binding Path="HeroStats.ModifiedValues[MaxHealth]" UpdateSourceTrigger="PropertyChanged"/>
+							<Binding Path="Hero.Stats.ModifiedValues[CurrentHealth]" UpdateSourceTrigger="PropertyChanged"/>
+							<Binding Path="Hero.Stats.ModifiedValues[MaxHealth]" UpdateSourceTrigger="PropertyChanged"/>
 						</MultiBinding>
 					</TextBlock.Text>
 				</TextBlock>
 			</Label>
 			<Label Grid.Row="2" HorizontalAlignment="Center" FontSize="14">
-				<TextBlock Text="{Binding HeroPotions, StringFormat={}{0} potions remaining}"></TextBlock>
+				<TextBlock Text="{Binding Hero.Inventory.PotionsHeld, StringFormat={}{0} potions remaining}"></TextBlock>
 			</Label>
 			<Label Grid.Row="3"/>
 			<Button Grid.Row="4" MaxHeight="30" Name="btnUsePotion">Use Potion</Button>

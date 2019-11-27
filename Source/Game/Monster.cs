@@ -49,7 +49,7 @@ namespace DiabloSimulator.Game
         public Monster(Monster other)
             : base(other.Name, other.Archetype)
         {
-            rarity = other.rarity;
+            rarity = other.Rarity;
             stats = new StatTable(other.stats);
             random = new Random();
         }
@@ -130,21 +130,36 @@ namespace DiabloSimulator.Game
 
         public bool IsDead()
         {
-            return stats.ModifiedValues["CurrentHealth"] == 0;
+            return Name == Monster.EmptyMonster || stats.ModifiedValues["CurrentHealth"] == 0;
+        }
+
+        public float HealthPercent
+        {
+            get
+            {
+                float currentMonsterHealth = stats.ModifiedValues["CurrentHealth"];
+                float maxMonsterHealth = stats.ModifiedValues["MaxHealth"];
+
+                if (maxMonsterHealth == 0.0f)
+                    return 0.0f;
+
+                return currentMonsterHealth / maxMonsterHealth;
+            }
         }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public const string EmptyMonster = "No Monster Detected";
+        public MonsterRarity Rarity { get => rarity; }
 
-        public MonsterRarity rarity;
+        public const string EmptyMonster = "No Monster Detected";
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private Random random;
+        private MonsterRarity rarity;
     }
 }

@@ -24,9 +24,9 @@
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" 
-							 Text="{Binding HeroEquipment.Items[MainHand].Name, FallbackValue=No Item Equipped}"/>
+							 Text="{Binding Hero.Equipment.Items[MainHand].Name, FallbackValue=No Item Equipped}"/>
 				<TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" 
-							 Text="{Binding HeroEquipment.Items[MainHand].Archetype, FallbackValue=Unarmed}"/>
+							 Text="{Binding Hero.Equipment.Items[MainHand].Archetype, FallbackValue=Unarmed}"/>
 				<TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
 					<TextBlock.Text>
 						<MultiBinding StringFormat="{}{0:F0} - {1:F0} Damage">
@@ -36,7 +36,7 @@
 					</TextBlock.Text>
 				</TextBlock>
 				<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"
-							 Text="{Binding HeroStats.ModifiedValues[CriticalHitChance], 
+							 Text="{Binding Hero.Stats.ModifiedValues[CriticalHitChance], 
 								StringFormat={}{0:P1} Critical Hit Chance}"/>
 			</Grid>
 		</Grid>

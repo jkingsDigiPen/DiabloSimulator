@@ -124,13 +124,13 @@ namespace DiabloSimulator.UserControls
         private Item UnequipItem(SlotType slot)
         {
             // Unequip item
-            Item unequipped = View.HeroEquipment.UnequipItem(slot, View.HeroStats);
+            Item unequipped = View.Hero.Equipment.UnequipItem(slot, View.Hero.stats);
 
             // Add to inventory
             if (unequipped is null)
                 return null;
 
-            View.HeroInventory.AddItem(unequipped);
+            View.Hero.Inventory.AddItem(unequipped);
 
             return unequipped;
         }

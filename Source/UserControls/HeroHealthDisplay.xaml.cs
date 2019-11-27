@@ -39,7 +39,7 @@ namespace DiabloSimulator.UserControls
             try
             {
                 // TO DO: REMOVE THIS
-                View.HeroPotions = 3;
+                View.Hero.Inventory.PotionsHeld = 3;
             }
             catch
             {
@@ -49,12 +49,12 @@ namespace DiabloSimulator.UserControls
 
         private void btnUsePotion_Click(object sender, RoutedEventArgs e)
         {
-            if (View.HeroPotions == 0)
+            if (View.Hero.Inventory.PotionsHeld == 0)
                 return;
 
-            --View.HeroPotions;
+            --View.Hero.Inventory.PotionsHeld;
 
-            View.HealHero(25);
+            View.Hero.Heal(25);
         }
 
         private ViewModel View

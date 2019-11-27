@@ -9,14 +9,14 @@
 	<ListView Grid.Row="1" Name="lbStats">
 		<DockPanel>
 			<TextBlock>Name:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroName}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Name}"/>
 		</DockPanel>
 		<TextBlock TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left" 
 							 Height="auto" MaxWidth="250" 
-							 Text="{Binding HeroDescription, StringFormat=Desciption:&#x0d;&#x0a;{0}}"/>
+							 Text="{Binding Hero.Description, StringFormat=Desciption:&#x0d;&#x0a;{0}}"/>
 		<DockPanel>
 			<TextBlock>Class:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroClass}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Archetype}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Level:</TextBlock>
@@ -24,59 +24,59 @@
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Experience:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Experience]}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[Experience]}"/>
 		</DockPanel>
 		<TextBlock FontSize="18" Margin="5" HorizontalAlignment="Center">Core Stats</TextBlock>
 		<DockPanel>
 			<TextBlock>Strength:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Strength]}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[Strength]}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Dexterity:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Dexterity]}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[Dexterity]}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Intelligence:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Intelligence]}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[Intelligence]}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Vitality:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Vitality]}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[Vitality]}"/>
 		</DockPanel>
 		<TextBlock FontSize="18" Margin="5" HorizontalAlignment="Center">Offensive Stats</TextBlock>
 		<DockPanel>
 			<TextBlock>Critical Hit Damage:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[CriticalHitDamage], 
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[CriticalHitDamage], 
 				StringFormat={}{0:P0}}"/>
 		</DockPanel>
 		<TextBlock FontSize="18" Margin="5" HorizontalAlignment="Center">Defensive Stats</TextBlock>
 		<DockPanel>
 			<TextBlock>Life Regen:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[HealthRegen], 
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[HealthRegen], 
 				StringFormat={}{0:F0} per turn}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Armor:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[Armor]}"/>
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[Armor]}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Fire Resistance:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[FireResist], 
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[FireResist], 
 				StringFormat={}{0:F0}}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Cold Resistance:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[ColdResist], 
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[ColdResist], 
 				StringFormat={}{0:F0}}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Lightning Resistance:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[LightningResist], 
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[LightningResist], 
 				StringFormat={}{0:F0}}"/>
 		</DockPanel>
 		<DockPanel>
 			<TextBlock>Poison Resistance:</TextBlock>
-			<TextBlock TextAlignment="Right" Text="{Binding HeroStats.ModifiedValues[PoisonResist], 
+			<TextBlock TextAlignment="Right" Text="{Binding Hero.Stats.ModifiedValues[PoisonResist], 
 				StringFormat={}{0:F0}}"/>
 		</DockPanel>
 	</ListView>

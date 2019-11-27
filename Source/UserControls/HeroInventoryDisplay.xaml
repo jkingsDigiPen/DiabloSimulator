@@ -15,7 +15,7 @@
 		<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 								 FontWeight="SemiBold">Inventory</Label>
 		<ListView Grid.Row="1" Name="lbInventory" 
-							ItemsSource="{Binding HeroInventory.Items, UpdateSourceTrigger=PropertyChanged}"></ListView>
+							ItemsSource="{Binding Hero.Inventory.Items, UpdateSourceTrigger=PropertyChanged}"></ListView>
 		<Grid Grid.Row="2" Width="auto">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>

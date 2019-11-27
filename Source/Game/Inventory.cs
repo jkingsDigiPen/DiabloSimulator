@@ -15,7 +15,7 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class Inventory
+    public class Inventory : INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -23,13 +23,13 @@ namespace DiabloSimulator.Game
 
         public Inventory()
         {
-            goldAmount = 0;
+            GoldAmount = 0;
             Items = new ObservableCollection<Item>();
         }
 
         public Inventory(Inventory other)
         {
-            goldAmount = other.goldAmount;
+            GoldAmount = other.GoldAmount;
             Items = new ObservableCollection<Item>(other.Items);
         }
 
@@ -85,17 +85,53 @@ namespace DiabloSimulator.Game
             Items.Insert(selection, itemToFavorite);
         }
 
-        public ObservableCollection<Item> Items { get; }
+        public uint PotionsHeld 
+        { 
+            get => potionsHeld; 
+            set
+            {
+                if (potionsHeld != value)
+                {
+                    potionsHeld = value;
+                    OnPropertyChange("PotionsHeld");
+                }
+            }
+        }
+
+        public uint GoldAmount 
+        {
+            get => goldAmount;
+            set
+            {
+                if (goldAmount != value)
+                {
+                    goldAmount = value;
+                    OnPropertyChange("GoldAmount");
+                }
+            }
+        }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public uint goldAmount;
-        public uint potionsHeld;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<Item> Items { get; }
 
         //------------------------------------------------------------------------------
-        // Private Function:
+        // Private Functions:
         //------------------------------------------------------------------------------
+
+        private void OnPropertyChange(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private uint goldAmount;
+        private uint potionsHeld;
     }
 }

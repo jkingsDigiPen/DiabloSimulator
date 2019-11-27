@@ -30,7 +30,7 @@
 					<TextBlock TextWrapping="Wrap">
 					Name your character:
 					</TextBlock>
-					<TextBox Margin="10" Width="300" Name="tbxHeroName" Text="{Binding HeroName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+					<TextBox Margin="10" Width="300" Name="tbxHeroName" Text="{Binding Hero.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 					<Separator/>
 
 					<!-- Character description -->
@@ -38,7 +38,7 @@
 					Describe your character:
 					</TextBlock>
 					<TextBox TextWrapping="Wrap" Width="300" MinHeight="200" Margin="10" Name="tbxHeroDesc" 
-							Text="{Binding HeroDescription, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+							Text="{Binding Hero.Description, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 					<Separator/>
 
 					<!-- Start button -->

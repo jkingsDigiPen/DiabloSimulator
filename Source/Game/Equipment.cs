@@ -87,7 +87,7 @@ namespace DiabloSimulator.Game
         private void AddItemModsToHeroStats(Item itemToEquip, StatTable heroStats)
         {
             // Add stats from item to hero stat mods
-            foreach (KeyValuePair<string, float> mod in itemToEquip.stats.LeveledValues)
+            foreach (KeyValuePair<string, float> mod in itemToEquip.Stats.LeveledValues)
             {
                 // Ignore "required level"
                 if (mod.Key == "RequiredLevel")
@@ -97,7 +97,7 @@ namespace DiabloSimulator.Game
                     itemToEquip.Name, ModifierType.Additive, mod.Value));
             }
 
-            foreach (KeyValuePair<string, ModifierMap> modMap in itemToEquip.stats.Modifiers)
+            foreach (KeyValuePair<string, ModifierMap> modMap in itemToEquip.Stats.Modifiers)
             {
                 foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
                 {
@@ -112,13 +112,13 @@ namespace DiabloSimulator.Game
         private void RemoveItemModsFromHeroStats(Item unequipped, StatTable heroStats)
         {
             // Remove stats from item from hero stat mods
-            foreach (KeyValuePair<string, float> mod in unequipped.stats.LeveledValues)
+            foreach (KeyValuePair<string, float> mod in unequipped.Stats.LeveledValues)
             {
                 heroStats.RemoveModifier(new StatModifier(mod.Key,
                     unequipped.Name, ModifierType.Additive, mod.Value));
             }
 
-            foreach (KeyValuePair<string, ModifierMap> modMap in unequipped.stats.Modifiers)
+            foreach (KeyValuePair<string, ModifierMap> modMap in unequipped.Stats.Modifiers)
             {
                 foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
                 {

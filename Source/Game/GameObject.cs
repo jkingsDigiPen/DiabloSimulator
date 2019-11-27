@@ -6,13 +6,15 @@
 //
 //------------------------------------------------------------------------------
 
+using System.ComponentModel;
+
 namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public abstract class GameObject
+    public abstract class GameObject : INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -25,10 +27,83 @@ namespace DiabloSimulator.Game
             stats = new StatTable();
         }
 
-        public string Name { get; set; }
-        public string Archetype { get; set; }
-        public string Description { get; set; }
+        public GameObject(GameObject other)
+        {
+            Name = other.Name;
+            Archetype = other.Archetype;
+            Description = other.Description;
+            stats = new StatTable(other.stats);
+        }
 
-        public StatTable stats;
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (name != value)
+                {
+                    name = value;
+                    OnPropertyChange("Name");
+                }
+            }
+        }
+
+        public string Archetype 
+        {
+            get => archetype; 
+            set
+            {
+                if (archetype != value)
+                {
+                    archetype = value;
+                    OnPropertyChange("Archetype");
+                }
+            }
+        }
+
+        public string Description 
+        { 
+            get => description; 
+            set
+            {
+                if (description != value)
+                {
+                    description = value;
+                    OnPropertyChange("Description");
+                }
+            }
+        }
+
+        public StatTable Stats
+        {
+            get => stats;
+        }
+
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        private void OnPropertyChange(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private string name;
+        private string archetype;
+        private string description;
+        private StatTable stats;
     }
 }

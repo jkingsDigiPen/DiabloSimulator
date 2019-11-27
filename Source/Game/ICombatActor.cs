@@ -49,6 +49,10 @@ namespace DiabloSimulator.Game
 
         // Takes in desired damage amount,
         // returns message about actual damage taken.
+        public string Damage(float damage);
+
+        // Takes in desired damage amounts,
+        // returns message about actual damage taken.
         public string Damage(List<DamageArgs> damageList);
 
         public List<DamageArgs> GetAttackDamage();

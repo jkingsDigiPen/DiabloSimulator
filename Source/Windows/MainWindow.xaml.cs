@@ -31,7 +31,7 @@ namespace DiabloSimulator.Windows
             DataContext = viewModel;
 
             // Stock hero description
-            viewModel.HeroDescription = "A wandering adventurer, seeking fame and fortune.";
+            viewModel.Hero.Description = "A wandering adventurer, seeking fame and fortune.";
 
             // Event handlers
             btnStart.Click += btnStart_Click;
@@ -57,7 +57,7 @@ namespace DiabloSimulator.Windows
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             // Check to make sure form is filled
-            if(viewModel.HeroName.Trim() != "")
+            if(viewModel.Hero.Name.Trim() != "")
             {
                 // We have everything we need to create the hero
                 viewModel.CreateHero();
@@ -73,7 +73,7 @@ namespace DiabloSimulator.Windows
 
         private void rbClass_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.HeroClass = (sender as RadioButton).Content.ToString();
+            viewModel.Hero.Archetype = (sender as RadioButton).Content.ToString();
         }
 
         //------------------------------------------------------------------------------

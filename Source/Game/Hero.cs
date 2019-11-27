@@ -24,24 +24,23 @@ namespace DiabloSimulator.Game
         public Hero(string name_ = "", string heroClass = "Warrior")
             : base(name_, heroClass)
         {
-            inventory = new Inventory();
-            equipment = new Equipment();
+            Inventory = new Inventory();
+            Equipment = new Equipment();
             random = new Random();
         }
 
         public Hero(Hero other)
-            : base(other.Name, other.Archetype)
+            : base(other)
         {
-            inventory = new Inventory(other.inventory);
-            equipment = new Equipment(other.equipment);
+            Inventory = new Inventory(other.Inventory);
+            Equipment = new Equipment(other.Equipment);
             random = new Random();
-            stats = new StatTable(other.stats);
         }
 
         public string Heal(float amount)
         {
             // Increase health, but keep below max
-            stats["CurrentHealth"] = Math.Min(stats.BaseValues["CurrentHealth"] + amount, 0);
+            Stats["CurrentHealth"] = Math.Min(Stats.BaseValues["CurrentHealth"] + amount, 0);
 
             return "You heal " + amount + " damage";
         }
@@ -60,8 +59,8 @@ namespace DiabloSimulator.Game
                     result += "\n";
                 ++i;
 
-                stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
-                -stats.ModifiedValues["MaxHealth"]);
+                Stats["CurrentHealth"] = Math.Max(Stats.BaseValues["CurrentHealth"] - damage.amount,
+                -Stats.ModifiedValues["MaxHealth"]);
 
                 result += "You take " + damage.amount;
                 if (damage.damageType != DamageType.Physical)
@@ -79,12 +78,19 @@ namespace DiabloSimulator.Game
             return result;
         }
 
+        public string Damage(float damage)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(damage));
+            return Damage(damageList);
+        }
+
         public List<DamageArgs> GetAttackDamage()
         {
             var damageList = new List<DamageArgs>();
 
-            int minValue = (int)stats.ModifiedValues["MinDamage"];
-            int maxValue = (int)stats.ModifiedValues["MaxDamage"];
+            int minValue = (int)Stats.ModifiedValues["MinDamage"];
+            int maxValue = (int)Stats.ModifiedValues["MaxDamage"];
 
             damageList.Add(new DamageArgs(random.Next(minValue, maxValue + 1)));
             return damageList;
@@ -93,10 +99,10 @@ namespace DiabloSimulator.Game
         public void Kill()
         {
             // Reduce health
-            stats["CurrentHealth"] = -stats.ModifiedValues["MaxHealth"];
+            Stats["CurrentHealth"] = -Stats.ModifiedValues["MaxHealth"];
 
             // Lose gold
-            inventory.goldAmount = 0;
+            Inventory.GoldAmount = 0;
 
             // TO DO: Remove temp buffs
 
@@ -104,29 +110,20 @@ namespace DiabloSimulator.Game
 
         public void Revive()
         {
-            stats["CurrentHealth"] = 0;
+            Stats["CurrentHealth"] = 0;
         }
 
         public bool IsDead()
         {
-            return stats.ModifiedValues["CurrentHealth"] == 0;
+            return Stats.ModifiedValues["CurrentHealth"] == 0;
         }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public Inventory inventory;
-        public Equipment equipment;
-
-        //------------------------------------------------------------------------------
-        // Private Functions:
-        //------------------------------------------------------------------------------
-
-        private void InitializeStats()
-        {
-           
-        }
+        public Inventory Inventory { get; }
+        public Equipment Equipment { get; }
 
         //------------------------------------------------------------------------------
         // Private Variables:

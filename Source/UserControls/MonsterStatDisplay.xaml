@@ -24,18 +24,18 @@
 				<!-- Content -->
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 									FontWeight="SemiBold">Monster Stats</Label>
-				<TextBlock Name="tbMonsterName" Grid.Row="1" HorizontalAlignment="Center" Text="{Binding MonsterName, 
+				<TextBlock Name="tbMonsterName" Grid.Row="1" HorizontalAlignment="Center" Text="{Binding Monster.Name, 
 										UpdateSourceTrigger=PropertyChanged, FallbackValue=No Monster Detected}"/>
 				<TextBlock Name="tbMonsterType" Grid.Row="2" HorizontalAlignment="Center">
 					<TextBlock.Text>
 						<MultiBinding StringFormat="{}({0} {1})">
-							<Binding x:Name="bMonsterRarity" Path="MonsterRarity" UpdateSourceTrigger="PropertyChanged" FallbackValue=""/>
-							<Binding x:Name="bMonsterType" Path="MonsterType" UpdateSourceTrigger="PropertyChanged" FallbackValue=""/>
+							<Binding x:Name="bMonsterRarity" Path="Monster.Rarity" UpdateSourceTrigger="PropertyChanged" FallbackValue=""/>
+							<Binding x:Name="bMonsterType" Path="Monster.Archetype" UpdateSourceTrigger="PropertyChanged" FallbackValue=""/>
 						</MultiBinding>
 					</TextBlock.Text>
 				</TextBlock>
 				<TextBlock Name="tbMonsterHealth" Grid.Row="3" HorizontalAlignment="Center" Text=
-									 "{Binding MonsterHealthPercent, StringFormat={}{0:P0} Health Remaining, 
+									 "{Binding Monster.HealthPercent, StringFormat={}{0:P0} Health Remaining, 
 										UpdateSourceTrigger=PropertyChanged, FallbackValue=0%}"/>
 				<TextBlock Grid.Row="4"/>
 			</Grid>

@@ -34,7 +34,7 @@ namespace DiabloSimulator.Game
             : base("No Monster Detected")
         {
             rarity = MonsterRarity.Common;
-            stats.Level = 0;
+            Stats.Level = 0;
         }
 
         public Monster(string name_, uint level_, string baseMonster_ = "", 
@@ -42,15 +42,14 @@ namespace DiabloSimulator.Game
             : base(name_, baseMonster_)
         {
             rarity = rarity_;
-            stats.Level = level_;
+            Stats.Level = level_;
             random = new Random();
         }
 
         public Monster(Monster other)
-            : base(other.Name, other.Archetype)
+            : base(other)
         {
-            rarity = other.rarity;
-            stats = new StatTable(other.stats);
+            rarity = other.Rarity;
             random = new Random();
         }
 
@@ -70,8 +69,8 @@ namespace DiabloSimulator.Game
                     result += "\n";
                 ++i;
 
-                stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
-                    -stats.ModifiedValues["MaxHealth"]);
+                Stats["CurrentHealth"] = Math.Max(Stats.BaseValues["CurrentHealth"] - damage.amount,
+                    -Stats.ModifiedValues["MaxHealth"]);
 
                 result += Name + " takes " + damage.amount;
                 if (damage.damageType != DamageType.Physical)
@@ -94,14 +93,14 @@ namespace DiabloSimulator.Game
             var damageList = new List<DamageArgs>();
 
             // Physical
-            int minValue = (int)stats.ModifiedValues["MinDamage"];
-            int maxValue = (int)stats.ModifiedValues["MaxDamage"];
+            int minValue = (int)Stats.ModifiedValues["MinDamage"];
+            int maxValue = (int)Stats.ModifiedValues["MaxDamage"];
             if(minValue != 0 && maxValue != 0)
                 damageList.Add(new DamageArgs(random.Next(minValue, maxValue + 1)));
 
             // Fire
-            minValue = (int)stats.ModifiedValues["MinFireDamage"];
-            maxValue = (int)stats.ModifiedValues["MaxFireDamage"];
+            minValue = (int)Stats.ModifiedValues["MinFireDamage"];
+            maxValue = (int)Stats.ModifiedValues["MaxFireDamage"];
             if(minValue != 0 && maxValue != 0)
                 damageList.Add(new DamageArgs(
                     random.Next(minValue, maxValue + 1), DamageType.Fire));
@@ -109,10 +108,17 @@ namespace DiabloSimulator.Game
             return damageList;
         }
 
+        public string Damage(float damage)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(damage));
+            return Damage(damageList);
+        }
+
         public string Heal(float amount)
         {
             // Increase health, but keep below max
-            stats["CurrentHealth"] = Math.Min(stats.BaseValues["CurrentHealth"] + amount, 0);
+            Stats["CurrentHealth"] = Math.Min(Stats.BaseValues["CurrentHealth"] + amount, 0);
 
             return amount.ToString();
         }
@@ -120,31 +126,46 @@ namespace DiabloSimulator.Game
         public void Kill()
         {
             // Reduce health
-            stats["CurrentHealth"] = -stats.ModifiedValues["MaxHealth"];
+            Stats["CurrentHealth"] = -Stats.ModifiedValues["MaxHealth"];
         }
 
         public void Revive()
         {
-            stats["CurrentHealth"] = 0;
+            Stats["CurrentHealth"] = 0;
         }
 
         public bool IsDead()
         {
-            return stats.ModifiedValues["CurrentHealth"] == 0;
+            return Name == Monster.EmptyMonster || Stats.ModifiedValues["CurrentHealth"] == 0;
+        }
+
+        public float HealthPercent
+        {
+            get
+            {
+                float currentMonsterHealth = Stats.ModifiedValues["CurrentHealth"];
+                float maxMonsterHealth = Stats.ModifiedValues["MaxHealth"];
+
+                if (maxMonsterHealth == 0.0f)
+                    return 0.0f;
+
+                return currentMonsterHealth / maxMonsterHealth;
+            }
         }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public const string EmptyMonster = "No Monster Detected";
+        public MonsterRarity Rarity { get => rarity; }
 
-        public MonsterRarity rarity;
+        public const string EmptyMonster = "No Monster Detected";
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private Random random;
+        private MonsterRarity rarity;
     }
 }

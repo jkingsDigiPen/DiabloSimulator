@@ -1,0 +1,116 @@
+{
+  "Fallen Imp": {
+    "HealthPercent": 1.0,
+    "Race": "Demon",
+    "Rarity": 0,
+    "Family": "Fallen",
+    "Name": "Fallen Imp",
+    "Archetype": "",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "MaxHealth": 10.0,
+        "MinDamage": 1.0,
+        "MaxDamage": 4.0,
+        "Experience": 5.0,
+        "CurrentHealth": 0.0
+      },
+      "LeveledValues": {
+        "MaxHealth": 10.0,
+        "MinDamage": 1.0,
+        "MaxDamage": 4.0,
+        "Experience": 5.0,
+        "CurrentHealth": 0.0
+      },
+      "ModifiedValues": {
+        "MaxHealth": 10.0,
+        "MinDamage": 1.0,
+        "MaxDamage": 4.0,
+        "Experience": 5.0,
+        "CurrentHealth": 10.0
+      },
+      "Progressions": {
+        "MaxHealth": 12.0,
+        "MinDamage": 1.0,
+        "MaxDamage": 1.0,
+        "Experience": 5.0
+      },
+      "Dependants": {
+        "MaxHealth": [
+          "CurrentHealth"
+        ]
+      },
+      "Modifiers": {
+        "CurrentHealth": {
+          "Additive": [
+            {
+              "statName": "CurrentHealth",
+              "modSourceStat": "MaxHealth",
+              "type": 0,
+              "ModSourceObject": "Fallen Imp",
+              "ModValue": 1.0
+            }
+          ]
+        }
+      },
+      "Level": 1
+    }
+  },
+  "Fallen Shaman": {
+    "HealthPercent": 1.0,
+    "Race": "Demon",
+    "Rarity": 0,
+    "Family": "Fallen",
+    "Name": "Fallen Shaman",
+    "Archetype": "",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "MaxHealth": 30.0,
+        "MinFireDamage": 2.0,
+        "MaxFireDamage": 8.0,
+        "Experience": 20.0,
+        "CurrentHealth": 0.0
+      },
+      "LeveledValues": {
+        "MaxHealth": 30.0,
+        "MinFireDamage": 2.0,
+        "MaxFireDamage": 8.0,
+        "Experience": 20.0,
+        "CurrentHealth": 0.0
+      },
+      "ModifiedValues": {
+        "MaxHealth": 30.0,
+        "MinFireDamage": 2.0,
+        "MaxFireDamage": 8.0,
+        "Experience": 20.0,
+        "CurrentHealth": 30.0
+      },
+      "Progressions": {
+        "MaxHealth": 20.0,
+        "MinFireDamage": 2.0,
+        "MaxFireDamage": 2.0,
+        "Experience": 10.0
+      },
+      "Dependants": {
+        "MaxHealth": [
+          "CurrentHealth"
+        ]
+      },
+      "Modifiers": {
+        "CurrentHealth": {
+          "Additive": [
+            {
+              "statName": "CurrentHealth",
+              "modSourceStat": "MaxHealth",
+              "type": 0,
+              "ModSourceObject": "Fallen Shaman",
+              "ModValue": 1.0
+            }
+          ]
+        }
+      },
+      "Level": 1
+    }
+  }
+}

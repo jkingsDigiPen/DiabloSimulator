@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace DiabloSimulator.Game
 {
@@ -31,9 +32,9 @@ namespace DiabloSimulator.Game
             BaseValues = new StatMap();
             LeveledValues = new StatMap();
             ModifiedValues = new StatMap();
-            progressions = new StatMap();
+            Progressions = new StatMap();
             Modifiers = new Dictionary<string, ModifierMap>();
-            dependants = new StatDependantMap();
+            Dependants = new StatDependantMap();
             level = level_;
         }
 
@@ -47,21 +48,12 @@ namespace DiabloSimulator.Game
             ModifiedValues = new StatMap();
 
             // Progressions, modifiers, dependants must be copied
-            progressions = new StatMap(other.progressions);
+            Progressions = new StatMap(other.Progressions);
             Modifiers = new Dictionary<string, ModifierMap>(other.Modifiers);
-            dependants = new StatDependantMap(other.dependants);
+            Dependants = new StatDependantMap(other.Dependants);
 
             // Redo mod sources
-            foreach(KeyValuePair<string, ModifierMap> modMap in Modifiers)
-            {
-                foreach(KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
-                {
-                    foreach(StatModifier mod in modSet.Value)
-                    {
-                        mod.UpdateSourceTable(other, this);
-                    }
-                }
-            }
+            RemapModifierSources(other, this);
 
             // Using property fills out leveled and modified values
             Level = other.Level;
@@ -89,7 +81,26 @@ namespace DiabloSimulator.Game
 
         public StatMap ModifiedValues { get; }
 
+        public StatMap Progressions { get; }
+
+        public StatDependantMap Dependants { get; }
+
         public Dictionary<string, ModifierMap> Modifiers { get; }
+
+        public uint Level
+        {
+            get { return level; }
+            set
+            {
+                if (value != level)
+                {
+                    level = value;
+                    UpdateAllLeveledValues();
+                    UpdateAllModifiedValues();
+                    OnPropertyChange("Level");
+                }
+            }
+        }
 
         public void AddModifier(StatModifier mod)
         {
@@ -109,11 +120,11 @@ namespace DiabloSimulator.Game
 
             // Add the mod stat as a dependant of the mod source
             List<string> depList;
-            if(!dependants.TryGetValue(mod.modSource, out depList))
+            if(!Dependants.TryGetValue(mod.modSourceStat, out depList))
             {
-                dependants[mod.modSource] = new List<string>();
+                Dependants[mod.modSourceStat] = new List<string>();
             }
-            dependants[mod.modSource].Add(mod.statName);
+            Dependants[mod.modSourceStat].Add(mod.statName);
 
             UpdateModifiedValue(mod.statName);
             OnPropertyChange("ModifiedValues");
@@ -131,31 +142,44 @@ namespace DiabloSimulator.Game
             UpdateModifiedValue(mod.statName);
 
             // Remove mod stat as dependant
-            dependants[mod.modSource].Remove(mod.statName);
+            Dependants[mod.modSourceStat].Remove(mod.statName);
 
             OnPropertyChange("ModifiedValues");
         }
 
         public void SetProgression(string name, float progression)
         {
-            progressions[name] = progression;
+            Progressions[name] = progression;
             UpdateLeveledValue(name);
             UpdateModifiedValue(name);
             OnPropertyChange("LeveledValues");
             OnPropertyChange("ModifiedValues");
         }
 
-        public uint Level 
-        { 
-            get { return level; }
-            set
+        public void RemapModifierSources(GameObject modSourceObject)
+        {
+            foreach (KeyValuePair<string, ModifierMap> modMap in Modifiers)
             {
-                if (value != level)
+                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
                 {
-                    level = value;
-                    UpdateAllLeveledValues();
-                    UpdateAllModifiedValues();
-                    OnPropertyChange("Level");
+                    foreach (StatModifier mod in modSet.Value)
+                    {
+                        mod.UpdateSourceTable(modSourceObject);
+                    }
+                }
+            }
+        }
+
+        public void RemapModifierSources(StatTable oldSourceTable, StatTable newSourceTable)
+        {
+            foreach (KeyValuePair<string, ModifierMap> modMap in Modifiers)
+            {
+                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
+                {
+                    foreach (StatModifier mod in modSet.Value)
+                    {
+                        mod.UpdateSourceTable(oldSourceTable, newSourceTable);
+                    }
                 }
             }
         }
@@ -182,7 +206,7 @@ namespace DiabloSimulator.Game
         private void UpdateLeveledValue(string name)
         {
             float progression = 0.0f;
-            progressions.TryGetValue(name, out progression);
+            Progressions.TryGetValue(name, out progression);
             LeveledValues[name] = BaseValues[name] + progression * (Level - 1);
         }
 
@@ -206,7 +230,7 @@ namespace DiabloSimulator.Game
                 {
                     foreach (StatModifier modifier in addMods)
                     {
-                        ModifiedValues[name] += modifier.ModValue;
+                        ModifiedValues[name] += modifier.ModValueWithTable();
                     }
                 }
 
@@ -216,7 +240,7 @@ namespace DiabloSimulator.Game
                     float totalMult = 1.0f;
                     foreach (StatModifier modifier in multMods)
                     {
-                        totalMult += modifier.ModValue;
+                        totalMult += modifier.ModValueWithTable();
                     }
                     ModifiedValues[name] *= totalMult;
                 }
@@ -224,7 +248,7 @@ namespace DiabloSimulator.Game
 
             // Propagate changes to dependant stats
             List<string> depList;
-            if(dependants.TryGetValue(name, out depList))
+            if(Dependants.TryGetValue(name, out depList))
             {
                 foreach(string dependant in depList)
                 {
@@ -240,8 +264,10 @@ namespace DiabloSimulator.Game
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private StatMap progressions;
-        private StatDependantMap dependants;
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
         private uint level;
     }
 }

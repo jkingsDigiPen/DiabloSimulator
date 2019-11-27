@@ -33,6 +33,12 @@ namespace DiabloSimulator.Game.Factories
         // Makes an object by cloning the given archetype.
         protected abstract T CloneArchetype(string name);
 
+        // Loads all archetype from a file
+        protected abstract void LoadArchetypesFromFile();
+
+        // Save all archetypes to a file
+        protected abstract void SaveArchetypesToFile();
+
         //------------------------------------------------------------------------------
         // Protected Variables:
         //------------------------------------------------------------------------------

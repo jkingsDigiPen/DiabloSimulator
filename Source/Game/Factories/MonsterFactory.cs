@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace DiabloSimulator.Game.Factories
 {
@@ -24,7 +26,8 @@ namespace DiabloSimulator.Game.Factories
         {
             random = new Random();
 
-            AddMonsterArchetypes();
+            //AddMonsterArchetypes();
+            LoadArchetypesFromFile();
         }
 
         public override Monster Create(Hero hero)
@@ -68,6 +71,31 @@ namespace DiabloSimulator.Game.Factories
             return new Monster(archetypes[name]);
         }
 
+        protected override void LoadArchetypesFromFile()
+        {
+            var stream = new System.IO.StreamReader("../../../Data/Monsters.txt");
+            string monsterStrings = stream.ReadToEnd();
+            stream.Close();
+
+            archetypes = JsonConvert.DeserializeObject<Dictionary<string, Monster>>(monsterStrings);
+
+            // Remap modifier sources for local modifiers
+            foreach (KeyValuePair<string, Monster> monster in archetypes)
+            {
+                monster.Value.Stats.RemapModifierSources(monster.Value);
+            }
+        }
+
+        protected override void SaveArchetypesToFile()
+        {
+            var stream = new System.IO.StreamWriter("../../../Data/Monsters.txt");
+
+            string monsterStrings = JsonConvert.SerializeObject(archetypes, Formatting.Indented);
+            stream.Write(monsterStrings);
+
+            stream.Close();
+        }
+
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
@@ -86,7 +114,7 @@ namespace DiabloSimulator.Game.Factories
             monster.Stats.SetProgression("Experience", 5);
             monster.Stats["CurrentHealth"] = 0;
             monster.Stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
-                ModifierType.Additive, 1, monster.Stats));
+                ModifierType.Additive, 1, monster));
             AddArchetype(monster);
 
             monster = new Monster("Fallen Shaman", 1,
@@ -101,8 +129,10 @@ namespace DiabloSimulator.Game.Factories
             monster.Stats.SetProgression("Experience", 10);
             monster.Stats["CurrentHealth"] = 0;
             monster.Stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
-                ModifierType.Additive, 1, monster.Stats));
+                ModifierType.Additive, 1, monster));
             AddArchetype(monster);
+
+           SaveArchetypesToFile();
         }
 
         //------------------------------------------------------------------------------

@@ -43,6 +43,16 @@ namespace DiabloSimulator.Game.Factories
             return new Hero(archetypes[name]);
         }
 
+        protected override void LoadArchetypesFromFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void SaveArchetypesToFile()
+        {
+            throw new NotImplementedException();
+        }
+
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
@@ -67,9 +77,9 @@ namespace DiabloSimulator.Game.Factories
 
             // Add modifiers
             hero.Stats.AddModifier(new StatModifier("MinDamage", "Strength",
-                ModifierType.Multiplicative, 0.01f, hero.Stats));
+                ModifierType.Multiplicative, 0.01f, hero));
             hero.Stats.AddModifier(new StatModifier("MaxDamage", "Strength",
-                ModifierType.Multiplicative, 0.01f, hero.Stats));
+                ModifierType.Multiplicative, 0.01f, hero));
 
             AddArchetype(hero);
 
@@ -90,9 +100,9 @@ namespace DiabloSimulator.Game.Factories
 
             // Add modifiers
             hero.Stats.AddModifier(new StatModifier("MinDamage", "Dexterity",
-                ModifierType.Multiplicative, 0.01f, hero.Stats));
+                ModifierType.Multiplicative, 0.01f, hero));
             hero.Stats.AddModifier(new StatModifier("MaxDamage", "Dexterity",
-                ModifierType.Multiplicative, 0.01f, hero.Stats));
+                ModifierType.Multiplicative, 0.01f, hero));
 
             AddArchetype(hero);
 
@@ -113,9 +123,9 @@ namespace DiabloSimulator.Game.Factories
 
             // Add modifiers
             hero.Stats.AddModifier(new StatModifier("MinDamage", "Intelligence",
-                ModifierType.Multiplicative, 0.01f, hero.Stats));
+                ModifierType.Multiplicative, 0.01f, hero));
             hero.Stats.AddModifier(new StatModifier("MaxDamage", "Intelligence",
-                ModifierType.Multiplicative, 0.01f, hero.Stats));
+                ModifierType.Multiplicative, 0.01f, hero));
 
             AddArchetype(hero);
         }
@@ -131,22 +141,22 @@ namespace DiabloSimulator.Game.Factories
             // Vitality gives health per point
             hero.Stats["MaxHealth"] = 0;
             hero.Stats.AddModifier(new StatModifier("MaxHealth", "Vitality",
-                ModifierType.Additive, 3, hero.Stats));
+                ModifierType.Additive, 3, hero));
 
             // Current/Max Health
             hero.Stats["CurrentHealth"] = 0;
             hero.Stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
-                ModifierType.Additive, 1, hero.Stats));
+                ModifierType.Additive, 1, hero));
 
             // Strength gives armor per point
             hero.Stats["Armor"] = 0;
             hero.Stats.AddModifier(new StatModifier("Armor", "Strength",
-                ModifierType.Additive, 1, hero.Stats));
+                ModifierType.Additive, 1, hero));
 
             // Dexterity gives dodge chance per point
             hero.Stats["DodgeChance"] = 0;
             hero.Stats.AddModifier(new StatModifier("DodgeChance", "Dexterity",
-                ModifierType.Additive, 0.001f, hero.Stats));
+                ModifierType.Additive, 0.001f, hero));
 
             // Intelligence gives resistances per point
             hero.Stats["FireResist"] = 0;
@@ -154,13 +164,13 @@ namespace DiabloSimulator.Game.Factories
             hero.Stats["LightningResist"] = 0;
             hero.Stats["PoisionResist"] = 0;
             hero.Stats.AddModifier(new StatModifier("FireResist", "Intelligence",
-                ModifierType.Additive, 0.1f, hero.Stats));
+                ModifierType.Additive, 0.1f, hero));
             hero.Stats.AddModifier(new StatModifier("ColdResist", "Intelligence",
-                ModifierType.Additive, 0.1f, hero.Stats));
+                ModifierType.Additive, 0.1f, hero));
             hero.Stats.AddModifier(new StatModifier("LightningResist", "Intelligence",
-                ModifierType.Additive, 0.1f, hero.Stats));
+                ModifierType.Additive, 0.1f, hero));
             hero.Stats.AddModifier(new StatModifier("PoisonResist", "Intelligence",
-                ModifierType.Additive, 0.1f, hero.Stats));
+                ModifierType.Additive, 0.1f, hero));
 
             // Experience
             hero.Stats["Experience"] = 0;

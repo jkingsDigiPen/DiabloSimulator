@@ -25,69 +25,86 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         // Constructor for modifier
-        public StatModifier(string statName_, string modSource_,
-            ModifierType type_, float modValue_, StatTable modSourceTable_ = null)
+        public StatModifier(string statName_, string modSourceStat_,
+            ModifierType type_, float modValue_, GameObject modSourceObject_ = null)
         {
             statName = statName_;
-            modSource = modSource_;
+            modSourceStat = modSourceStat_;
             type = type_;
+            ModValue = modValue_;
 
-            modValue = modValue_;
-            modSourceTable = modSourceTable_;
+            if (modSourceObject_ != null)
+            {
+                ModSourceObject = modSourceObject_.Name;
+                modSourceTable = modSourceObject_.Stats;
+            }
         }
 
-        // Retrieve modifier value
-        public float ModValue
+        public float ModValueWithTable()
         {
-            get { return modSourceTable == null ? modValue : modSourceTable.ModifiedValues[modSource] * modValue; }
+            return modSourceTable == null ? ModValue
+                    : modSourceTable.ModifiedValues[modSourceStat] * ModValue;
         }
 
         public static bool operator ==(StatModifier lhs, StatModifier rhs)
         {
-            return lhs.statName == rhs.statName && lhs.modSource == rhs.modSource && lhs.type == rhs.type;
+            return lhs.statName == rhs.statName && lhs.modSourceStat == rhs.modSourceStat 
+                && lhs.ModSourceObject == rhs.ModSourceObject && lhs.type == rhs.type;
         }
 
         public static bool operator !=(StatModifier lhs, StatModifier rhs)
         {
-            return lhs.statName != rhs.statName || lhs.modSource != rhs.modSource || lhs.type != rhs.type;
+            return lhs.statName != rhs.statName || lhs.modSourceStat != rhs.modSourceStat 
+                || lhs.ModSourceObject == rhs.ModSourceObject || lhs.type != rhs.type;
         }
 
         public bool Equals(StatModifier rhs)
         {
-            return statName == rhs.statName && modSource == rhs.modSource && type == rhs.type;
+            return this == rhs;
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as StatModifier);
+            return Equals(obj as StatModifier);
         }
 
         public override int GetHashCode()
         {
-            return (statName + modSource + type.ToString()).GetHashCode();
+            return (statName + modSourceStat + ModSourceObject + type.ToString()).GetHashCode();
         }
 
-        public void UpdateSourceTable(StatTable check, StatTable change)
+        public void UpdateSourceTable(StatTable oldTable, StatTable newTable)
         {
-            if(modSourceTable == check)
+            if(modSourceTable == oldTable)
             {
-                modSourceTable = change;
+                modSourceTable = newTable;
             }
         }
+
+        public void UpdateSourceTable(GameObject modSourceObject_)
+        {
+            if (ModSourceObject == modSourceObject_.Name)
+            {
+                modSourceTable = modSourceObject_.Stats;
+            }
+        }
+
+        public string ModSourceObject { get; set; }
+
+        public float ModValue { get; set; }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
         public string statName;
-        public string modSource;
+        public string modSourceStat;
         public ModifierType type;
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private float modValue;
         private StatTable modSourceTable;
     }
 }

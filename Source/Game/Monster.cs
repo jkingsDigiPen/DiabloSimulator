@@ -88,6 +88,13 @@ namespace DiabloSimulator.Game
             return result;
         }
 
+        public string Damage(float damage)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(damage));
+            return Damage(damageList);
+        }
+
         public List<DamageArgs> GetAttackDamage()
         {
             var damageList = new List<DamageArgs>();
@@ -106,13 +113,6 @@ namespace DiabloSimulator.Game
                     random.Next(minValue, maxValue + 1), DamageType.Fire));
 
             return damageList;
-        }
-
-        public string Damage(float damage)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(damage));
-            return Damage(damageList);
         }
 
         public string Heal(float amount)

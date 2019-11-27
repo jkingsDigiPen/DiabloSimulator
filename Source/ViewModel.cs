@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using DiabloSimulator.Game;
 using DiabloSimulator.Game.Factories;
 
@@ -29,14 +30,14 @@ namespace DiabloSimulator
             heroFactory = new HeroFactory();
         }
 
-        public Hero Hero { get => hero; }
-
         public bool InCombat()
         {
             return !Hero.IsDead() && !Monster.IsDead();
         }
 
         #region heroFunctions
+
+        public Hero Hero { get => hero; }
 
         public void CreateHero()
         {
@@ -62,6 +63,13 @@ namespace DiabloSimulator
         {
             Monster.Kill();
             monster = new Monster();
+        }
+
+        public string DamageMonster(float amount)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(amount));
+            return Monster.Damage(damageList);
         }
 
         #endregion

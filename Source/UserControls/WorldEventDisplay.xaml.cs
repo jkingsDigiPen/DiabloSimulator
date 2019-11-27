@@ -75,7 +75,7 @@ namespace DiabloSimulator.UserControls
             if(View.InCombat())
             {
                 float damageDealt = View.Hero.GetAttackDamage()[0].amount;
-                string damageDealtString = View.Monster.Damage(damageDealt);
+                string damageDealtString = View.DamageMonster(damageDealt);
                 AddWorldEvent("You attack the " + View.Monster.Archetype + ". " + damageDealtString);
 
                 if (!View.Monster.IsDead())

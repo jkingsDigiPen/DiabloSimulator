@@ -131,6 +131,10 @@ namespace DiabloSimulator.Game
             }
         }
 
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
         private uint goldAmount;
         private uint potionsHeld;
     }

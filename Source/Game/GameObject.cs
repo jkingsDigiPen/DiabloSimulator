@@ -74,10 +74,7 @@ namespace DiabloSimulator.Game
             }
         }
 
-        public StatTable Stats
-        {
-            get => stats;
-        }
+        public StatTable Stats { get => stats; }
 
         //------------------------------------------------------------------------------
         // Public Variables:
@@ -101,9 +98,9 @@ namespace DiabloSimulator.Game
         // Private Variables:
         //------------------------------------------------------------------------------
 
+        private StatTable stats;
         private string name;
         private string archetype;
         private string description;
-        private StatTable stats;
     }
 }

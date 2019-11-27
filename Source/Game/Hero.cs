@@ -24,16 +24,16 @@ namespace DiabloSimulator.Game
         public Hero(string name_ = "", string heroClass = "Warrior")
             : base(name_, heroClass)
         {
-            Inventory = new Inventory();
-            Equipment = new Equipment();
+            inventory = new Inventory();
+            equipment = new Equipment();
             random = new Random();
         }
 
         public Hero(Hero other)
             : base(other)
         {
-            Inventory = new Inventory(other.Inventory);
-            Equipment = new Equipment(other.Equipment);
+            inventory = new Inventory(other.Inventory);
+            equipment = new Equipment(other.Equipment);
             random = new Random();
         }
 
@@ -78,13 +78,6 @@ namespace DiabloSimulator.Game
             return result;
         }
 
-        public string Damage(float damage)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(damage));
-            return Damage(damageList);
-        }
-
         public List<DamageArgs> GetAttackDamage()
         {
             var damageList = new List<DamageArgs>();
@@ -118,17 +111,26 @@ namespace DiabloSimulator.Game
             return Stats.ModifiedValues["CurrentHealth"] == 0;
         }
 
+        public string Damage(float damage)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(damage));
+            return Damage(damageList);
+        }
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public Inventory Inventory { get; }
-        public Equipment Equipment { get; }
+        public Inventory Inventory { get => inventory; }
+        public Equipment Equipment { get => equipment; }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private Random random;
+        private Inventory inventory;
+        private Equipment equipment;
     }
 }

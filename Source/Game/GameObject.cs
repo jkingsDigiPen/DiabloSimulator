@@ -86,7 +86,7 @@ namespace DiabloSimulator.Game
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void OnPropertyChange(string propertyName)
+        protected void OnPropertyChange(string propertyName)
         {
             if (PropertyChanged != null)
             {

@@ -6,8 +6,11 @@
 //
 //------------------------------------------------------------------------------
 
+using System.ComponentModel;
+using System.Collections.Generic;
 using DiabloSimulator.Game;
 using DiabloSimulator.Game.Factories;
+using System;
 
 namespace DiabloSimulator
 {
@@ -23,13 +26,11 @@ namespace DiabloSimulator
 
         public ViewModel()
         {
-            hero = new Hero("The Vagabond");
-            monster = new Monster();
+            Hero = new Hero("The Vagabond");
+            Monster = new Monster();
             monsterFactory = new MonsterFactory();
             heroFactory = new HeroFactory();
         }
-
-        public Hero Hero { get => hero; }
 
         public bool InCombat()
         {
@@ -43,28 +44,43 @@ namespace DiabloSimulator
             hero = heroFactory.Create(Hero);
         }
 
+        public string DamageHero(float amount)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(amount));
+            return Hero.Damage(damageList);
+        }
+
         #endregion
 
         #region monsterFunctions
 
-        public Monster Monster { get => monster; }
-
         // Returns a message describing
         // the monster's entrance.
-        public string CreateMonster()
+        public string GenerateMonster()
         {
             monster = monsterFactory.Create(Hero);
             return Monster.Name + " (a level " 
-                + Monster.Stats.Level + " " + Monster.Archetype + ") appeared!";
+                + Monster.stats.Level + " " + Monster.Archetype + ") appeared!";
         }
 
-        public void DestroyMonster()
+        public void KillMonster()
         {
             Monster.Kill();
             monster = new Monster();
         }
 
+        public string DamageMonster(float amount)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(amount));
+            return Monster.Damage(damageList);
+        }
+
         #endregion
+
+        public Hero Hero { get; }
+        public Monster Monster { get; }
 
         //------------------------------------------------------------------------------
         // Private Functions:

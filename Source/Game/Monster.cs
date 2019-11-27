@@ -34,7 +34,7 @@ namespace DiabloSimulator.Game
             : base("No Monster Detected")
         {
             rarity = MonsterRarity.Common;
-            Stats.Level = 0;
+            stats.Level = 0;
         }
 
         public Monster(string name_, uint level_, string baseMonster_ = "", 
@@ -42,14 +42,15 @@ namespace DiabloSimulator.Game
             : base(name_, baseMonster_)
         {
             rarity = rarity_;
-            Stats.Level = level_;
+            stats.Level = level_;
             random = new Random();
         }
 
         public Monster(Monster other)
-            : base(other)
+            : base(other.Name, other.Archetype)
         {
             rarity = other.Rarity;
+            stats = new StatTable(other.stats);
             random = new Random();
         }
 
@@ -69,8 +70,8 @@ namespace DiabloSimulator.Game
                     result += "\n";
                 ++i;
 
-                Stats["CurrentHealth"] = Math.Max(Stats.BaseValues["CurrentHealth"] - damage.amount,
-                    -Stats.ModifiedValues["MaxHealth"]);
+                stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
+                    -stats.ModifiedValues["MaxHealth"]);
 
                 result += Name + " takes " + damage.amount;
                 if (damage.damageType != DamageType.Physical)
@@ -93,14 +94,14 @@ namespace DiabloSimulator.Game
             var damageList = new List<DamageArgs>();
 
             // Physical
-            int minValue = (int)Stats.ModifiedValues["MinDamage"];
-            int maxValue = (int)Stats.ModifiedValues["MaxDamage"];
+            int minValue = (int)stats.ModifiedValues["MinDamage"];
+            int maxValue = (int)stats.ModifiedValues["MaxDamage"];
             if(minValue != 0 && maxValue != 0)
                 damageList.Add(new DamageArgs(random.Next(minValue, maxValue + 1)));
 
             // Fire
-            minValue = (int)Stats.ModifiedValues["MinFireDamage"];
-            maxValue = (int)Stats.ModifiedValues["MaxFireDamage"];
+            minValue = (int)stats.ModifiedValues["MinFireDamage"];
+            maxValue = (int)stats.ModifiedValues["MaxFireDamage"];
             if(minValue != 0 && maxValue != 0)
                 damageList.Add(new DamageArgs(
                     random.Next(minValue, maxValue + 1), DamageType.Fire));
@@ -108,17 +109,10 @@ namespace DiabloSimulator.Game
             return damageList;
         }
 
-        public string Damage(float damage)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(damage));
-            return Damage(damageList);
-        }
-
         public string Heal(float amount)
         {
             // Increase health, but keep below max
-            Stats["CurrentHealth"] = Math.Min(Stats.BaseValues["CurrentHealth"] + amount, 0);
+            stats["CurrentHealth"] = Math.Min(stats.BaseValues["CurrentHealth"] + amount, 0);
 
             return amount.ToString();
         }
@@ -126,25 +120,25 @@ namespace DiabloSimulator.Game
         public void Kill()
         {
             // Reduce health
-            Stats["CurrentHealth"] = -Stats.ModifiedValues["MaxHealth"];
+            stats["CurrentHealth"] = -stats.ModifiedValues["MaxHealth"];
         }
 
         public void Revive()
         {
-            Stats["CurrentHealth"] = 0;
+            stats["CurrentHealth"] = 0;
         }
 
         public bool IsDead()
         {
-            return Name == Monster.EmptyMonster || Stats.ModifiedValues["CurrentHealth"] == 0;
+            return Name == Monster.EmptyMonster || stats.ModifiedValues["CurrentHealth"] == 0;
         }
 
         public float HealthPercent
         {
             get
             {
-                float currentMonsterHealth = Stats.ModifiedValues["CurrentHealth"];
-                float maxMonsterHealth = Stats.ModifiedValues["MaxHealth"];
+                float currentMonsterHealth = stats.ModifiedValues["CurrentHealth"];
+                float maxMonsterHealth = stats.ModifiedValues["MaxHealth"];
 
                 if (maxMonsterHealth == 0.0f)
                     return 0.0f;

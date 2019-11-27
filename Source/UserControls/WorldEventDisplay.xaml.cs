@@ -75,7 +75,7 @@ namespace DiabloSimulator.UserControls
             if(View.InCombat())
             {
                 float damageDealt = View.Hero.GetAttackDamage()[0].amount;
-                string damageDealtString = View.Monster.Damage(damageDealt);
+                string damageDealtString = View.DamageMonster(damageDealt);
                 AddWorldEvent("You attack the " + View.Monster.Archetype + ". " + damageDealtString);
 
                 if (!View.Monster.IsDead())
@@ -89,7 +89,7 @@ namespace DiabloSimulator.UserControls
             else if(!View.Hero.IsDead())
             {
                 Turns = 0;
-                AddWorldEvent(View.CreateMonster());
+                AddWorldEvent(View.GenerateMonster());
                 // Force monster stat update
                 RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
             }
@@ -121,16 +121,16 @@ namespace DiabloSimulator.UserControls
                 StatModifier regenAddBonus = new StatModifier("HealthRegen",
                     "Rest", Game.ModifierType.Additive, 2);
 
-                View.Hero.Stats.AddModifier(regenMultBonus);
-                View.Hero.Stats.AddModifier(regenAddBonus);
+                View.Hero.stats.AddModifier(regenMultBonus);
+                View.Hero.stats.AddModifier(regenAddBonus);
                 AddWorldEvent("You rest for a short while. You feel healthier!");
 
                 // Step time forward to heal
                 AdvanceTime();
 
                 // Remove temporary regen
-                View.Hero.Stats.RemoveModifier(regenMultBonus);
-                View.Hero.Stats.RemoveModifier(regenAddBonus);
+                View.Hero.stats.RemoveModifier(regenMultBonus);
+                View.Hero.stats.RemoveModifier(regenAddBonus);
             }
         }
 
@@ -170,7 +170,7 @@ namespace DiabloSimulator.UserControls
 
         private void HeroLifeRegen()
         {
-            float lifeRegenAmount = View.Hero.Stats.ModifiedValues["HealthRegen"];
+            float lifeRegenAmount = View.Hero.stats.ModifiedValues["HealthRegen"];
             if (lifeRegenAmount != 0)
             {
                 AddWorldEvent(View.Hero.Heal(lifeRegenAmount) + " from natural healing.");
@@ -182,7 +182,7 @@ namespace DiabloSimulator.UserControls
             MessageBox.Show("You have died. You will be revived in town.");
             AddWorldEvent("You are in the town of Tristram, a place of relative safety.");
             View.Hero.Revive();
-            View.DestroyMonster();
+            View.KillMonster();
 
             // Force monster stat update
             RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));

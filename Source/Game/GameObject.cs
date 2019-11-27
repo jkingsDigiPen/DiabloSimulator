@@ -27,22 +27,14 @@ namespace DiabloSimulator.Game
             stats = new StatTable();
         }
 
-        public GameObject(GameObject other)
-        {
-            Name = other.Name;
-            Archetype = other.Archetype;
-            Description = other.Description;
-            stats = new StatTable(other.stats);
-        }
-
         public string Name
         {
-            get => name;
+            get => Name;
             set
             {
-                if (name != value)
+                if (Name != value)
                 {
-                    name = value;
+                    Name = value;
                     OnPropertyChange("Name");
                 }
             }
@@ -50,12 +42,12 @@ namespace DiabloSimulator.Game
 
         public string Archetype 
         {
-            get => archetype; 
+            get => Archetype; 
             set
             {
-                if (archetype != value)
+                if (Archetype != value)
                 {
-                    archetype = value;
+                    Archetype = value;
                     OnPropertyChange("Archetype");
                 }
             }
@@ -63,25 +55,22 @@ namespace DiabloSimulator.Game
 
         public string Description 
         { 
-            get => description; 
+            get => Description; 
             set
             {
-                if (description != value)
+                if (Description != value)
                 {
-                    description = value;
+                    Description = value;
                     OnPropertyChange("Description");
                 }
             }
         }
 
-        public StatTable Stats
-        {
-            get => stats;
-        }
-
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
+
+        public StatTable stats;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -96,14 +85,5 @@ namespace DiabloSimulator.Game
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-        //------------------------------------------------------------------------------
-        // Private Variables:
-        //------------------------------------------------------------------------------
-
-        private string name;
-        private string archetype;
-        private string description;
-        private StatTable stats;
     }
 }

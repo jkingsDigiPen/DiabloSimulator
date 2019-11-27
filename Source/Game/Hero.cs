@@ -24,23 +24,24 @@ namespace DiabloSimulator.Game
         public Hero(string name_ = "", string heroClass = "Warrior")
             : base(name_, heroClass)
         {
-            Inventory = new Inventory();
-            Equipment = new Equipment();
+            inventory = new Inventory();
+            equipment = new Equipment();
             random = new Random();
         }
 
         public Hero(Hero other)
-            : base(other)
+            : base(other.Name, other.Archetype)
         {
-            Inventory = new Inventory(other.Inventory);
-            Equipment = new Equipment(other.Equipment);
+            inventory = new Inventory(other.Inventory);
+            equipment = new Equipment(other.Equipment);
             random = new Random();
+            stats = new StatTable(other.stats);
         }
 
         public string Heal(float amount)
         {
             // Increase health, but keep below max
-            Stats["CurrentHealth"] = Math.Min(Stats.BaseValues["CurrentHealth"] + amount, 0);
+            stats["CurrentHealth"] = Math.Min(stats.BaseValues["CurrentHealth"] + amount, 0);
 
             return "You heal " + amount + " damage";
         }
@@ -59,8 +60,8 @@ namespace DiabloSimulator.Game
                     result += "\n";
                 ++i;
 
-                Stats["CurrentHealth"] = Math.Max(Stats.BaseValues["CurrentHealth"] - damage.amount,
-                -Stats.ModifiedValues["MaxHealth"]);
+                stats["CurrentHealth"] = Math.Max(stats.BaseValues["CurrentHealth"] - damage.amount,
+                -stats.ModifiedValues["MaxHealth"]);
 
                 result += "You take " + damage.amount;
                 if (damage.damageType != DamageType.Physical)
@@ -78,19 +79,12 @@ namespace DiabloSimulator.Game
             return result;
         }
 
-        public string Damage(float damage)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(damage));
-            return Damage(damageList);
-        }
-
         public List<DamageArgs> GetAttackDamage()
         {
             var damageList = new List<DamageArgs>();
 
-            int minValue = (int)Stats.ModifiedValues["MinDamage"];
-            int maxValue = (int)Stats.ModifiedValues["MaxDamage"];
+            int minValue = (int)stats.ModifiedValues["MinDamage"];
+            int maxValue = (int)stats.ModifiedValues["MaxDamage"];
 
             damageList.Add(new DamageArgs(random.Next(minValue, maxValue + 1)));
             return damageList;
@@ -99,7 +93,7 @@ namespace DiabloSimulator.Game
         public void Kill()
         {
             // Reduce health
-            Stats["CurrentHealth"] = -Stats.ModifiedValues["MaxHealth"];
+            stats["CurrentHealth"] = -stats.ModifiedValues["MaxHealth"];
 
             // Lose gold
             Inventory.GoldAmount = 0;
@@ -110,25 +104,27 @@ namespace DiabloSimulator.Game
 
         public void Revive()
         {
-            Stats["CurrentHealth"] = 0;
+            stats["CurrentHealth"] = 0;
         }
 
         public bool IsDead()
         {
-            return Stats.ModifiedValues["CurrentHealth"] == 0;
+            return stats.ModifiedValues["CurrentHealth"] == 0;
         }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public Inventory Inventory { get; }
-        public Equipment Equipment { get; }
+        public Inventory Inventory { get => inventory; }
+        public Equipment Equipment { get => equipment; }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private Random random;
+        private Inventory inventory;
+        private Equipment equipment;
     }
 }

@@ -46,22 +46,22 @@ namespace DiabloSimulator.UserControls
             { 
                 // TO DO: REMOVE THIS
                 Item testItem = new Item("Simple Dagger", SlotType.MainHand, ItemRarity.Common, "Dagger");
-                testItem.Stats["MinDamage"] = 2;
-                testItem.Stats["MaxDamage"] = 6;
-                testItem.Stats["RequiredLevel"] = 1;
+                testItem.stats["MinDamage"] = 2;
+                testItem.stats["MaxDamage"] = 6;
+                testItem.stats["RequiredLevel"] = 1;
                 View.Hero.Inventory.AddItem(testItem);
 
                 testItem = new Item("Short Sword", SlotType.MainHand, ItemRarity.Common, "1-Handed Sword");
-                testItem.Stats["MinDamage"] = 1;
-                testItem.Stats["MaxDamage"] = 7;
-                testItem.Stats["RequiredLevel"] = 1;
+                testItem.stats["MinDamage"] = 1;
+                testItem.stats["MaxDamage"] = 7;
+                testItem.stats["RequiredLevel"] = 1;
                 View.Hero.Inventory.AddItem(testItem);
 
                 testItem = new Item("Leather Hood", SlotType.Head, ItemRarity.Magic, "Helm");
-                testItem.Stats["Armor"] = 21;
-                testItem.Stats["Vitality"] = 4;
-                testItem.Stats["HealthRegen"] = 2;
-                testItem.Stats["RequiredLevel"] = 4;
+                testItem.stats["Armor"] = 21;
+                testItem.stats["Vitality"] = 4;
+                testItem.stats["HealthRegen"] = 2;
+                testItem.stats["RequiredLevel"] = 4;
                 View.Hero.Inventory.AddItem(testItem);
             }
             catch
@@ -87,10 +87,10 @@ namespace DiabloSimulator.UserControls
             // TO DO: Handle rings
 
             // Remove currently equipped item
-            Item itemToRemove = equipment.UnequipItem(itemToEquip.slot, View.Hero.Stats);
+            Item itemToRemove = equipment.UnequipItem(itemToEquip.slot, View.Hero.stats);
 
             // Equip item in slot
-            equipment.EquipItem(itemToEquip, View.Hero.Stats);
+            equipment.EquipItem(itemToEquip, View.Hero.stats);
 
             // Remove item from inventory
             inventory.RemoveItem(itemToEquip);

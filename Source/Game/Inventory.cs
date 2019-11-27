@@ -87,12 +87,12 @@ namespace DiabloSimulator.Game
 
         public uint PotionsHeld 
         { 
-            get => potionsHeld; 
+            get => PotionsHeld; 
             set
             {
-                if (potionsHeld != value)
+                if (PotionsHeld != value)
                 {
-                    potionsHeld = value;
+                    PotionsHeld = value;
                     OnPropertyChange("PotionsHeld");
                 }
             }
@@ -100,12 +100,12 @@ namespace DiabloSimulator.Game
 
         public uint GoldAmount 
         {
-            get => goldAmount;
+            get => GoldAmount;
             set
             {
-                if (goldAmount != value)
+                if (GoldAmount != value)
                 {
-                    goldAmount = value;
+                    GoldAmount = value;
                     OnPropertyChange("GoldAmount");
                 }
             }
@@ -130,8 +130,5 @@ namespace DiabloSimulator.Game
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-        private uint goldAmount;
-        private uint potionsHeld;
     }
 }

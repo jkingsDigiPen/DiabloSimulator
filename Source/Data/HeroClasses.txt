@@ -1,0 +1,662 @@
+{
+  "Warrior": {
+    "Inventory": {
+      "PotionsHeld": 0,
+      "GoldAmount": 0,
+      "Items": []
+    },
+    "Equipment": {
+      "Items": {}
+    },
+    "StatPriorities": [
+      "Strength",
+      "Vitality",
+      "Dexterity",
+      "Intelligence"
+    ],
+    "Name": "The Warrior",
+    "Archetype": "Warrior",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "Strength": 10.0,
+        "Vitality": 9.0,
+        "Dexterity": 8.0,
+        "Intelligence": 8.0,
+        "MinDamage": 2.0,
+        "MaxDamage": 3.0,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 0.0,
+        "CurrentHealth": 0.0,
+        "Armor": 0.0,
+        "DodgeChance": 0.0,
+        "FireResist": 0.0,
+        "ColdResist": 0.0,
+        "LightningResist": 0.0,
+        "PoisionResist": 0.0,
+        "Experience": 0.0
+      },
+      "LeveledValues": {
+        "Strength": 10.0,
+        "Vitality": 9.0,
+        "Dexterity": 8.0,
+        "Intelligence": 8.0,
+        "MinDamage": 2.0,
+        "MaxDamage": 3.0,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 0.0,
+        "CurrentHealth": 0.0,
+        "Armor": 0.0,
+        "DodgeChance": 0.0,
+        "FireResist": 0.0,
+        "ColdResist": 0.0,
+        "LightningResist": 0.0,
+        "PoisionResist": 0.0,
+        "Experience": 0.0
+      },
+      "ModifiedValues": {
+        "Strength": 10.0,
+        "Vitality": 9.0,
+        "Dexterity": 8.0,
+        "Intelligence": 8.0,
+        "MinDamage": 2.2,
+        "MaxDamage": 3.3000002,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 27.0,
+        "CurrentHealth": 27.0,
+        "Armor": 10.0,
+        "DodgeChance": 0.008,
+        "PoisionResist": 0.0,
+        "FireResist": 0.8,
+        "ColdResist": 0.8,
+        "LightningResist": 0.8,
+        "PoisonResist": 0.8,
+        "Experience": 0.0
+      },
+      "Progressions": {
+        "Strength": 3.0,
+        "Vitality": 2.0,
+        "Dexterity": 1.0,
+        "Intelligence": 1.0
+      },
+      "Dependants": {
+        "Strength": [
+          "MinDamage",
+          "MaxDamage",
+          "Armor"
+        ],
+        "Vitality": [
+          "MaxHealth"
+        ],
+        "MaxHealth": [
+          "CurrentHealth"
+        ],
+        "Dexterity": [
+          "DodgeChance"
+        ],
+        "Intelligence": [
+          "FireResist",
+          "ColdResist",
+          "LightningResist",
+          "PoisonResist"
+        ]
+      },
+      "Modifiers": {
+        "MinDamage": {
+          "Multiplicative": [
+            {
+              "statName": "MinDamage",
+              "modSourceStat": "Strength",
+              "type": 1,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 0.01
+            }
+          ]
+        },
+        "MaxDamage": {
+          "Multiplicative": [
+            {
+              "statName": "MaxDamage",
+              "modSourceStat": "Strength",
+              "type": 1,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 0.01
+            }
+          ]
+        },
+        "MaxHealth": {
+          "Additive": [
+            {
+              "statName": "MaxHealth",
+              "modSourceStat": "Vitality",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 3.0
+            }
+          ]
+        },
+        "CurrentHealth": {
+          "Additive": [
+            {
+              "statName": "CurrentHealth",
+              "modSourceStat": "MaxHealth",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 1.0
+            }
+          ]
+        },
+        "Armor": {
+          "Additive": [
+            {
+              "statName": "Armor",
+              "modSourceStat": "Strength",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 1.0
+            }
+          ]
+        },
+        "DodgeChance": {
+          "Additive": [
+            {
+              "statName": "DodgeChance",
+              "modSourceStat": "Dexterity",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 0.001
+            }
+          ]
+        },
+        "FireResist": {
+          "Additive": [
+            {
+              "statName": "FireResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "ColdResist": {
+          "Additive": [
+            {
+              "statName": "ColdResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "LightningResist": {
+          "Additive": [
+            {
+              "statName": "LightningResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "PoisonResist": {
+          "Additive": [
+            {
+              "statName": "PoisonResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Warrior",
+              "ModValue": 0.1
+            }
+          ]
+        }
+      },
+      "Level": 1
+    }
+  },
+  "Rogue": {
+    "Inventory": {
+      "PotionsHeld": 0,
+      "GoldAmount": 0,
+      "Items": []
+    },
+    "Equipment": {
+      "Items": {}
+    },
+    "StatPriorities": [
+      "Dexterity",
+      "Vitality",
+      "Strength",
+      "Intelligence"
+    ],
+    "Name": "The Rogue",
+    "Archetype": "Rogue",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "Dexterity": 10.0,
+        "Vitality": 9.0,
+        "Strength": 8.0,
+        "Intelligence": 8.0,
+        "MinDamage": 2.0,
+        "MaxDamage": 3.0,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 0.0,
+        "CurrentHealth": 0.0,
+        "Armor": 0.0,
+        "DodgeChance": 0.0,
+        "FireResist": 0.0,
+        "ColdResist": 0.0,
+        "LightningResist": 0.0,
+        "PoisionResist": 0.0,
+        "Experience": 0.0
+      },
+      "LeveledValues": {
+        "Dexterity": 10.0,
+        "Vitality": 9.0,
+        "Strength": 8.0,
+        "Intelligence": 8.0,
+        "MinDamage": 2.0,
+        "MaxDamage": 3.0,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 0.0,
+        "CurrentHealth": 0.0,
+        "Armor": 0.0,
+        "DodgeChance": 0.0,
+        "FireResist": 0.0,
+        "ColdResist": 0.0,
+        "LightningResist": 0.0,
+        "PoisionResist": 0.0,
+        "Experience": 0.0
+      },
+      "ModifiedValues": {
+        "Dexterity": 10.0,
+        "Vitality": 9.0,
+        "Strength": 8.0,
+        "Intelligence": 8.0,
+        "MinDamage": 2.2,
+        "MaxDamage": 3.3000002,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 27.0,
+        "CurrentHealth": 27.0,
+        "Armor": 8.0,
+        "DodgeChance": 0.010000001,
+        "PoisionResist": 0.0,
+        "FireResist": 0.8,
+        "ColdResist": 0.8,
+        "LightningResist": 0.8,
+        "PoisonResist": 0.8,
+        "Experience": 0.0
+      },
+      "Progressions": {
+        "Dexterity": 3.0,
+        "Vitality": 2.0,
+        "Strength": 1.0,
+        "Intelligence": 1.0
+      },
+      "Dependants": {
+        "Dexterity": [
+          "MinDamage",
+          "MaxDamage",
+          "DodgeChance"
+        ],
+        "Vitality": [
+          "MaxHealth"
+        ],
+        "MaxHealth": [
+          "CurrentHealth"
+        ],
+        "Strength": [
+          "Armor"
+        ],
+        "Intelligence": [
+          "FireResist",
+          "ColdResist",
+          "LightningResist",
+          "PoisonResist"
+        ]
+      },
+      "Modifiers": {
+        "MinDamage": {
+          "Multiplicative": [
+            {
+              "statName": "MinDamage",
+              "modSourceStat": "Dexterity",
+              "type": 1,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 0.01
+            }
+          ]
+        },
+        "MaxDamage": {
+          "Multiplicative": [
+            {
+              "statName": "MaxDamage",
+              "modSourceStat": "Dexterity",
+              "type": 1,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 0.01
+            }
+          ]
+        },
+        "MaxHealth": {
+          "Additive": [
+            {
+              "statName": "MaxHealth",
+              "modSourceStat": "Vitality",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 3.0
+            }
+          ]
+        },
+        "CurrentHealth": {
+          "Additive": [
+            {
+              "statName": "CurrentHealth",
+              "modSourceStat": "MaxHealth",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 1.0
+            }
+          ]
+        },
+        "Armor": {
+          "Additive": [
+            {
+              "statName": "Armor",
+              "modSourceStat": "Strength",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 1.0
+            }
+          ]
+        },
+        "DodgeChance": {
+          "Additive": [
+            {
+              "statName": "DodgeChance",
+              "modSourceStat": "Dexterity",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 0.001
+            }
+          ]
+        },
+        "FireResist": {
+          "Additive": [
+            {
+              "statName": "FireResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "ColdResist": {
+          "Additive": [
+            {
+              "statName": "ColdResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "LightningResist": {
+          "Additive": [
+            {
+              "statName": "LightningResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "PoisonResist": {
+          "Additive": [
+            {
+              "statName": "PoisonResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Rogue",
+              "ModValue": 0.1
+            }
+          ]
+        }
+      },
+      "Level": 1
+    }
+  },
+  "Sorcerer": {
+    "Inventory": {
+      "PotionsHeld": 0,
+      "GoldAmount": 0,
+      "Items": []
+    },
+    "Equipment": {
+      "Items": {}
+    },
+    "StatPriorities": [
+      "Intelligence",
+      "Vitality",
+      "Dexterity",
+      "Strength"
+    ],
+    "Name": "The Sorcerer",
+    "Archetype": "Sorcerer",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "Intelligence": 10.0,
+        "Vitality": 9.0,
+        "Dexterity": 8.0,
+        "Strength": 8.0,
+        "MinDamage": 2.0,
+        "MaxDamage": 3.0,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 0.0,
+        "CurrentHealth": 0.0,
+        "Armor": 0.0,
+        "DodgeChance": 0.0,
+        "FireResist": 0.0,
+        "ColdResist": 0.0,
+        "LightningResist": 0.0,
+        "PoisionResist": 0.0,
+        "Experience": 0.0
+      },
+      "LeveledValues": {
+        "Intelligence": 10.0,
+        "Vitality": 9.0,
+        "Dexterity": 8.0,
+        "Strength": 8.0,
+        "MinDamage": 2.0,
+        "MaxDamage": 3.0,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 0.0,
+        "CurrentHealth": 0.0,
+        "Armor": 0.0,
+        "DodgeChance": 0.0,
+        "FireResist": 0.0,
+        "ColdResist": 0.0,
+        "LightningResist": 0.0,
+        "PoisionResist": 0.0,
+        "Experience": 0.0
+      },
+      "ModifiedValues": {
+        "Intelligence": 10.0,
+        "Vitality": 9.0,
+        "Dexterity": 8.0,
+        "Strength": 8.0,
+        "MinDamage": 2.2,
+        "MaxDamage": 3.3000002,
+        "CriticalHitChance": 0.05,
+        "CriticalHitDamage": 1.5,
+        "MaxHealth": 27.0,
+        "CurrentHealth": 27.0,
+        "Armor": 8.0,
+        "DodgeChance": 0.008,
+        "PoisionResist": 0.0,
+        "FireResist": 1.0,
+        "ColdResist": 1.0,
+        "LightningResist": 1.0,
+        "PoisonResist": 1.0,
+        "Experience": 0.0
+      },
+      "Progressions": {
+        "Intelligence": 3.0,
+        "Vitality": 2.0,
+        "Dexterity": 1.0,
+        "Strength": 1.0
+      },
+      "Dependants": {
+        "Intelligence": [
+          "MinDamage",
+          "MaxDamage",
+          "FireResist",
+          "ColdResist",
+          "LightningResist",
+          "PoisonResist"
+        ],
+        "Vitality": [
+          "MaxHealth"
+        ],
+        "MaxHealth": [
+          "CurrentHealth"
+        ],
+        "Strength": [
+          "Armor"
+        ],
+        "Dexterity": [
+          "DodgeChance"
+        ]
+      },
+      "Modifiers": {
+        "MinDamage": {
+          "Multiplicative": [
+            {
+              "statName": "MinDamage",
+              "modSourceStat": "Intelligence",
+              "type": 1,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 0.01
+            }
+          ]
+        },
+        "MaxDamage": {
+          "Multiplicative": [
+            {
+              "statName": "MaxDamage",
+              "modSourceStat": "Intelligence",
+              "type": 1,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 0.01
+            }
+          ]
+        },
+        "MaxHealth": {
+          "Additive": [
+            {
+              "statName": "MaxHealth",
+              "modSourceStat": "Vitality",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 3.0
+            }
+          ]
+        },
+        "CurrentHealth": {
+          "Additive": [
+            {
+              "statName": "CurrentHealth",
+              "modSourceStat": "MaxHealth",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 1.0
+            }
+          ]
+        },
+        "Armor": {
+          "Additive": [
+            {
+              "statName": "Armor",
+              "modSourceStat": "Strength",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 1.0
+            }
+          ]
+        },
+        "DodgeChance": {
+          "Additive": [
+            {
+              "statName": "DodgeChance",
+              "modSourceStat": "Dexterity",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 0.001
+            }
+          ]
+        },
+        "FireResist": {
+          "Additive": [
+            {
+              "statName": "FireResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "ColdResist": {
+          "Additive": [
+            {
+              "statName": "ColdResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "LightningResist": {
+          "Additive": [
+            {
+              "statName": "LightningResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 0.1
+            }
+          ]
+        },
+        "PoisonResist": {
+          "Additive": [
+            {
+              "statName": "PoisonResist",
+              "modSourceStat": "Intelligence",
+              "type": 0,
+              "ModSourceObject": "The Sorcerer",
+              "ModValue": 0.1
+            }
+          ]
+        }
+      },
+      "Level": 1
+    }
+  }
+}

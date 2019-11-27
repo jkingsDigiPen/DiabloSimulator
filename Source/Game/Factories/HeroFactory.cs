@@ -6,7 +6,9 @@
 //
 //------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace DiabloSimulator.Game.Factories
 {
@@ -19,6 +21,7 @@ namespace DiabloSimulator.Game.Factories
         public HeroFactory()
         {
             AddHeroArchetypes();
+            SaveArchetypesToFile();
         }
 
         public override Hero Create(Hero hero)
@@ -45,12 +48,27 @@ namespace DiabloSimulator.Game.Factories
 
         protected override void LoadArchetypesFromFile()
         {
-            throw new NotImplementedException();
+            var stream = new System.IO.StreamReader(archetypesFileName);
+            string monsterStrings = stream.ReadToEnd();
+            stream.Close();
+
+            archetypes = JsonConvert.DeserializeObject<Dictionary<string, Hero>>(monsterStrings);
+
+            // Remap modifier sources for local modifiers
+            foreach (KeyValuePair<string, Hero> hero in archetypes)
+            {
+                hero.Value.Stats.RemapModifierSources(hero.Value);
+            }
         }
 
         protected override void SaveArchetypesToFile()
         {
-            throw new NotImplementedException();
+            var stream = new System.IO.StreamWriter(archetypesFileName);
+
+            string monsterStrings = JsonConvert.SerializeObject(archetypes, Formatting.Indented);
+            stream.Write(monsterStrings);
+
+            stream.Close();
         }
 
         //------------------------------------------------------------------------------
@@ -161,5 +179,11 @@ namespace DiabloSimulator.Game.Factories
             // Experience
             hero.Stats["Experience"] = 0;
         }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private const string archetypesFileName = "../../../Data/HeroClasses.txt";
     }
 }

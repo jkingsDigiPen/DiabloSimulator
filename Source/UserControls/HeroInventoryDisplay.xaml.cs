@@ -43,25 +43,15 @@ namespace DiabloSimulator.UserControls
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try 
-            { 
+            {
                 // TO DO: REMOVE THIS
-                Item testItem = new Item("Simple Dagger", SlotType.MainHand, ItemRarity.Common, "Dagger");
-                testItem.Stats["MinDamage"] = 2;
-                testItem.Stats["MaxDamage"] = 6;
-                testItem.Stats["RequiredLevel"] = 1;
+                Item testItem = View.CreateItem("Simple Dagger");
                 View.Hero.Inventory.AddItem(testItem);
 
-                testItem = new Item("Short Sword", SlotType.MainHand, ItemRarity.Common, "1-Handed Sword");
-                testItem.Stats["MinDamage"] = 1;
-                testItem.Stats["MaxDamage"] = 7;
-                testItem.Stats["RequiredLevel"] = 1;
+                testItem = View.CreateItem("Short Sword");
                 View.Hero.Inventory.AddItem(testItem);
 
-                testItem = new Item("Leather Hood", SlotType.Head, ItemRarity.Magic, "Helm");
-                testItem.Stats["Armor"] = 21;
-                testItem.Stats["Vitality"] = 4;
-                testItem.Stats["HealthRegen"] = 2;
-                testItem.Stats["RequiredLevel"] = 4;
+                testItem = View.CreateItem("Leather Hood");
                 View.Hero.Inventory.AddItem(testItem);
             }
             catch

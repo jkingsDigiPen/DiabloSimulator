@@ -29,6 +29,7 @@ namespace DiabloSimulator
             monster = new Monster();
             monsterFactory = new MonsterFactory();
             heroFactory = new HeroFactory();
+            itemFactory = new ItemFactory();
         }
 
         public bool InCombat
@@ -83,6 +84,22 @@ namespace DiabloSimulator
 
         #endregion
 
+        #region itemFunctions
+
+        public Item CreateItem(string name = "random")
+        {
+            if(name == "random")
+            {
+                return itemFactory.Create(hero);
+            }
+            else
+            {
+                return itemFactory.Create(hero, name);
+            }
+        }
+
+        #endregion
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         //------------------------------------------------------------------------------
@@ -99,6 +116,7 @@ namespace DiabloSimulator
 
         private MonsterFactory monsterFactory;
         private HeroFactory heroFactory;
+        private ItemFactory itemFactory;
         private Monster monster;
         private Hero hero;
         private bool inCombat;

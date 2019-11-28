@@ -62,6 +62,14 @@ namespace DiabloSimulator.Game
             junkStatus = JunkStatus.None;
         }
 
+        public Item(Item other)
+            : base(other)
+        {
+            slot = other.slot;
+            rarity = other.rarity;
+            junkStatus = JunkStatus.None;
+        }
+
         public static bool operator==(Item lhs, Item rhs)
         {
             // Null items

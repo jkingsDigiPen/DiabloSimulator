@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <None Remove="Data\HeroClasses.txt" />
+    <None Remove="Data\Items.txt" />
     <None Remove="Data\Monsters.txt" />
     <None Remove="Fonts\VollkornSC-Black.ttf" />
     <None Remove="Fonts\VollkornSC-Bold.ttf" />
@@ -27,6 +28,9 @@
 
   <ItemGroup>
     <Content Include="Data\HeroClasses.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Items.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Monsters.txt">

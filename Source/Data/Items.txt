@@ -1,0 +1,83 @@
+{
+  "Simple Dagger": {
+    "slot": 0,
+    "rarity": 0,
+    "junkStatus": 0,
+    "Name": "Simple Dagger",
+    "Archetype": "Dagger",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "MinDamage": 2.0,
+        "MaxDamage": 6.0
+      },
+      "LeveledValues": {
+        "MinDamage": 2.0,
+        "MaxDamage": 6.0
+      },
+      "ModifiedValues": {
+        "MinDamage": 2.0,
+        "MaxDamage": 6.0
+      },
+      "Progressions": {},
+      "Dependants": {},
+      "Modifiers": {},
+      "Level": 1
+    }
+  },
+  "Short Sword": {
+    "slot": 0,
+    "rarity": 0,
+    "junkStatus": 0,
+    "Name": "Short Sword",
+    "Archetype": "1-Handed Sword",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "MinDamage": 1.0,
+        "MaxDamage": 7.0
+      },
+      "LeveledValues": {
+        "MinDamage": 1.0,
+        "MaxDamage": 7.0
+      },
+      "ModifiedValues": {
+        "MinDamage": 1.0,
+        "MaxDamage": 7.0
+      },
+      "Progressions": {},
+      "Dependants": {},
+      "Modifiers": {},
+      "Level": 1
+    }
+  },
+  "Leather Hood": {
+    "slot": 2,
+    "rarity": 1,
+    "junkStatus": 0,
+    "Name": "Leather Hood",
+    "Archetype": "Helm",
+    "Description": null,
+    "Stats": {
+      "BaseValues": {
+        "Armor": 21.0,
+        "Vitality": 4.0,
+        "HealthRegen": 2.0
+      },
+      "LeveledValues": {
+        "Armor": 21.0,
+        "Vitality": 4.0,
+        "HealthRegen": 2.0
+      },
+      "ModifiedValues": {
+        "Armor": 21.0,
+        "Vitality": 4.0,
+        "HealthRegen": 2.0
+      },
+      "Progressions": {},
+      "Dependants": {},
+      "Modifiers": {},
+      "Level": 4
+    }
+  }
+}

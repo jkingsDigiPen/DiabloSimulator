@@ -14,7 +14,8 @@
 		<Label Grid.Row="0" HorizontalAlignment="Center" 
 									 FontSize="18" FontWeight="SemiBold">Equipment</Label>
 		<!---Fix actual height and width to prevent text boxes from resizing-->
-		<ListView Grid.Row="1" Name="lbEquip" 
+		<ListView Grid.Row="1" Name="lbEquip"
+							ScrollViewer.VerticalScrollBarVisibility="Visible"
 							ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 			<ListView.ItemsPanel>
 				<ItemsPanelTemplate>

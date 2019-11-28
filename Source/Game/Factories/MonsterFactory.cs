@@ -80,10 +80,10 @@ namespace DiabloSimulator.Game.Factories
             archetypes = JsonConvert.DeserializeObject<Dictionary<string, Monster>>(monsterStrings);
 
             // Remap modifier sources for local modifiers
-            foreach (KeyValuePair<string, Monster> monster in archetypes)
+            /*foreach (KeyValuePair<string, Monster> monster in archetypes)
             {
                 monster.Value.Stats.RemapModifierSources(monster.Value);
-            }
+            }*/
         }
 
         protected override void SaveArchetypesToFile()

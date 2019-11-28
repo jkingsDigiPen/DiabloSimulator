@@ -7,10 +7,8 @@
 //------------------------------------------------------------------------------
 
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text.Json;
 
 namespace DiabloSimulator.Game
 {
@@ -31,17 +29,21 @@ namespace DiabloSimulator.Game
         [JsonConstructor]
         public StatTable(uint level_ = 1)
         {
+            id = nextId++;
+
             BaseValues = new StatMap();
             LeveledValues = new StatMap();
             ModifiedValues = new StatMap();
             Progressions = new StatMap();
             Modifiers = new Dictionary<string, ModifierMap>();
             Dependants = new StatDependantMap();
-            level = level_;
+            Level = level_;
         }
 
         public StatTable(StatTable other)
         {
+            id = nextId++;
+
             // Base values must be copied
             BaseValues = new StatMap(other.BaseValues);
 
@@ -51,11 +53,20 @@ namespace DiabloSimulator.Game
 
             // Progressions, modifiers, dependants must be copied
             Progressions = new StatMap(other.Progressions);
-            Modifiers = new Dictionary<string, ModifierMap>(other.Modifiers);
             Dependants = new StatDependantMap(other.Dependants);
 
-            // Redo mod sources
-            RemapModifierSources(other, this);
+            // Modifiers need extra care, as they need to refer to other objects
+            Modifiers = new Dictionary<string, ModifierMap>();
+            foreach(KeyValuePair<string, ModifierMap> modMap in other.Modifiers)
+            {
+                foreach(KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
+                {
+                    foreach(StatModifier mod in modSet.Value)
+                    {
+                        AddModifier(new StatModifier(mod, this));
+                    }
+                }
+            }
 
             // Using property fills out leveled and modified values
             Level = other.Level;
@@ -158,7 +169,7 @@ namespace DiabloSimulator.Game
             OnPropertyChange("ModifiedValues");
         }
 
-        public void RemapModifierSources(GameObject modSourceObject)
+        /*public void RemapModifierSources(GameObject modSourceObject)
         {
             foreach (KeyValuePair<string, ModifierMap> modMap in Modifiers)
             {
@@ -170,21 +181,7 @@ namespace DiabloSimulator.Game
                     }
                 }
             }
-        }
-
-        public void RemapModifierSources(StatTable oldSourceTable, StatTable newSourceTable)
-        {
-            foreach (KeyValuePair<string, ModifierMap> modMap in Modifiers)
-            {
-                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
-                {
-                    foreach (StatModifier mod in modSet.Value)
-                    {
-                        mod.UpdateSourceTable(oldSourceTable, newSourceTable);
-                    }
-                }
-            }
-        }
+        }*/
 
         //------------------------------------------------------------------------------
         // Public Variables:
@@ -271,5 +268,8 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         private uint level;
+
+        private uint id;
+        private static uint nextId = 0;
     }
 }

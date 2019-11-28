@@ -6,6 +6,8 @@
 //
 //------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------
@@ -25,6 +27,7 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         // Constructor for modifier
+        [JsonConstructor]
         public StatModifier(string statName_, string modSourceStat_,
             ModifierType type_, float modValue_, GameObject modSourceObject_ = null)
         {
@@ -38,6 +41,17 @@ namespace DiabloSimulator.Game
                 ModSourceObject = modSourceObject_.Name;
                 modSourceTable = modSourceObject_.Stats;
             }
+        }
+
+        public StatModifier(StatModifier other, StatTable newTable)
+        {
+            statName = other.statName;
+            modSourceStat = other.modSourceStat;
+            type = other.type;
+            ModValue = other.ModValue;
+            ModSourceObject = other.ModSourceObject;
+            if(ModSourceObject != null)
+                modSourceTable = newTable;
         }
 
         public float ModValueWithTable()
@@ -73,7 +87,7 @@ namespace DiabloSimulator.Game
             return (statName + modSourceStat + ModSourceObject + type.ToString()).GetHashCode();
         }
 
-        public void UpdateSourceTable(StatTable oldTable, StatTable newTable)
+        /*public void UpdateSourceTable(StatTable oldTable, StatTable newTable)
         {
             if(modSourceTable == oldTable)
             {
@@ -87,7 +101,7 @@ namespace DiabloSimulator.Game
             {
                 modSourceTable = modSourceObject_.Stats;
             }
-        }
+        }*/
 
         public string ModSourceObject { get; set; }
 

@@ -173,9 +173,9 @@ namespace DiabloSimulator.Game
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public MonsterRarity Rarity { get => rarity; }
+        public MonsterRarity Rarity { get => rarity; set => rarity = value; }
 
-        public string Family { get => family; }
+        public string Family { get => family; set => family = value; }
 
         public const string EmptyMonster = "No Monster Detected";
 

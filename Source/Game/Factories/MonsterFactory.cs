@@ -33,8 +33,8 @@ namespace DiabloSimulator.Game.Factories
         public override Monster Create(Hero hero)
         {
             // TO DO: Get valid types from location
-            MonsterType monsterType = (MonsterType)random.Next(
-                (int)MonsterType.FallenImp, (int)MonsterType.FallenShaman + 1);
+
+            int monsterIndex = random.Next(0, archetypes.Count);
 
             // Generate level, based on hero level (+/- 2 levels)
             int level = random.Next(Math.Max(1, (int)hero.Stats.Level - 2), 
@@ -42,12 +42,12 @@ namespace DiabloSimulator.Game.Factories
 
             Monster monster = null;
 
-            switch(monsterType)
+            switch(monsterIndex)
             {
-                case MonsterType.FallenImp:
+                case 0:
                     monster = CloneArchetype("Fallen Imp");
                     break;
-                case MonsterType.FallenShaman:
+                case 1:
                     monster = CloneArchetype("Fallen Shaman");
                     break;
             }
@@ -133,16 +133,6 @@ namespace DiabloSimulator.Game.Factories
             AddArchetype(monster);
 
            SaveArchetypesToFile();
-        }
-
-        //------------------------------------------------------------------------------
-        // Private Structures:
-        //------------------------------------------------------------------------------
-
-        private enum MonsterType
-        {
-            FallenImp,
-            FallenShaman,
         }
 
         //------------------------------------------------------------------------------

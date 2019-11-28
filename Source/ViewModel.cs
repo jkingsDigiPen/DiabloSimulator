@@ -6,10 +6,8 @@
 //
 //------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.ComponentModel;
 using DiabloSimulator.Game;
-using DiabloSimulator.Game.Factories;
+using System.ComponentModel;
 
 namespace DiabloSimulator
 {
@@ -25,80 +23,64 @@ namespace DiabloSimulator
 
         public ViewModel()
         {
-            hero = new Hero("The Vagabond");
-            monster = new Monster();
-            monsterFactory = new MonsterFactory();
-            heroFactory = new HeroFactory();
-            itemFactory = new ItemFactory();
+            gameManager = new GameManager();
+            wasInCombat = false;
         }
 
-        public bool InCombat
-        {
-            get => inCombat;
-            set
-            {
-                if (inCombat != value)
-                {
-                    inCombat = value;
-                    OnPropertyChange("InCombat");
-                }
-            }
-        }
+        #region actors
 
-        #region heroFunctions
-
-        public Hero Hero { get => hero; }
+        public Hero Hero { get => gameManager.Hero; }
 
         public void CreateHero()
         {
-            hero = heroFactory.Create(Hero);
+            gameManager.CreateHero();
         }
+
+        public Monster Monster { get => gameManager.Monster; }
 
         #endregion
 
-        #region monsterFunctions
+        #region gameState
 
-        public Monster Monster { get => monster; }
-
-        // Returns a message describing
-        // the monster's entrance.
-        public string CreateMonster()
+        public bool InCombat
         {
-            monster = monsterFactory.Create(Hero);
-            return Monster.Name + " (a level " 
-                + Monster.Stats.Level + " " + Monster.Race + ") appeared!";
-        }
-
-        public void DestroyMonster()
-        {
-            Monster.Kill();
-            monster = new Monster();
-        }
-
-        public string DamageMonster(float amount)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(amount));
-            return Monster.Damage(damageList);
-        }
-
-        #endregion
-
-        #region itemFunctions
-
-        public Item CreateItem(string name = "random")
-        {
-            if(name == "random")
+            get
             {
-                return itemFactory.Create(hero);
-            }
-            else
-            {
-                return itemFactory.Create(hero, name);
+                if(wasInCombat != gameManager.InCombat)
+                {
+                    wasInCombat = gameManager.InCombat;
+                    OnPropertyChange("InCombat");
+                }
+
+                return gameManager.InCombat;
             }
         }
 
+        public string GetActionResult(PlayerActionType actionType)
+        {
+            return gameManager.GetActionResult(new PlayerAction(actionType));
+        }
+
+        public string GetActionResult(PlayerAction action)
+        {
+            return gameManager.GetActionResult(action);
+        }
+
         #endregion
+
+        // TO DO: Remove these functions
+        #region testingFunctions
+            
+        public void AddItemToInventory(string name)
+        {
+            Hero.Inventory.AddItem(gameManager.CreateItem(name));
+        }
+
+        #endregion
+
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -106,19 +88,16 @@ namespace DiabloSimulator
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void OnPropertyChange(string property)
+        private void OnPropertyChange(string propertyName)
         {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private MonsterFactory monsterFactory;
-        private HeroFactory heroFactory;
-        private ItemFactory itemFactory;
-        private Monster monster;
-        private Hero hero;
-        private bool inCombat;
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private GameManager gameManager;
+        private bool wasInCombat;
     }
 }

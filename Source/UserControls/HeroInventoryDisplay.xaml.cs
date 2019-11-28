@@ -45,14 +45,9 @@ namespace DiabloSimulator.UserControls
             try 
             {
                 // TO DO: REMOVE THIS
-                Item testItem = View.CreateItem("Simple Dagger");
-                View.Hero.Inventory.AddItem(testItem);
-
-                testItem = View.CreateItem("Short Sword");
-                View.Hero.Inventory.AddItem(testItem);
-
-                testItem = View.CreateItem("Leather Hood");
-                View.Hero.Inventory.AddItem(testItem);
+                View.AddItemToInventory("Simple Dagger");
+                View.AddItemToInventory("Short Sword");
+                View.AddItemToInventory("Leather Hood");
             }
             catch
             {

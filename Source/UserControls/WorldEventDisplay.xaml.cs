@@ -8,7 +8,6 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using DiabloSimulator.Game;
 
 namespace DiabloSimulator.UserControls
@@ -30,16 +29,6 @@ namespace DiabloSimulator.UserControls
             // Event handlers
             btnExploreAttack.Click += btnExploreAttack_Click;
             btnDefend.Click += btnDefend_Click;
-
-            // Misc setup
-            Turns = 0;
-            PopulateEvents();
-        }
-
-        // The number of turns taken so far in the game
-        public uint Turns
-        {
-            get; set;
         }
 
         // Allows events to reach other parts of UI
@@ -64,35 +53,21 @@ namespace DiabloSimulator.UserControls
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void PopulateEvents()
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            AddWorldEvent("Welcome to Sanctuary!");
-            AddWorldEvent("You are in the town of Tristram, a place of relative safety.");
+            // Add start text
+            AddWorldEvent(PlayerActionType.Look);
         }
 
         private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
         {
             if(View.InCombat)
             {
-                float damageDealt = View.Hero.GetAttackDamage()[0].amount;
-                string damageDealtString = View.DamageMonster(damageDealt);
-                AddWorldEvent("You attack the " + View.Monster.Race + ". " + damageDealtString);
-
-                if (!View.Monster.IsDead())
-                {
-                    damageDealtString = View.Hero.Damage(View.Monster.GetAttackDamage());
-                    AddWorldEvent(View.Monster.Name + " attacks you. " + damageDealtString);
-                }
-
-                AdvanceTime();
+                AddWorldEvent(PlayerActionType.Attack);
             }
             else if(!View.Hero.IsDead())
             {
-                Turns = 0;
-                AddWorldEvent(View.CreateMonster());
-                View.InCombat = true;
-                // Force monster stat update
-                RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
+                AddWorldEvent(PlayerActionType.Explore);
             }
         }
 
@@ -100,100 +75,31 @@ namespace DiabloSimulator.UserControls
         {
             if (View.InCombat)
             {
-                // TO DO: Add bonus dodge chance
-                AddWorldEvent("You steel yourself, waiting for your enemy to attack.");
-
-                if (!View.Monster.IsDead())
-                {
-                    string damageDealtString = View.Hero.Damage(View.Monster.GetAttackDamage());
-                    AddWorldEvent(View.Monster.Name + " attacks you. " + damageDealtString);
-                }
-
-                // TO DO: Remove bonus dodge chance
-
-                AdvanceTime();
+                AddWorldEvent(PlayerActionType.Defend);
             }
             else if (!View.Hero.IsDead())
             {
-                // Add regen - additive and multiplicative
-                StatModifier regenMultBonus = new StatModifier("HealthRegen",
-                    "Rest", Game.ModifierType.Multiplicative, 0.5f);
-                StatModifier regenAddBonus = new StatModifier("HealthRegen",
-                    "Rest", Game.ModifierType.Additive, 2);
-
-                View.Hero.Stats.AddModifier(regenMultBonus);
-                View.Hero.Stats.AddModifier(regenAddBonus);
-                AddWorldEvent("You rest for a short while. You feel healthier!");
-
-                // Step time forward to heal
-                AdvanceTime();
-
-                // Remove temporary regen
-                View.Hero.Stats.RemoveModifier(regenMultBonus);
-                View.Hero.Stats.RemoveModifier(regenAddBonus);
+                AddWorldEvent(PlayerActionType.Rest);
             }
         }
 
-        private void AddWorldEvent(string worldEvent)
+        private void AddWorldEvent(PlayerActionType action)
         {
-            lvEvents.Items.Add(worldEvent);
+            string eventText = View.GetActionResult(action);
 
-            if (VisualTreeHelper.GetChildrenCount(lvEvents) > 0)
-            {
-                Border border = (Border)VisualTreeHelper.GetChild(lvEvents, 0);
-                ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
-                scrollViewer.ScrollToBottom();
-            }
-        }
+            // Remove last newline and carriage return
+            eventText = eventText.Remove(eventText.Length - 2);
 
-        private void AdvanceTime()
-        {
-            bool heroDead = View.Hero.IsDead();
-            bool monsterDead = View.Monster.IsDead();
+            // Add to list view
+            lvEvents.Items.Add(eventText);
 
-            if(heroDead || monsterDead)
-            {
-                View.InCombat = false;
-
-                // Check for player death
-                if (heroDead)
-                {
-                    GameOver();
-                }
-            }
-            else
-            {
-                ++Turns;
-                AddWorldEvent("A round of combat ends. (Round " + Turns + ")");
-
-                // Force monster stat update
-                RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
-            }
-
-            if(!heroDead)
-            {
-                HeroLifeRegen();
-            }
-        }
-
-        private void HeroLifeRegen()
-        {
-            float lifeRegenAmount = View.Hero.Stats.ModifiedValues["HealthRegen"];
-            if (lifeRegenAmount != 0)
-            {
-                AddWorldEvent(View.Hero.Heal(lifeRegenAmount) + " from natural healing.");
-            }
-        }
-
-        private void GameOver()
-        {
-            MessageBox.Show("You have died. You will be revived in town.");
-            AddWorldEvent("You are in the town of Tristram, a place of relative safety.");
-            View.Hero.Revive();
-            View.DestroyMonster();
+            // Scroll to bottom
+            lvEvents.Items.MoveCurrentToLast();
+            lvEvents.ScrollIntoView(lvEvents.Items.CurrentItem);
 
             // Force monster stat update
-            RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
+            if(View.InCombat)
+                RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
         }
 
         private ViewModel View

@@ -10,6 +10,13 @@ namespace DiabloSimulator.UserControls
     /// </summary>
     public partial class MonsterStatDisplay : UserControl
     {
+        public MonsterStatDisplay()
+        {
+            InitializeComponent();
+
+            MonsterChanged += OnMonsterChanged;
+        }
+
         // Allows events to reach other parts of UI
         public event RoutedEventHandler MonsterChanged
         {
@@ -21,13 +28,6 @@ namespace DiabloSimulator.UserControls
             {
                 RemoveHandler(WorldEventDisplay.MonsterChangedEvent, value);
             }
-        }
-
-        public MonsterStatDisplay()
-        {
-            InitializeComponent();
-
-            MonsterChanged += OnMonsterChanged;
         }
 
         private void OnMonsterChanged(object sender, RoutedEventArgs e)

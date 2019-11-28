@@ -20,8 +20,8 @@ namespace DiabloSimulator.Game.Factories
 
         public HeroFactory()
         {
-            AddHeroArchetypes();
-            SaveArchetypesToFile();
+            //AddHeroArchetypes();
+            LoadArchetypesFromFile();
         }
 
         public override Hero Create(Hero hero)
@@ -49,10 +49,10 @@ namespace DiabloSimulator.Game.Factories
         protected override void LoadArchetypesFromFile()
         {
             var stream = new System.IO.StreamReader(archetypesFileName);
-            string monsterStrings = stream.ReadToEnd();
+            string heroStrings = stream.ReadToEnd();
             stream.Close();
 
-            archetypes = JsonConvert.DeserializeObject<Dictionary<string, Hero>>(monsterStrings);
+            archetypes = JsonConvert.DeserializeObject<Dictionary<string, Hero>>(heroStrings);
 
             // Remap modifier sources for local modifiers
             foreach (KeyValuePair<string, Hero> hero in archetypes)
@@ -63,7 +63,7 @@ namespace DiabloSimulator.Game.Factories
 
         protected override void SaveArchetypesToFile()
         {
-            var stream = new System.IO.StreamWriter(archetypesFileName);
+            var stream = new System.IO.StreamWriter("../../../" + archetypesFileName);
 
             string monsterStrings = JsonConvert.SerializeObject(archetypes, Formatting.Indented);
             stream.Write(monsterStrings);
@@ -109,6 +109,8 @@ namespace DiabloSimulator.Game.Factories
             hero.StatPriorities.Add("Strength");
 
             AddArchetype(hero);
+
+            SaveArchetypesToFile();
         }
 
         private void InitCommonStats(Hero hero)
@@ -184,6 +186,6 @@ namespace DiabloSimulator.Game.Factories
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private const string archetypesFileName = "../../../Data/HeroClasses.txt";
+        private const string archetypesFileName = "Data/HeroClasses.txt";
     }
 }

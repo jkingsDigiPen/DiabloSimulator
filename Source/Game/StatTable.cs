@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,7 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
+        [JsonConstructor]
         public StatTable(uint level_ = 1)
         {
             BaseValues = new StatMap();

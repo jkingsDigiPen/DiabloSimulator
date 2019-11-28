@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -21,6 +22,7 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
+        [JsonConstructor]
         public Hero(string name_ = "", string heroClass = "Warrior")
             : base(name_, heroClass)
         {
@@ -125,7 +127,9 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         public Inventory Inventory { get => inventory; }
+
         public Equipment Equipment { get => equipment; }
+
         public List<string> StatPriorities { get; set; }
 
         //------------------------------------------------------------------------------

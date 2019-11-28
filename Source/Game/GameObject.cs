@@ -77,7 +77,7 @@ namespace DiabloSimulator.Game
             }
         }
 
-        public StatTable Stats { get => stats; }
+        public StatTable Stats { get => stats; set => stats = value; }
 
         //------------------------------------------------------------------------------
         // Public Variables:

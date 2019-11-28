@@ -34,12 +34,6 @@ namespace DiabloSimulator.Windows
             ctrlEvents.MonsterChanged += ctrlEvents_MonsterChanged;
         }
 
-        // Whether we are in a combat event
-        public bool InCombat
-        {
-            get; set;
-        }
-
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
@@ -60,6 +54,12 @@ namespace DiabloSimulator.Windows
             ctrlEvents.ClearValue(HeightProperty);
             ctrlHealth.ClearValue(WidthProperty);
             ctrlHealth.ClearValue(HeightProperty);
+            ctrlEvents.ClearValue(WidthProperty);
+            ctrlEvents.ClearValue(HeightProperty);
+            ctrlWeapon.ClearValue(WidthProperty);
+            ctrlWeapon.ClearValue(HeightProperty);
+            ctrlMonster.ClearValue(WidthProperty);
+            ctrlMonster.ClearValue(HeightProperty);
 
             // Don't want our window to be able to get any smaller than this.
             SetValue(MinWidthProperty, this.Width);

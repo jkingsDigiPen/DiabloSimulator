@@ -7,7 +7,6 @@
 //------------------------------------------------------------------------------
 
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace DiabloSimulator.Game.Factories
@@ -65,8 +64,8 @@ namespace DiabloSimulator.Game.Factories
         {
             var stream = new System.IO.StreamWriter("../../../" + archetypesFileName);
 
-            string monsterStrings = JsonConvert.SerializeObject(archetypes, Formatting.Indented);
-            stream.Write(monsterStrings);
+            string heroStrings = JsonConvert.SerializeObject(archetypes, Formatting.Indented);
+            stream.Write(heroStrings);
 
             stream.Close();
         }

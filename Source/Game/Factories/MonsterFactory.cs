@@ -88,7 +88,7 @@ namespace DiabloSimulator.Game.Factories
 
         protected override void SaveArchetypesToFile()
         {
-            var stream = new System.IO.StreamWriter(archetypesFileName);
+            var stream = new System.IO.StreamWriter("../../../" + archetypesFileName);
 
             string monsterStrings = JsonConvert.SerializeObject(archetypes, Formatting.Indented);
             stream.Write(monsterStrings);
@@ -151,6 +151,6 @@ namespace DiabloSimulator.Game.Factories
 
         private Random random;
 
-        private const string archetypesFileName = "../../../Data/Monsters.txt";
+        private const string archetypesFileName = "Data/Monsters.txt";
     }
 }

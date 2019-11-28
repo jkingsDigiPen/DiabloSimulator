@@ -70,7 +70,7 @@ namespace DiabloSimulator.Game
             foreach(DamageArgs damage in damageList)
             {
                 if (i != 0)
-                    result += "\n";
+                    result += "\r\n";
                 ++i;
 
                 Stats["CurrentHealth"] = Math.Max(Stats.BaseValues["CurrentHealth"] - damage.amount,
@@ -84,7 +84,7 @@ namespace DiabloSimulator.Game
 
             if (IsDead())
             {
-                result += "\n";
+                result += "\r\n";
                 Kill();
                 result += Name + " has been been slain!";
             }

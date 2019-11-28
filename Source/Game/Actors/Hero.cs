@@ -60,7 +60,7 @@ namespace DiabloSimulator.Game
             foreach (DamageArgs damage in damageList)
             {
                 if (i != 0)
-                    result += "\n";
+                    result += "\n\r";
                 ++i;
 
                 Stats["CurrentHealth"] = Math.Max(Stats.BaseValues["CurrentHealth"] - damage.amount,
@@ -74,7 +74,7 @@ namespace DiabloSimulator.Game
 
             if (IsDead())
             {
-                result += "\n";
+                result += "\n\r";
                 Kill();
                 result += "You have been vanquished by the forces of evil!\n You have lost all of your gold.";
             }

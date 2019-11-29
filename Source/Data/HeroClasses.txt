@@ -111,7 +111,7 @@
               "statName": "MinDamage",
               "modSourceStat": "Strength",
               "type": 1,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 0.01
             }
           ]
@@ -122,7 +122,7 @@
               "statName": "MaxDamage",
               "modSourceStat": "Strength",
               "type": 1,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 0.01
             }
           ]
@@ -133,7 +133,7 @@
               "statName": "MaxHealth",
               "modSourceStat": "Vitality",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 3.0
             }
           ]
@@ -144,7 +144,7 @@
               "statName": "CurrentHealth",
               "modSourceStat": "MaxHealth",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 1.0
             }
           ]
@@ -155,7 +155,7 @@
               "statName": "Armor",
               "modSourceStat": "Strength",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 1.0
             }
           ]
@@ -166,7 +166,7 @@
               "statName": "DodgeChance",
               "modSourceStat": "Dexterity",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 0.001
             }
           ]
@@ -177,7 +177,7 @@
               "statName": "FireResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 0.1
             }
           ]
@@ -188,7 +188,7 @@
               "statName": "ColdResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 0.1
             }
           ]
@@ -199,7 +199,7 @@
               "statName": "LightningResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 0.1
             }
           ]
@@ -210,7 +210,7 @@
               "statName": "PoisonResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Warrior",
+              "ModSourceObject": "Warrior",
               "ModValue": 0.1
             }
           ]
@@ -331,7 +331,7 @@
               "statName": "MinDamage",
               "modSourceStat": "Dexterity",
               "type": 1,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 0.01
             }
           ]
@@ -342,7 +342,7 @@
               "statName": "MaxDamage",
               "modSourceStat": "Dexterity",
               "type": 1,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 0.01
             }
           ]
@@ -353,7 +353,7 @@
               "statName": "MaxHealth",
               "modSourceStat": "Vitality",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 3.0
             }
           ]
@@ -364,7 +364,7 @@
               "statName": "CurrentHealth",
               "modSourceStat": "MaxHealth",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 1.0
             }
           ]
@@ -375,7 +375,7 @@
               "statName": "Armor",
               "modSourceStat": "Strength",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 1.0
             }
           ]
@@ -386,7 +386,7 @@
               "statName": "DodgeChance",
               "modSourceStat": "Dexterity",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 0.001
             }
           ]
@@ -397,7 +397,7 @@
               "statName": "FireResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 0.1
             }
           ]
@@ -408,7 +408,7 @@
               "statName": "ColdResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 0.1
             }
           ]
@@ -419,7 +419,7 @@
               "statName": "LightningResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 0.1
             }
           ]
@@ -430,7 +430,7 @@
               "statName": "PoisonResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Rogue",
+              "ModSourceObject": "Rogue",
               "ModValue": 0.1
             }
           ]
@@ -551,7 +551,7 @@
               "statName": "MinDamage",
               "modSourceStat": "Intelligence",
               "type": 1,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 0.01
             }
           ]
@@ -562,7 +562,7 @@
               "statName": "MaxDamage",
               "modSourceStat": "Intelligence",
               "type": 1,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 0.01
             }
           ]
@@ -573,7 +573,7 @@
               "statName": "MaxHealth",
               "modSourceStat": "Vitality",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 3.0
             }
           ]
@@ -584,7 +584,7 @@
               "statName": "CurrentHealth",
               "modSourceStat": "MaxHealth",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 1.0
             }
           ]
@@ -595,7 +595,7 @@
               "statName": "Armor",
               "modSourceStat": "Strength",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 1.0
             }
           ]
@@ -606,7 +606,7 @@
               "statName": "DodgeChance",
               "modSourceStat": "Dexterity",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 0.001
             }
           ]
@@ -617,7 +617,7 @@
               "statName": "FireResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 0.1
             }
           ]
@@ -628,7 +628,7 @@
               "statName": "ColdResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 0.1
             }
           ]
@@ -639,7 +639,7 @@
               "statName": "LightningResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 0.1
             }
           ]
@@ -650,7 +650,7 @@
               "statName": "PoisonResist",
               "modSourceStat": "Intelligence",
               "type": 0,
-              "ModSourceObject": "The Sorcerer",
+              "ModSourceObject": "Sorcerer",
               "ModValue": 0.1
             }
           ]

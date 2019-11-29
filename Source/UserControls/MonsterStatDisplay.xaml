@@ -74,7 +74,7 @@
 		<!--EXP UNTIL NEXT LEVEL -->
 		<Border Height="auto" Grid.Row="0">
 			<TextBlock Grid.Column="0" HorizontalAlignment="Center" FontSize="16" 
-								 Text="{Binding Hero.ExperienceThreshold,
+								 Text="{Binding Hero.ExperienceNeeded,
 				StringFormat={}{0} Exp until next level}"/>
 		</Border>
 	</Grid>

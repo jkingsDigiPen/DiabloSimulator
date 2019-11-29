@@ -134,17 +134,20 @@ namespace DiabloSimulator.Game
             float currentExperience = Stats.ModifiedValues["Experience"];
 
             // Check for level up
-            if(currentExperience >= ExperienceThreshold)
+            if(currentExperience >= CalculateExperienceThreshold(Stats.Level))
             {
                 Stats.Level = Stats.Level + 1;
             }
+
+            base.OnPropertyChange("ExperienceNeeded");
         }
 
-        public float ExperienceThreshold
+        public float ExperienceNeeded
         {
             get
             {
-                return CalculateExperienceThreshold(Stats.Level);
+                return CalculateExperienceThreshold(Stats.Level) 
+                    - Stats.ModifiedValues["Experience"];
             }
         }
 
@@ -170,16 +173,16 @@ namespace DiabloSimulator.Game
             }
             else if(currentLevel == 2)
             {
-                return CalculateExperienceThreshold(1) + 2420;
+                return CalculateExperienceThreshold(1) + 2700;
             }
             else if(currentLevel < 7)
             {
-                return CalculateExperienceThreshold(currentLevel - 1) 
+                return CalculateExperienceThreshold(currentLevel - 1) * 2 
                     + 900 + currentLevel * 300;
             }
             else
             {
-                return CalculateExperienceThreshold(currentLevel - 1)
+                return CalculateExperienceThreshold(currentLevel - 1) * 2
                     + 900 + currentLevel * 200;
             }
         }

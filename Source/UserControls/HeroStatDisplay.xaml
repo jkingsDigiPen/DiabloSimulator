@@ -13,7 +13,7 @@
 		</DockPanel>
 		<TextBlock TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left" 
 							 Height="auto" MaxWidth="250" 
-							 Text="{Binding Hero.Description, StringFormat=Desciption:&#x0d;&#x0a;{0}}"/>
+							 Text="{Binding Hero.Description, StringFormat=Description:&#x0d;&#x0a;{0}}"/>
 		<DockPanel>
 			<TextBlock>Class:</TextBlock>
 			<TextBlock TextAlignment="Right" Text="{Binding Hero.Archetype}"/>

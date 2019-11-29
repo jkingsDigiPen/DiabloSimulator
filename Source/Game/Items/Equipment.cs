@@ -87,46 +87,20 @@ namespace DiabloSimulator.Game
         private void AddItemModsToHeroStats(Item itemToEquip, StatTable heroStats)
         {
             // Add stats from item to hero stat mods
-            foreach (KeyValuePair<string, float> mod in itemToEquip.Stats.LeveledValues)
+            foreach (KeyValuePair<string, float> moddedStat in itemToEquip.Stats.ModifiedValues)
             {
-                // Ignore "required level"
-                if (mod.Key == "RequiredLevel")
-                    continue;
-
-                heroStats.AddModifier(new StatModifier(mod.Key,
-                    itemToEquip.Name, ModifierType.Additive, mod.Value));
-            }
-
-            foreach (KeyValuePair<string, ModifierMap> modMap in itemToEquip.Stats.Modifiers)
-            {
-                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
-                {
-                    foreach (StatModifier mod in modSet.Value)
-                    {
-                        heroStats.AddModifier(mod);
-                    }
-                }
+                heroStats.AddModifier(new StatModifier(moddedStat.Key,
+                    null, ModifierType.Additive, moddedStat.Value, itemToEquip));
             }
         }
 
         private void RemoveItemModsFromHeroStats(Item unequipped, StatTable heroStats)
         {
             // Remove stats from item from hero stat mods
-            foreach (KeyValuePair<string, float> mod in unequipped.Stats.LeveledValues)
+            foreach (KeyValuePair<string, float> moddedStat in unequipped.Stats.ModifiedValues)
             {
-                heroStats.RemoveModifier(new StatModifier(mod.Key,
-                    unequipped.Name, ModifierType.Additive, mod.Value));
-            }
-
-            foreach (KeyValuePair<string, ModifierMap> modMap in unequipped.Stats.Modifiers)
-            {
-                foreach (KeyValuePair<ModifierType, HashSet<StatModifier>> modSet in modMap.Value)
-                {
-                    foreach (StatModifier mod in modSet.Value)
-                    {
-                        heroStats.RemoveModifier(mod);
-                    }
-                }
+                heroStats.RemoveModifier(new StatModifier(moddedStat.Key,
+                    null, ModifierType.Additive, moddedStat.Value, unequipped));
             }
         }
     }

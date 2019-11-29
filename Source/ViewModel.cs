@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Game;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace DiabloSimulator
@@ -40,7 +41,7 @@ namespace DiabloSimulator
 
         #endregion
 
-        #region gameState
+        #region gameFunctions
 
         public bool InCombat
         {
@@ -68,9 +69,33 @@ namespace DiabloSimulator
 
         #endregion
 
+        #region saveLoad
+
+        public bool CanLoadGame
+        {
+            get => gameManager.CanLoadState;
+        }
+
+        public List<string> SavedCharacters
+        {
+            get => gameManager.SavedCharacters;
+        }
+
+        public void SaveGame()
+        {
+            gameManager.SaveState();
+        } 
+
+        public void LoadGame(string saveFileName)
+        {
+            gameManager.LoadState(saveFileName);
+        }
+
+        #endregion
+
         // TO DO: Remove these functions
         #region testingFunctions
-            
+
         public void AddItemToInventory(string name)
         {
             Hero.Inventory.AddItem(gameManager.CreateItem(name));

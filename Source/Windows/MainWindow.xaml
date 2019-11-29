@@ -8,47 +8,38 @@
 				Style="{StaticResource FixedWindowStyle}">
 	<Grid>
 		<StackPanel HorizontalAlignment="Center" Margin="10">
-			<TextBlock TextWrapping="Wrap" Width="300">
-				Welcome to the Diablo Simulator! Stay a while and listen.
+			<TextBlock TextWrapping="Wrap" Width="300" Margin="10">
+				Welcome to the Diablo Simulator!
 			</TextBlock>
+
+			<TextBlock TextWrapping="Wrap" Width="300" Margin="10">
+				Click NEW GAME to start an adventure with a new character.
+			</TextBlock>
+
+			<TextBlock TextWrapping="Wrap" Width="300" Margin="10">
+				Select an existing character below and click
+				CONTINUE to resume their story.
+			</TextBlock>
+			
 			<Separator></Separator>
-			<TextBlock TextWrapping="Wrap">
-			Choose a class:
-			</TextBlock>
-			<DockPanel>
-				<StackPanel DockPanel.Dock ="Top">
-					
-					<!-- Class options -->
-					<StackPanel Margin="10">
-						<RadioButton Name="rbClassWarrior" IsChecked="True">Warrior</RadioButton>
-						<RadioButton Name="rbClassRogue">Rogue</RadioButton>
-						<RadioButton Name="rbClassSorcerer">Sorcerer</RadioButton>
-					</StackPanel>
-					<Separator/>
-
-					<!-- Character name -->
-					<TextBlock TextWrapping="Wrap">
-					Name your character:
-					</TextBlock>
-					<TextBox Margin="10" Width="300" Name="tbxHeroName" Text="{Binding Hero.Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-					<Separator/>
-
-					<!-- Character description -->
-					<TextBlock TextWrapping="Wrap">
-					Describe your character:
-					</TextBlock>
-					<TextBox TextWrapping="Wrap" Width="300" MinHeight="200" Margin="10" Name="tbxHeroDesc" 
-							Text="{Binding Hero.Description, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-					<Separator/>
-
-					<!-- Start button -->
-					<TextBlock TextWrapping="Wrap">
-					Click below to enter the world of Sanctuary.
-					</TextBlock>
-				</StackPanel>
-				<Button DockPanel.Dock ="Bottom" Name="btnStart" Margin="10" >
-					Start</Button>
-			</DockPanel>
+			<Button Name="btnNewGame" Margin="10">New Game</Button>
+			<Separator></Separator>
+			<TextBlock HorizontalAlignment="Center" Margin="10" FontSize="18">Character Selection</TextBlock>
+			<ListView Name="lvCharacters" MinHeight="200" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+								ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding SavedCharacters}"></ListView>
+			<Button Name="btnContinue" Margin="10">
+				<Button.Style>
+					<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+						<Setter Property="Content" Value="Continue"></Setter>
+						<Setter Property="IsEnabled" Value="False"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding CanLoadGame}" Value="True">
+								<Setter Property="IsEnabled" Value="True"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+			</Button>
 		</StackPanel>
 	</Grid>
 </Window>

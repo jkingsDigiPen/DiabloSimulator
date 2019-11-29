@@ -26,6 +26,8 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
+        #region constructors
+
         [JsonConstructor]
         public StatTable(uint level_ = 1)
         {
@@ -72,6 +74,10 @@ namespace DiabloSimulator.Game
             Level = other.Level;
         }
 
+        #endregion
+
+        #region properties
+
         public float this[string key]
         {
             set
@@ -115,6 +121,10 @@ namespace DiabloSimulator.Game
             }
         }
 
+        #endregion
+
+        #region modifiers
+
         public void AddModifier(StatModifier mod)
         {
             // Add the mod to the list of modifiers for this stat
@@ -132,12 +142,15 @@ namespace DiabloSimulator.Game
             Modifiers[mod.statName][mod.type].Add(mod);
 
             // Add the mod stat as a dependant of the mod source
-            List<string> depList;
-            if(!Dependants.TryGetValue(mod.modSourceStat, out depList))
+            if (mod.modSourceStat != null)
             {
-                Dependants[mod.modSourceStat] = new List<string>();
+                List<string> depList;
+                if (!Dependants.TryGetValue(mod.modSourceStat, out depList))
+                {
+                    Dependants[mod.modSourceStat] = new List<string>();
+                }
+                Dependants[mod.modSourceStat].Add(mod.statName);
             }
-            Dependants[mod.modSourceStat].Add(mod.statName);
 
             UpdateModifiedValue(mod.statName);
             OnPropertyChange("ModifiedValues");
@@ -155,10 +168,13 @@ namespace DiabloSimulator.Game
             UpdateModifiedValue(mod.statName);
 
             // Remove mod stat as dependant
-            Dependants[mod.modSourceStat].Remove(mod.statName);
+            if(mod.modSourceStat != null)
+                Dependants[mod.modSourceStat].Remove(mod.statName);
 
             OnPropertyChange("ModifiedValues");
         }
+
+        #endregion
 
         public void SetProgression(string name, float progression)
         {
@@ -169,7 +185,7 @@ namespace DiabloSimulator.Game
             OnPropertyChange("ModifiedValues");
         }
 
-        /*public void RemapModifierSources(GameObject modSourceObject)
+        public void RemapModifierSources(GameObject modSourceObject)
         {
             foreach (KeyValuePair<string, ModifierMap> modMap in Modifiers)
             {
@@ -181,7 +197,9 @@ namespace DiabloSimulator.Game
                     }
                 }
             }
-        }*/
+
+            UpdateAllModifiedValues();
+        }
 
         //------------------------------------------------------------------------------
         // Public Variables:

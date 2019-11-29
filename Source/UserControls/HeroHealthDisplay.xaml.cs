@@ -36,25 +36,11 @@ namespace DiabloSimulator.UserControls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                // TO DO: REMOVE THIS
-                View.Hero.Inventory.PotionsHeld = 3;
-            }
-            catch
-            {
-                Console.WriteLine("Bleargh?!");
-            }
         }
 
         private void btnUsePotion_Click(object sender, RoutedEventArgs e)
         {
-            if (View.Hero.Inventory.PotionsHeld == 0)
-                return;
-
-            --View.Hero.Inventory.PotionsHeld;
-
-            View.Hero.Heal(25);
+            View.Hero.UsePotion();
         }
 
         private ViewModel View

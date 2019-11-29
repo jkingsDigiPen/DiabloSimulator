@@ -38,7 +38,7 @@ namespace DiabloSimulator.Game
 
             if (modSourceObject_ != null)
             {
-                ModSourceObject = modSourceObject_.Name;
+                ModSourceObject = modSourceObject_.Archetype;
                 modSourceTable = modSourceObject_.Stats;
             }
         }
@@ -56,7 +56,7 @@ namespace DiabloSimulator.Game
 
         public float ModValueWithTable()
         {
-            return modSourceTable == null ? ModValue
+            return (modSourceTable == null || modSourceStat == null) ? ModValue
                     : modSourceTable.ModifiedValues[modSourceStat] * ModValue;
         }
 
@@ -84,7 +84,7 @@ namespace DiabloSimulator.Game
 
         public override int GetHashCode()
         {
-            return (statName + modSourceStat + ModSourceObject + type.ToString()).GetHashCode();
+            return (statName + ModSourceObject + type.ToString()).GetHashCode();
         }
 
         /*public void UpdateSourceTable(StatTable oldTable, StatTable newTable)
@@ -93,15 +93,15 @@ namespace DiabloSimulator.Game
             {
                 modSourceTable = newTable;
             }
-        }
+        }*/
 
         public void UpdateSourceTable(GameObject modSourceObject_)
         {
-            if (ModSourceObject == modSourceObject_.Name)
+            if (ModSourceObject == modSourceObject_.Archetype)
             {
                 modSourceTable = modSourceObject_.Stats;
             }
-        }*/
+        }
 
         public string ModSourceObject { get; set; }
 

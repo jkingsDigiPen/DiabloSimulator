@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Game.Factories;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -49,11 +51,21 @@ namespace DiabloSimulator.Game
             actionFunctions[PlayerActionType.Rest] = Rest;
             //actionFunctions[PlayerActionType.Flee] = Flee;
             //actionFunctions[PlayerActionType.TownPortal] = TownPortal;
+
+            // TO DO: Populate save list
+            saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                + "\\DiabloSimulator\\Saves\\";
+            savedCharacters = new List<string>();
+            string[] saveFileList = Directory.GetDirectories(saveLocation);
+            foreach (string file in saveFileList)
+            {
+                savedCharacters.Add(file.Substring(saveLocation.Length));
+            }
         }
 
         #endregion
 
-        #region gameStateFunctions
+        #region gameFunctions
 
         public string GetActionResult(PlayerAction action)
         {
@@ -73,6 +85,49 @@ namespace DiabloSimulator.Game
         public bool InCombat { get; set; }
 
         public int Turns { get => turns; }
+
+        #endregion
+
+        #region saveLoad
+
+        public void SaveState()
+        {
+            // Attempt to create directories
+            string heroSaveLocation = saveLocation + Hero.Name.Trim() + "\\";
+            Directory.CreateDirectory(heroSaveLocation);
+
+            // Save hero data, inventory, equipment
+            string heroDataFilename = heroSaveLocation + "HeroData.txt";
+            string heroStrings = JsonConvert.SerializeObject(hero, Formatting.Indented);
+
+            var stream = new StreamWriter(heroDataFilename);
+            stream.Write(heroStrings);
+            stream.Close();
+        }
+
+        public void LoadState(string saveFileName)
+        {
+            string heroSaveLocation = saveLocation + saveFileName + "\\";
+
+            // Save hero data, inventory, equipment
+            string heroDataFilename = heroSaveLocation + "HeroData.txt";
+            var stream = new StreamReader(heroDataFilename);
+            string heroStrings = stream.ReadToEnd();
+            stream.Close();
+
+            hero = JsonConvert.DeserializeObject<Hero>(heroStrings);
+            hero.Stats.RemapModifierSources(hero);
+        }
+
+        public List<string> SavedCharacters
+        {
+            get => savedCharacters;
+        }
+
+        public bool CanLoadState
+        {
+            get => SavedCharacters.Count > 0;
+        }
 
         #endregion
 
@@ -165,6 +220,12 @@ namespace DiabloSimulator.Game
         public void CreateHero()
         {
             hero = heroFactory.Create(Hero);
+
+            // Add starting equipment
+            hero.Inventory.PotionsHeld = 3;
+            hero.Inventory.AddItem(itemFactory.Create(hero, "Simple Dagger"));
+            hero.Inventory.AddItem(itemFactory.Create(hero, "Short Sword"));
+            hero.Inventory.AddItem(itemFactory.Create(hero, "Leather Hood"));
         }
 
         private void HeroLifeRegen()
@@ -250,7 +311,8 @@ namespace DiabloSimulator.Game
 
         private void GameOver()
         {
-            MessageBox.Show("You have died. You will be revived in town.");
+            MessageBox.Show("You have died. You will be revived in town.", 
+                "Diablo Simulator", MessageBoxButton.OK, MessageBoxImage.Information);
             nextEvent.WriteLine("You are in the town of Tristram, a place of relative safety.");
             Hero.Revive();
             DestroyMonster();
@@ -268,6 +330,8 @@ namespace DiabloSimulator.Game
         // Game state
         private int turns;
         private StringWriter nextEvent;
+        private List<string> savedCharacters;
+        private string saveLocation;
 
         // Actors
         private Monster monster;

@@ -7,8 +7,6 @@
 //------------------------------------------------------------------------------
 
 using System.Windows;
-using System.Windows.Controls;
-using DiabloSimulator.Game;
 
 namespace DiabloSimulator.Windows
 {
@@ -30,14 +28,9 @@ namespace DiabloSimulator.Windows
             viewModel = new ViewModel();
             DataContext = viewModel;
 
-            // Stock hero description
-            viewModel.Hero.Description = "A wandering adventurer, seeking fame and fortune.";
-
             // Event handlers
-            btnStart.Click += btnStart_Click;
-            rbClassWarrior.Click += rbClass_Click;
-            rbClassRogue.Click += rbClass_Click;
-            rbClassSorcerer.Click += rbClass_Click;
+            btnNewGame.Click += btnNewGame_Click;
+            btnContinue.Click += btnContinue_Click;
         }
 
         //------------------------------------------------------------------------------
@@ -54,26 +47,23 @@ namespace DiabloSimulator.Windows
             SetValue(MinHeightProperty, this.Height);
         }
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        private void btnNewGame_Click(object sender, RoutedEventArgs e)
         {
-            // Check to make sure form is filled
-            if(viewModel.Hero.Name.Trim() != "")
-            {
-                // We have everything we need to create the hero
-                viewModel.CreateHero();
-
-                Window gw = new GameWindow(viewModel);
-                gw.Show();
-            }
-            else
-            {
-                MessageBox.Show("Please enter a name for your character.", "Notification");
-            }
+            Window characterWindow = new CharacterCreationWindow(viewModel);
+            characterWindow.Show();
         }
 
-        private void rbClass_Click(object sender, RoutedEventArgs e)
+        private void btnContinue_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.Hero.Archetype = (sender as RadioButton).Content.ToString();
+            var selectedItem = lvCharacters.SelectedItem;
+            if (selectedItem == null)
+                return;
+
+            string selectedCharacter = selectedItem.ToString();
+            viewModel.LoadGame(selectedCharacter);
+
+            Window gameWindow = new GameWindow(viewModel);
+            gameWindow.Show();
         }
 
         //------------------------------------------------------------------------------

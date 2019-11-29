@@ -22,13 +22,15 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
+        #region constructors
+
         [JsonConstructor]
         public Hero(string name_ = "", string heroClass = "Warrior")
             : base(name_, heroClass)
         {
             StatPriorities = new List<string>();
-            inventory = new Inventory();
-            equipment = new Equipment();
+            Inventory = new Inventory();
+            Equipment = new Equipment();
             random = new Random();
         }
 
@@ -36,13 +38,19 @@ namespace DiabloSimulator.Game
             : base(other)
         {
             StatPriorities = new List<string>(other.StatPriorities);
-            inventory = new Inventory(other.Inventory);
-            equipment = new Equipment(other.Equipment);
+            Inventory = new Inventory(other.Inventory);
+            Equipment = new Equipment(other.Equipment);
             random = new Random();
         }
 
+        #endregion
+
+        #region damageAndHealing
+
         public string Heal(float amount)
         {
+            amount = MathF.Ceiling(amount);
+
             // Increase health, but keep below max
             Stats["CurrentHealth"] = Math.Min(Stats.BaseValues["CurrentHealth"] + amount, 0);
 
@@ -82,6 +90,13 @@ namespace DiabloSimulator.Game
             return result;
         }
 
+        public string Damage(float damage)
+        {
+            var damageList = new List<DamageArgs>();
+            damageList.Add(new DamageArgs(damage));
+            return Damage(damageList);
+        }
+
         public List<DamageArgs> GetAttackDamage()
         {
             var damageList = new List<DamageArgs>();
@@ -115,12 +130,9 @@ namespace DiabloSimulator.Game
             return Stats.ModifiedValues["CurrentHealth"] == 0;
         }
 
-        public string Damage(float damage)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(damage));
-            return Damage(damageList);
-        }
+        #endregion
+
+        #region experience
 
         public void AddExperience(Monster monster)
         {
@@ -151,13 +163,55 @@ namespace DiabloSimulator.Game
             }
         }
 
+        #endregion
+
+        #region equipment
+
+        public void EquipItem(int selection)
+        {
+            Item itemToEquip = Inventory.Items[selection];
+
+            // Don't equip junk items
+            if (itemToEquip.junkStatus == JunkStatus.Junk)
+                return;
+
+            // TO DO: Handle rings
+
+            // Remove currently equipped item
+            Item itemToRemove = Equipment.UnequipItem(itemToEquip.slot, Stats);
+
+            // Equip item in slot
+            Equipment.EquipItem(itemToEquip, Stats);
+
+            // Remove item from inventory
+            Inventory.RemoveItem(itemToEquip);
+
+            // Add unequipped item to inventory
+            if (itemToRemove != null)
+            {
+                Inventory.AddItem(itemToRemove);
+            }
+        }
+
+        public void UsePotion()
+        {
+            if (Inventory.PotionsHeld == 0)
+                return;
+
+            --Inventory.PotionsHeld;
+
+            Heal(Stats.ModifiedValues["MaxHealth"] * 0.6f);
+        }
+
+        #endregion
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public Inventory Inventory { get => inventory; }
+        public Inventory Inventory { get; set; }
 
-        public Equipment Equipment { get => equipment; }
+        public Equipment Equipment { get; set; }
 
         public List<string> StatPriorities { get; set; }
 
@@ -192,7 +246,5 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         private Random random;
-        private Inventory inventory;
-        private Equipment equipment;
     }
 }

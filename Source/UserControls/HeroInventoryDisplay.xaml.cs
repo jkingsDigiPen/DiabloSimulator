@@ -42,17 +42,6 @@ namespace DiabloSimulator.UserControls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try 
-            {
-                // TO DO: REMOVE THIS
-                View.AddItemToInventory("Simple Dagger");
-                View.AddItemToInventory("Short Sword");
-                View.AddItemToInventory("Leather Hood");
-            }
-            catch
-            {
-                Console.WriteLine("Bleargh?!");
-            }
         }
 
         private void btnItemEquip_Click(object sender, RoutedEventArgs e)
@@ -61,30 +50,7 @@ namespace DiabloSimulator.UserControls
             if (selection == -1)
                 return;
 
-            Inventory inventory = View.Hero.Inventory;
-            Equipment equipment = View.Hero.Equipment;
-            Item itemToEquip = inventory.Items[selection];
-
-            // Don't equip junk items
-            if (itemToEquip.junkStatus == JunkStatus.Junk)
-                return;
-
-            // TO DO: Handle rings
-
-            // Remove currently equipped item
-            Item itemToRemove = equipment.UnequipItem(itemToEquip.slot, View.Hero.Stats);
-
-            // Equip item in slot
-            equipment.EquipItem(itemToEquip, View.Hero.Stats);
-
-            // Remove item from inventory
-            inventory.RemoveItem(itemToEquip);
-
-            // Add unequipped item to inventory
-            if(itemToRemove != null)
-            {
-                inventory.AddItem(itemToRemove);
-            }
+            View.Hero.EquipItem(selection);
         }
 
         private void btnItemDiscardSell_Click(object sender, RoutedEventArgs e)

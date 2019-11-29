@@ -27,6 +27,7 @@ namespace DiabloSimulator.Game.Factories
         {
             Hero newHero = CloneArchetype(hero.Archetype);
             newHero.Name = hero.Name;
+            newHero.Description = hero.Description;
             return newHero;
         }
 

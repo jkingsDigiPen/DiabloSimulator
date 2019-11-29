@@ -122,6 +122,32 @@ namespace DiabloSimulator.Game
             return Damage(damageList);
         }
 
+        public void AddExperience(Monster monster)
+        {
+            // TO DO: Account for monster level (if significantly
+            // higher or lower than player level
+
+            // TO DO: Account for experience buffs
+
+            Stats["Experience"] = Stats.BaseValues["Experience"] + monster.Stats.ModifiedValues["Experience"];
+
+            float currentExperience = Stats.ModifiedValues["Experience"];
+
+            // Check for level up
+            if(currentExperience >= ExperienceThreshold)
+            {
+                Stats.Level = Stats.Level + 1;
+            }
+        }
+
+        public float ExperienceThreshold
+        {
+            get
+            {
+                return CalculateExperienceThreshold(Stats.Level);
+            }
+        }
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
@@ -131,6 +157,32 @@ namespace DiabloSimulator.Game
         public Equipment Equipment { get => equipment; }
 
         public List<string> StatPriorities { get; set; }
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        float CalculateExperienceThreshold(uint currentLevel)
+        {
+            if(currentLevel == 1)
+            {
+                return 280;
+            }
+            else if(currentLevel == 2)
+            {
+                return CalculateExperienceThreshold(1) + 2420;
+            }
+            else if(currentLevel < 7)
+            {
+                return CalculateExperienceThreshold(currentLevel - 1) 
+                    + 900 + currentLevel * 300;
+            }
+            else
+            {
+                return CalculateExperienceThreshold(currentLevel - 1)
+                    + 900 + currentLevel * 200;
+            }
+        }
 
         //------------------------------------------------------------------------------
         // Private Variables:

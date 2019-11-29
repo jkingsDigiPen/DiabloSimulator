@@ -116,7 +116,7 @@ namespace DiabloSimulator.Game
             }
             else
             {
-                hero.Stats["Experience"] = hero.Stats.BaseValues["Experience"] + Monster.Stats.ModifiedValues["Experience"];
+                hero.AddExperience(monster);
             }
 
             AdvanceTime();

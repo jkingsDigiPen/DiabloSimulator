@@ -114,6 +114,10 @@ namespace DiabloSimulator.Game
                 damageDealtString = Hero.Damage(Monster.GetAttackDamage());
                 nextEvent.WriteLine(Monster.Name + " attacks you. " + damageDealtString);
             }
+            else
+            {
+                hero.Stats["Experience"] = hero.Stats.BaseValues["Experience"] + Monster.Stats.ModifiedValues["Experience"];
+            }
 
             AdvanceTime();
         }
@@ -235,10 +239,7 @@ namespace DiabloSimulator.Game
             else
             {
                 ++turns;
-                nextEvent.WriteLine("A round of combat ends. (Round " + Turns + ")");
-
-                // Force monster stat update
-                //RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
+                //nextEvent.WriteLine("A round of combat ends. (Round " + Turns + ")");
             }
 
             if (!heroDead)

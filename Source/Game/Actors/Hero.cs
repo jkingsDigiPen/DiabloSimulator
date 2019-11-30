@@ -167,9 +167,9 @@ namespace DiabloSimulator.Game
 
         #region equipment
 
-        public void EquipItem(int selection)
+        public void EquipItem(int inventoryIndex)
         {
-            Item itemToEquip = Inventory.Items[selection];
+            Item itemToEquip = Inventory.Items[inventoryIndex];
 
             // Don't equip junk items
             if (itemToEquip.junkStatus == JunkStatus.Junk)
@@ -191,6 +191,20 @@ namespace DiabloSimulator.Game
             {
                 Inventory.AddItem(itemToRemove);
             }
+        }
+
+        public Item UnequipItem(SlotType slot)
+        {
+            // Unequip item
+            Item unequipped = Equipment.UnequipItem(slot, Stats);
+
+            // Add to inventory
+            if (unequipped is null)
+                return null;
+
+           Inventory.AddItem(unequipped);
+
+            return unequipped;
         }
 
         public void UsePotion()

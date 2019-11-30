@@ -18,6 +18,7 @@ namespace DiabloSimulator.Game
     public enum MonsterRarity
     {
         Common,
+        Uncommon,
         Elite,
         Legendary
     }
@@ -37,7 +38,7 @@ namespace DiabloSimulator.Game
             Stats.Level = 0;
         }
 
-        public Monster(string name_, uint level_, MonsterRarity rarity_ = MonsterRarity.Common, 
+        public Monster(string name_, int level_, MonsterRarity rarity_ = MonsterRarity.Common, 
             string race_ = "", string family_ = "", string baseMonster_ = "") 
             : base(name_, baseMonster_)
         {

@@ -7,10 +7,10 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Game.Factories;
+using DiabloSimulator.Game.World;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 
@@ -38,6 +38,7 @@ namespace DiabloSimulator.Game
             heroFactory = new HeroFactory();
             monsterFactory = new MonsterFactory();
             itemFactory = new ItemFactory();
+            zoneFactory = new WorldZoneFactory();
 
             // Internal data
             nextEvent = new StringWriter();
@@ -50,7 +51,7 @@ namespace DiabloSimulator.Game
             actionFunctions[PlayerActionType.Explore] = Explore;
             actionFunctions[PlayerActionType.Rest] = Rest;
             //actionFunctions[PlayerActionType.Flee] = Flee;
-            //actionFunctions[PlayerActionType.TownPortal] = TownPortal;
+            actionFunctions[PlayerActionType.TownPortal] = TownPortal;
 
             // TO DO: Populate save list
             saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -61,6 +62,9 @@ namespace DiabloSimulator.Game
             {
                 savedCharacters.Add(file.Substring(saveLocation.Length));
             }
+
+            // Initial game text (new or otherwise)
+            nextEvent.WriteLine("Welcome to the world of Sanctuary!");
         }
 
         #endregion
@@ -109,7 +113,7 @@ namespace DiabloSimulator.Game
         {
             string heroSaveLocation = saveLocation + saveFileName + "\\";
 
-            // Save hero data, inventory, equipment
+            // Load hero data, inventory, equipment
             string heroDataFilename = heroSaveLocation + "HeroData.txt";
             var stream = new StreamReader(heroDataFilename);
             string heroStrings = stream.ReadToEnd();
@@ -117,6 +121,9 @@ namespace DiabloSimulator.Game
 
             hero = JsonConvert.DeserializeObject<Hero>(heroStrings);
             hero.Stats.RemapModifierSources(hero);
+
+            // Load zone data
+            SetZone(hero.CurrentZone);
         }
 
         public List<string> SavedCharacters
@@ -145,17 +152,13 @@ namespace DiabloSimulator.Game
 
         private void Look(List<string> args)
         {
-            // TO DO: Provide location specific text
-
-            nextEvent.WriteLine("Welcome to the world of Sanctuary!");
-            nextEvent.WriteLine("You are in the town of Tristram, a place of relative safety.");
+            nextEvent.WriteLine(zone.LookText);
         }
 
         private void Explore(List<string> args)
         {
-            turns = 0;
-            nextEvent.WriteLine(CreateMonster());
-            InCombat = true;
+            WorldEvent worldEvent = zone.EventTable.GenerateObject(hero);
+            ProcessWorldEvent(worldEvent);
         }
 
         private void Attack(List<string> args)
@@ -213,19 +216,38 @@ namespace DiabloSimulator.Game
             Hero.Stats.RemoveModifier(regenAddBonus);
         }
 
+        private void TownPortal(List<string> args)
+        {
+            if (zone.ZoneType == WorldZoneType.Town)
+            {
+                nextEvent.WriteLine("You have no need to use town portal. You are already in town.");
+            }
+            else
+            {
+                nextEvent.WriteLine("A glowing blue portal opens. Stepping through it, you find yourself " +
+                    "back in town.");
+                SetZone("Tristram");
+            }
+        }
+
         #endregion
 
         #region heroFunctions
 
         public void CreateHero()
         {
-            hero = heroFactory.Create(Hero);
+            // Create hero class, set name and description
+            hero = heroFactory.Create(Hero.Archetype, Hero);
+
+            // Set starting zone
+            SetZone("Tristram");
+            hero.DiscoveredZones.Add(hero.CurrentZone);
 
             // Add starting equipment
             hero.Inventory.PotionsHeld = 3;
-            hero.Inventory.AddItem(itemFactory.Create(hero, "Simple Dagger"));
-            hero.Inventory.AddItem(itemFactory.Create(hero, "Short Sword"));
-            hero.Inventory.AddItem(itemFactory.Create(hero, "Leather Hood"));
+            hero.Inventory.AddItem(itemFactory.Create("Simple Dagger", hero));
+            hero.Inventory.AddItem(itemFactory.Create("Short Sword", hero));
+            hero.Inventory.AddItem(itemFactory.Create("Leather Hood", hero));
         }
 
         private void HeroLifeRegen()
@@ -240,14 +262,6 @@ namespace DiabloSimulator.Game
         #endregion
 
         #region monsterFunctions
-
-        public string CreateMonster()
-        {
-            monster = null;
-            monster = monsterFactory.Create(Hero);
-            return Monster.Name + " (a level "
-                + Monster.Stats.Level + " " + Monster.Race + ") appeared!";
-        }
 
         public void DestroyMonster()
         {
@@ -264,18 +278,69 @@ namespace DiabloSimulator.Game
 
         #endregion
 
-        #region itemFunctions
+        #region zoneFunctions
 
-        public Item CreateItem(string name = "random")
+        private void ProcessWorldEvent(WorldEvent worldEvent)
         {
-            if (name == "random")
+            nextEvent.WriteLine(worldEvent.EventText);
+
+            switch (worldEvent.EventType)
             {
-                return itemFactory.Create(hero);
+                // Monster generation
+                case WorldEventType.MonsterEvent:
+                    turns = 0;
+                    InCombat = true;
+
+                    if (worldEvent.Name == "Wandering Monster")
+                    {
+                        // Get random monster name
+                        monster = zone.MonsterTable.GenerateObject(hero, monsterFactory);
+                    }
+                    else
+                    {
+                        string monsterName = worldEvent.EventData[0];
+                        monster = monsterFactory.Create(monsterName, hero);
+                    }
+
+                    nextEvent.WriteLine(Monster.Name + ", a level "
+                            + Monster.Stats.Level + " " + Monster.Race + ", appeared!");
+                    break;
+
+                default:
+                    break;
+
+                case WorldEventType.ZoneDiscoveryEvent:
+                    if(!hero.DiscoveredZones.Contains(worldEvent.Name))
+                    {
+                        hero.DiscoveredZones.Add(worldEvent.Name);
+                        nextEvent.WriteLine("You have discovered " + worldEvent.Name + "!");
+                    }
+                    else
+                    {
+                        nextEvent.WriteLine("You have entered " + worldEvent.Name + ".");
+                    }
+
+                    SetZone(worldEvent.Name);
+
+                    /*nextEvent.WriteLine("Click 'Explore' to explore this area. " +
+                        "If you wish to return to the previous area, click 'Town Portal', then 'Explore' " +
+                        "to choose an area to explore.");*/
+
+                    Look(null);
+
+                    break;
             }
-            else
-            {
-                return itemFactory.Create(hero, name);
-            }
+        }
+
+        private void SetZone(string name)
+        {
+            hero.CurrentZone = name;
+
+            // Only change zones if necessary
+            if (zone != null && hero.CurrentZone == zone.Name)
+                return;
+
+            zone = zoneFactory.Create(hero.CurrentZone);
         }
 
         #endregion
@@ -313,12 +378,15 @@ namespace DiabloSimulator.Game
         {
             MessageBox.Show("You have died. You will be revived in town.", 
                 "Diablo Simulator", MessageBoxButton.OK, MessageBoxImage.Information);
-            nextEvent.WriteLine("You are in the town of Tristram, a place of relative safety.");
+
             Hero.Revive();
             DestroyMonster();
 
-            // Force monster stat update
-            //RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
+            nextEvent.WriteLine("A fellow wanderer stumbles upon your lifeless body " +
+                "and brings you back to town, where the healers somehow manage to breathe life " +
+                "into you once again.");
+            SetZone("Tristram");
+            Look(null);
         }
 
         #endregion
@@ -336,11 +404,13 @@ namespace DiabloSimulator.Game
         // Actors
         private Monster monster;
         private Hero hero;
+        private WorldZone zone;
 
         // Factories
         private MonsterFactory monsterFactory;
         private HeroFactory heroFactory;
         private ItemFactory itemFactory;
+        private WorldZoneFactory zoneFactory;
 
         // Internal data
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;

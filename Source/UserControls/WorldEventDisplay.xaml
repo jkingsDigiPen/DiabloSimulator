@@ -21,9 +21,10 @@
 				<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
 						 FontWeight="SemiBold">Events</Label>
 
-				<ListView Grid.Row="1" MaxHeight="{Binding ActualHeight, ElementName=grid}" Name="lvEvents" FontSize="16" 
-										ScrollViewer.VerticalScrollBarVisibility="Visible" 
-									ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+				<ListView Grid.Row="1" MaxHeight="{Binding ActualHeight, ElementName=grid}"
+									MaxWidth="{Binding ActualWidth, ElementName=grid}"
+							Name="lvEvents" FontSize="16"
+								ScrollViewer.VerticalScrollBarVisibility="Visible"/>
 			</Grid>
 		</Border>
 		<Border Grid.Row="1" MaxHeight="30">

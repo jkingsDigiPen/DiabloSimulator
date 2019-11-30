@@ -32,6 +32,8 @@ namespace DiabloSimulator.Game
             Inventory = new Inventory();
             Equipment = new Equipment();
             random = new Random();
+            DiscoveredZones = new List<string>();
+            UniqueEventsSeen = new List<string>();
         }
 
         public Hero(Hero other)
@@ -41,6 +43,8 @@ namespace DiabloSimulator.Game
             Inventory = new Inventory(other.Inventory);
             Equipment = new Equipment(other.Equipment);
             random = new Random();
+            DiscoveredZones = new List<string>(other.DiscoveredZones);
+            UniqueEventsSeen = new List<string>(other.UniqueEventsSeen);
         }
 
         #endregion
@@ -229,11 +233,17 @@ namespace DiabloSimulator.Game
 
         public List<string> StatPriorities { get; set; }
 
+        public List<string> DiscoveredZones { get; set; }
+
+        public string CurrentZone { get; set; }
+
+        public List<string> UniqueEventsSeen { get; set; }
+
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        float CalculateExperienceThreshold(uint currentLevel)
+        float CalculateExperienceThreshold(int currentLevel)
         {
             if(currentLevel == 1)
             {

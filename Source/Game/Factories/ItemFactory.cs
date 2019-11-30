@@ -35,30 +35,15 @@ namespace DiabloSimulator.Game.Factories
             archetypes.Add(archetype.Name, archetype);
         }
 
-        public override Item Create(Hero hero)
+        public override Item Create(string name)
         {
-            var validItems = new List<string>();
-
-            foreach (KeyValuePair<string, Item> item in archetypes)
-            {
-                // Make sure required level is appropriate
-                if (item.Value.Stats.Level <= hero.Stats.Level)
-                {
-                    validItems.Add(item.Value.Name);
-                }
-            }
-
-            int itemIndex = random.Next(0, validItems.Count);
-
-            Item clonedItem = Create(hero, validItems[itemIndex]);
-
-            return clonedItem;
+            return new Item(archetypes[name]);
         }
 
-        // Create a specific item
-        public Item Create(Hero hero, string name)
+        // Create a specific item using hero's stats
+        public override Item Create(string name, Hero hero)
         {
-            Item clonedItem = CloneArchetype(name);
+            Item clonedItem = Create(name);
 
             // Level up the item
             if(clonedItem.Stats.Level < hero.Stats.Level)
@@ -72,11 +57,6 @@ namespace DiabloSimulator.Game.Factories
         //------------------------------------------------------------------------------
         // Protected Functions:
         //------------------------------------------------------------------------------
-
-        protected override Item CloneArchetype(string name)
-        {
-            return new Item(archetypes[name]);
-        }
 
         protected override void LoadArchetypesFromFile()
         {

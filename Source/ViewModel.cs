@@ -93,16 +93,6 @@ namespace DiabloSimulator
 
         #endregion
 
-        // TO DO: Remove these functions
-        #region testingFunctions
-
-        public void AddItemToInventory(string name)
-        {
-            Hero.Inventory.AddItem(gameManager.CreateItem(name));
-        }
-
-        #endregion
-
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------

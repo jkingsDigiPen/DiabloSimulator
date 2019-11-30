@@ -137,6 +137,7 @@
 
 		<Style TargetType="{x:Type TextBlock}">
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+			<Setter Property="TextWrapping" Value="WrapWithOverflow"/>
 		</Style>
 		
 		<Style TargetType="{x:Type ListBox}">
@@ -147,18 +148,28 @@
 		<Style TargetType="{x:Type ListView}">
 			<Setter Property="Background" Value="{StaticResource WindowBackColor}"/>
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+			<Setter Property="ItemTemplate">
+				<Setter.Value>
+					<DataTemplate>
+						<TextBlock Text="{Binding}"/>
+					</DataTemplate>
+				</Setter.Value>
+			</Setter>
 		</Style>
 
 		<Style TargetType="{x:Type ListBoxItem}">
 			<Setter Property="Background" Value="{StaticResource WindowToolbarColor}"/>
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
 			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+			<Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
 		</Style>
 
 		<Style TargetType="{x:Type ListViewItem}">
 			<Setter Property="Background" Value="{StaticResource WindowToolbarColor}"/>
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
 			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+			<Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
 		</Style>
 
 		<Style TargetType="{x:Type Border}">

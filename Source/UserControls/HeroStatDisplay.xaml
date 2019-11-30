@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="260"
 						 MinWidth="260">
-	<ListView Grid.Row="1" Name="lbStats">
+	<ListView Grid.Row="1" Name="lbStats" ItemTemplate="{x:Null}">
 		<DockPanel>
 			<TextBlock>Name:</TextBlock>
 			<TextBlock TextAlignment="Right" Text="{Binding Hero.Name}"/>

@@ -20,8 +20,11 @@ namespace DiabloSimulator.Game.Factories
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        // Create an object based off information from the hero.
-        public abstract T Create(Hero hero);
+        // Create an object from an archetype.
+        public abstract T Create(string name);
+
+        // Create an object from an archetype using the hero's stats.
+        public abstract T Create(string name, Hero hero);
 
         // Add an archetype/pattern from which to create objects.
         public abstract void AddArchetype(T archetype);
@@ -29,9 +32,6 @@ namespace DiabloSimulator.Game.Factories
         //------------------------------------------------------------------------------
         // Protected Functions:
         //------------------------------------------------------------------------------
-
-        // Makes an object by cloning the given archetype.
-        protected abstract T CloneArchetype(string name);
 
         // Loads all archetype from a file
         protected abstract void LoadArchetypesFromFile();

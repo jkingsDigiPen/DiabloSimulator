@@ -23,9 +23,14 @@ namespace DiabloSimulator.Game.Factories
             LoadArchetypesFromFile();
         }
 
-        public override Hero Create(Hero hero)
+        public override Hero Create(string name)
         {
-            Hero newHero = CloneArchetype(hero.Archetype);
+            return new Hero(archetypes[name]);
+        }
+
+        public override Hero Create(string name, Hero hero)
+        {
+            var newHero = Create(name);
             newHero.Name = hero.Name;
             newHero.Description = hero.Description;
             return newHero;
@@ -40,11 +45,6 @@ namespace DiabloSimulator.Game.Factories
         //------------------------------------------------------------------------------
         // Protected Functions:
         //------------------------------------------------------------------------------
-
-        protected override Hero CloneArchetype(string name)
-        {
-            return new Hero(archetypes[name]);
-        }
 
         protected override void LoadArchetypesFromFile()
         {

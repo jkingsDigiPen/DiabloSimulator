@@ -30,29 +30,20 @@ namespace DiabloSimulator.Game.Factories
             LoadArchetypesFromFile();
         }
 
-        public override Monster Create(Hero hero)
+        public override Monster Create(string name)
         {
-            // TO DO: Get valid types from location
+            return new Monster(archetypes[name]);
+        }
 
-            int monsterIndex = random.Next(0, archetypes.Count);
+        public override Monster Create(string name, Hero hero)
+        {
+            var monster = Create(name);
 
-            // Generate level, based on hero level (+/- 2 levels)
-            int level = random.Next(Math.Max(1, (int)hero.Stats.Level - 2), 
-                 ((int)hero.Stats.Level + 2) + 1);
-
-            Monster monster = null;
-
-            switch(monsterIndex)
+            // Increase monster level as necessary
+            if (monster.Stats.Level < hero.Stats.Level - 3)
             {
-                case 0:
-                    monster = CloneArchetype("Fallen Imp");
-                    break;
-                case 1:
-                    monster = CloneArchetype("Fallen Shaman");
-                    break;
+                monster.Stats.Level = random.Next(hero.Stats.Level - 3, hero.Stats.Level);
             }
-
-            monster.Stats.Level = (uint)level;
 
             return monster;
         }
@@ -65,11 +56,6 @@ namespace DiabloSimulator.Game.Factories
         //------------------------------------------------------------------------------
         // Protected Functions:
         //------------------------------------------------------------------------------
-
-        protected override Monster CloneArchetype(string name)
-        {
-            return new Monster(archetypes[name]);
-        }
 
         protected override void LoadArchetypesFromFile()
         {
@@ -139,8 +125,7 @@ namespace DiabloSimulator.Game.Factories
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private Random random;
-
         private const string archetypesFileName = "Data/Monsters.txt";
+        private Random random;
     }
 }

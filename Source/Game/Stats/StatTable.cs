@@ -29,7 +29,7 @@ namespace DiabloSimulator.Game
         #region constructors
 
         [JsonConstructor]
-        public StatTable(uint level_ = 1)
+        public StatTable(int level_ = 1)
         {
             id = nextId++;
 
@@ -106,7 +106,7 @@ namespace DiabloSimulator.Game
 
         public Dictionary<string, ModifierMap> Modifiers { get; }
 
-        public uint Level
+        public int Level
         {
             get { return level; }
             set
@@ -285,7 +285,7 @@ namespace DiabloSimulator.Game
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private uint level;
+        private int level;
 
         private uint id;
         private static uint nextId = 0;

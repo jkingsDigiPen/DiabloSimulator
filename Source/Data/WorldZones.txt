@@ -1,0 +1,100 @@
+{
+  "Tristram": {
+    "Name": "Tristram",
+    "LookText": "You are in the town of Tristram, a place of relative safety.",
+    "ConnectedZones": [
+      "Old Tristram Road"
+    ],
+    "MonsterTable": {
+      "Weights": {
+        "Common": 0.67,
+        "Uncommon": 0.2,
+        "Elite": 0.11,
+        "Legendary": 0.02
+      },
+      "Monsters": {
+        "Common": [],
+        "Uncommon": [],
+        "Elite": [],
+        "Legendary": []
+      }
+    },
+    "ZoneType": 0,
+    "EventTable": {
+      "Weights": {
+        "Common": 0.67,
+        "Uncommon": 0.2,
+        "Rare": 0.11,
+        "Legendary": 0.02
+      },
+      "Events": {
+        "Common": [
+          {
+            "Name": "Old Tristram Road",
+            "PreviousEventName": null,
+            "NextEventName": null,
+            "EventText": "Exiting the town's eastern gate, you find a weathered road leading north.",
+            "EventType": 4,
+            "EventData": [],
+            "UniquePerSession": false,
+            "UniquePerHero": false
+          }
+        ],
+        "Uncommon": [],
+        "Rare": [],
+        "Legendary": []
+      }
+    }
+  },
+  "Old Tristram Road": {
+    "Name": "Old Tristram Road",
+    "LookText": "You are in Old Tristram Road, just outside of the town of Tristram. An eerie fog blankets the area, making it difficult to see more than about 30 feet in front of you.",
+    "ConnectedZones": [
+      "Tristram"
+    ],
+    "MonsterTable": {
+      "Weights": {
+        "Common": 0.67,
+        "Uncommon": 0.2,
+        "Elite": 0.11,
+        "Legendary": 0.02
+      },
+      "Monsters": {
+        "Common": [
+          "Fallen Imp"
+        ],
+        "Uncommon": [
+          "Fallen Shaman"
+        ],
+        "Elite": [],
+        "Legendary": []
+      }
+    },
+    "ZoneType": 2,
+    "EventTable": {
+      "Weights": {
+        "Common": 0.67,
+        "Uncommon": 0.2,
+        "Rare": 0.11,
+        "Legendary": 0.02
+      },
+      "Events": {
+        "Common": [
+          {
+            "Name": "Wandering Monster",
+            "PreviousEventName": null,
+            "NextEventName": null,
+            "EventText": "As you wander, you stumble into the territory of a monster.",
+            "EventType": 0,
+            "EventData": [],
+            "UniquePerSession": false,
+            "UniquePerHero": false
+          }
+        ],
+        "Uncommon": [],
+        "Rare": [],
+        "Legendary": []
+      }
+    }
+  }
+}

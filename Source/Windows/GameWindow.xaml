@@ -44,11 +44,11 @@
 						<RowDefinition Height="auto"/>
 					</Grid.RowDefinitions>
 					<Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontSize="16" 
-							 FontWeight="SemiBold">Offense</Label>
-					<Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">100</Label>
+							 FontWeight="SemiBold">Offense (WIP)</Label>
+					<Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">0</Label>
 					<Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" FontSize="16" 
-							 FontWeight="SemiBold">Defense</Label>
-					<Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">48</Label>
+							 FontWeight="SemiBold">Defense (WIP)</Label>
+					<Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">0</Label>
 				</Grid>
 			</Grid>
 		</Border>

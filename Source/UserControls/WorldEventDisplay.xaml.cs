@@ -29,6 +29,7 @@ namespace DiabloSimulator.UserControls
             // Event handlers
             btnExploreAttack.Click += btnExploreAttack_Click;
             btnDefend.Click += btnDefend_Click;
+            btnFleeTown.Click += btnFleeTown_Click;
         }
 
         // Allows events to reach other parts of UI
@@ -80,6 +81,18 @@ namespace DiabloSimulator.UserControls
             else if (!View.Hero.IsDead())
             {
                 AddWorldEvent(PlayerActionType.Rest);
+            }
+        }
+
+        private void btnFleeTown_Click(object sender, RoutedEventArgs e)
+        {
+            if (View.InCombat)
+            {
+                AddWorldEvent(PlayerActionType.Flee);
+            }
+            else
+            {
+                AddWorldEvent(PlayerActionType.TownPortal);
             }
         }
 

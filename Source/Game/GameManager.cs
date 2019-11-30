@@ -50,7 +50,7 @@ namespace DiabloSimulator.Game
             actionFunctions[PlayerActionType.Defend] = Defend;
             actionFunctions[PlayerActionType.Explore] = Explore;
             actionFunctions[PlayerActionType.Rest] = Rest;
-            //actionFunctions[PlayerActionType.Flee] = Flee;
+            actionFunctions[PlayerActionType.Flee] = Flee;
             actionFunctions[PlayerActionType.TownPortal] = TownPortal;
 
             // TO DO: Populate save list
@@ -216,17 +216,47 @@ namespace DiabloSimulator.Game
             Hero.Stats.RemoveModifier(regenAddBonus);
         }
 
+        private void Flee(List<string> args)
+        {
+            nextEvent.WriteLine("You attempt to flee from the " + Monster.Race + "...");
+
+            // 60% flee chance
+            bool fleeSuccess = random.NextDouble() <= 0.6f;
+            if(fleeSuccess)
+            {
+                nextEvent.WriteLine("You have successfully escaped from " + Monster.Name + ".");
+                DestroyMonster();
+                Look(null);
+            }
+            else
+            {
+                nextEvent.WriteLine("You can't seem to find an opening to escape! " +
+                    "You are locked in combat with " + Monster.Name + ".");
+
+                if (!Monster.IsDead())
+                {
+                    string damageDealtString = Hero.Damage(Monster.GetAttackDamage());
+                    nextEvent.WriteLine(Monster.Name + " attacks you. " + damageDealtString);
+                }
+
+                AdvanceTime();
+            }
+        }
+
         private void TownPortal(List<string> args)
         {
             if (zone.ZoneType == WorldZoneType.Town)
             {
-                nextEvent.WriteLine("You have no need to use town portal. You are already in town.");
+                nextEvent.WriteLine("There is no need to cast 'Town Portal' at this time. You are already in town.");
             }
             else
             {
-                nextEvent.WriteLine("A glowing blue portal opens. Stepping through it, you find yourself " +
+                nextEvent.WriteLine("You reach into your pack and take out a dusty blue tome containing " +
+                    "the 'Town Portal' spell. You read the words aloud and suddenly a glowing, translucent " +
+                    "portal opens up in the air in front of you. Stepping through it, you find yourself " +
                     "back in town.");
                 SetZone("Tristram");
+                Look(null);
             }
         }
 
@@ -267,6 +297,7 @@ namespace DiabloSimulator.Game
         {
             Monster.Kill();
             monster = new Monster();
+            InCombat = false;
         }
 
         public string DamageMonster(float amount)
@@ -414,5 +445,6 @@ namespace DiabloSimulator.Game
 
         // Internal data
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
+        private Random random = new Random();
     }
 }

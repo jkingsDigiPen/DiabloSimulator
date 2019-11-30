@@ -76,7 +76,7 @@ namespace DiabloSimulator.Windows
 
             if(viewModel.InCombat)
             {
-                result = MessageBox.Show("Warning: Game state cannot be saved during combat. " +
+                result = MessageBox.Show("WARNING: Game cannot be saved during combat. " +
                     "Unsaved data will be lost upon exit.",
                     "Diablo Simulator", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             }

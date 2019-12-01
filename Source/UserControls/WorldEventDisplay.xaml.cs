@@ -6,9 +6,10 @@
 //
 //------------------------------------------------------------------------------
 
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
-using DiabloSimulator.Game;
+using System.Windows.Media;
 
 namespace DiabloSimulator.UserControls
 {
@@ -26,93 +27,35 @@ namespace DiabloSimulator.UserControls
         {
             InitializeComponent();
 
-            // Event handlers
-            btnExploreAttack.Click += btnExploreAttack_Click;
-            btnDefend.Click += btnDefend_Click;
-            btnFleeTown.Click += btnFleeTown_Click;
-        }
-
-        // Allows events to reach other parts of UI
-        public static readonly RoutedEvent MonsterChangedEvent =
-            EventManager.RegisterRoutedEvent("MonsterChanged", RoutingStrategy.Bubble,
-                typeof(RoutedEventHandler), typeof(WorldEventDisplay));
-
-        // Allows events to reach other parts of UI
-        public event RoutedEventHandler MonsterChanged
-        {
-            add
-            {
-                AddHandler(MonsterChangedEvent, value);
-            }
-            remove
-            {
-                RemoveHandler(MonsterChangedEvent, value);
-            }
+            Loaded += OnControlLoaded;
         }
 
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void OnControlLoaded(object sender, RoutedEventArgs e)
         {
-            // Add start text
-            AddWorldEvent(PlayerActionType.Look);
+            // Choices
+            btnExploreAttack.Click += View.OnChoice1Clicked;
+            btnDefend.Click += View.OnChoice2Clicked;
+            btnFleeTown.Click += View.OnChoice3Clicked;
+
+            // Force scrolling to end
+            View.WorldEventLog.CollectionChanged += OnCollectionChanged;
+
+            // Tell view we are ready to start
+            View.OnGameLoaded(null, null);
         }
 
-        private void btnExploreAttack_Click(object sender, RoutedEventArgs e)
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(View.InCombat)
+            if (VisualTreeHelper.GetChildrenCount(lvEvents) > 0)
             {
-                AddWorldEvent(PlayerActionType.Attack);
+                Border border = (Border)VisualTreeHelper.GetChild(lvEvents, 0);
+                ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(border, 0);
+                scrollViewer.ScrollToBottom();
             }
-            else if(!View.Hero.IsDead())
-            {
-                AddWorldEvent(PlayerActionType.Explore);
-            }
-        }
-
-        private void btnDefend_Click(object sender, RoutedEventArgs e)
-        {
-            if (View.InCombat)
-            {
-                AddWorldEvent(PlayerActionType.Defend);
-            }
-            else if (!View.Hero.IsDead())
-            {
-                AddWorldEvent(PlayerActionType.Rest);
-            }
-        }
-
-        private void btnFleeTown_Click(object sender, RoutedEventArgs e)
-        {
-            if (View.InCombat)
-            {
-                AddWorldEvent(PlayerActionType.Flee);
-            }
-            else
-            {
-                AddWorldEvent(PlayerActionType.TownPortal);
-            }
-        }
-
-        private void AddWorldEvent(PlayerActionType action)
-        {
-            string eventText = View.GetActionResult(action);
-
-            // Remove last newline and carriage return
-            eventText = eventText.Remove(eventText.Length - 2);
-
-            // Add to list view
-            lvEvents.Items.Add(eventText);
-
-            // Scroll to bottom
-            lvEvents.Items.MoveCurrentToLast();
-            lvEvents.ScrollIntoView(lvEvents.Items.CurrentItem);
-
-            // Force monster stat update
-            if(View.InCombat)
-                RaiseEvent(new RoutedEventArgs(MonsterChangedEvent));
         }
 
         private ViewModel View

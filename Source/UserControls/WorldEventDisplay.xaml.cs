@@ -37,9 +37,9 @@ namespace DiabloSimulator.UserControls
         private void OnControlLoaded(object sender, RoutedEventArgs e)
         {
             // Choices
-            btnExploreAttack.Click += View.OnChoice1Clicked;
-            btnDefend.Click += View.OnChoice2Clicked;
-            btnFleeTown.Click += View.OnChoice3Clicked;
+            btnExploreAttack.Click += View.OnChoice01Clicked;
+            btnDefend.Click += View.OnChoice02Clicked;
+            btnFleeTown.Click += View.OnChoice03Clicked;
 
             // Force scrolling to end
             View.WorldEventLog.CollectionChanged += OnCollectionChanged;

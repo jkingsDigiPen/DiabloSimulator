@@ -7,7 +7,6 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Game;
-using DiabloSimulator.UserControls;
 using DiabloSimulator.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,6 +30,7 @@ namespace DiabloSimulator
         {
             gameManager = new GameManager();
             wasInCombat = false;
+            ChoiceText = new PlayerChoiceText("Explore", "Rest", "Town Portal");
         }
 
         #region actors
@@ -85,7 +85,7 @@ namespace DiabloSimulator
             }
         }
 
-        public void OnChoice1Clicked(object sender, RoutedEventArgs e)
+        public void OnChoice01Clicked(object sender, RoutedEventArgs e)
         {
             if (InCombat)
             {
@@ -97,7 +97,7 @@ namespace DiabloSimulator
             }
         }
 
-        public void OnChoice2Clicked(object sender, RoutedEventArgs e)
+        public void OnChoice02Clicked(object sender, RoutedEventArgs e)
         {
             if (InCombat)
             {
@@ -109,7 +109,7 @@ namespace DiabloSimulator
             }
         }
 
-        public void OnChoice3Clicked(object sender, RoutedEventArgs e)
+        public void OnChoice03Clicked(object sender, RoutedEventArgs e)
         {
             if (InCombat)
             {
@@ -121,14 +121,14 @@ namespace DiabloSimulator
             }
         }
 
-        public string GetActionResult(PlayerActionType actionType)
+        public PlayerChoiceText ChoiceText
         {
-            return gameManager.GetActionResult(new PlayerAction(actionType));
-        }
-
-        public string GetActionResult(PlayerAction action)
-        {
-            return gameManager.GetActionResult(action);
+            get => choiceText;
+            set
+            {
+                choiceText = value;
+                OnPropertyChange("ChoiceText");
+            }
         }
 
         #endregion
@@ -196,6 +196,8 @@ namespace DiabloSimulator
         // Private Functions:
         //------------------------------------------------------------------------------
 
+        #region privateFunctions
+
         private void OnPropertyChange(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -218,11 +220,27 @@ namespace DiabloSimulator
                 .ctrlMonster.OnMonsterChanged(null, null));
         }
 
+        private string GetActionResult(PlayerActionType actionType)
+        {
+            return GetActionResult(new PlayerAction(actionType));
+        }
+
+        private string GetActionResult(PlayerAction action)
+        {
+            PlayerActionResult result = gameManager.GetActionResult(action);
+            ChoiceText = result.choiceText;
+
+            return result.resultText;
+        }
+
+        #endregion
+
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private GameManager gameManager;
         private bool wasInCombat;
+        private PlayerChoiceText choiceText;
     }
 }

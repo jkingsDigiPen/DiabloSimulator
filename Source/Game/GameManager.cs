@@ -53,7 +53,7 @@ namespace DiabloSimulator.Game
             actionFunctions[PlayerActionType.Flee] = Flee;
             actionFunctions[PlayerActionType.TownPortal] = TownPortal;
 
-            // TO DO: Populate save list
+            // Populate save list
             saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 + "\\DiabloSimulator\\Saves\\";
             savedCharacters = new List<string>();
@@ -64,6 +64,7 @@ namespace DiabloSimulator.Game
             }
 
             // Initial game text (new or otherwise)
+            currentChoiceText = exploreChoiceText;
             nextEvent.WriteLine("Welcome to the world of Sanctuary!");
         }
 
@@ -71,7 +72,7 @@ namespace DiabloSimulator.Game
 
         #region gameFunctions
 
-        public string GetActionResult(PlayerAction action)
+        public PlayerActionResult GetActionResult(PlayerAction action)
         {
             // Execute action
             actionFunctions[action.actionType](action.args);
@@ -79,7 +80,8 @@ namespace DiabloSimulator.Game
             // Return output
             string result = nextEvent.ToString();
             nextEvent.GetStringBuilder().Clear();
-            return result;
+
+            return new PlayerActionResult(result, currentChoiceText);
         }
 
         public Hero Hero { get => hero; }
@@ -431,6 +433,7 @@ namespace DiabloSimulator.Game
         private StringWriter nextEvent;
         private List<string> savedCharacters;
         private string saveLocation;
+        private PlayerChoiceText currentChoiceText;
 
         // Actors
         private Monster monster;
@@ -446,5 +449,15 @@ namespace DiabloSimulator.Game
         // Internal data
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
         private Random random = new Random();
+
+        // Pseudo-constants
+        private PlayerChoiceText exploreChoiceText =
+            new PlayerChoiceText("Explore", "Rest", "Town Portal");
+        private PlayerChoiceText combatChoiceText =
+            new PlayerChoiceText("Attack", "Defend", "Flee");
+        private PlayerChoiceText discoverChoiceText =
+            new PlayerChoiceText("Proceed", "Back", "Town Portal");
+        private PlayerChoiceText yesNoChoiceText =
+            new PlayerChoiceText("Yes", "No", "Back");
     }
 }

@@ -56,8 +56,13 @@ namespace DiabloSimulator.Windows
         private void btnContinue_Click(object sender, RoutedEventArgs e)
         {
             var selectedItem = lvCharacters.SelectedItem;
-            if (selectedItem == null)
-                return;
+
+            if (selectedItem == null && lvCharacters.Items.Count != 0)
+            {
+                // Use first item if no items are selected
+                lvCharacters.SelectedIndex = 0;
+                selectedItem = lvCharacters.SelectedItem;
+            }
 
             string selectedCharacter = selectedItem.ToString();
             viewModel.LoadGame(selectedCharacter);

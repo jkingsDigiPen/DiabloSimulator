@@ -88,7 +88,19 @@ namespace DiabloSimulator.Game
 
         public Monster Monster { get => monster; }
 
-        public bool InCombat { get; set; }
+        public bool InCombat 
+        { 
+            get => inCombat; 
+            set
+            {
+                inCombat = value;
+
+                if (value == true)
+                    currentChoiceText = combatChoiceText;
+                else
+                    currentChoiceText = exploreChoiceText;
+            }
+        }
 
         public int Turns { get => turns; }
 
@@ -338,7 +350,6 @@ namespace DiabloSimulator.Game
                     nextEvent.WriteLine(Monster.Name + ", a level "
                             + Monster.Stats.Level + " " + Monster.Race + ", appeared!");
                     break;
-
                 default:
                     break;
 
@@ -429,6 +440,7 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         // Game state
+        private bool inCombat;
         private int turns;
         private StringWriter nextEvent;
         private List<string> savedCharacters;

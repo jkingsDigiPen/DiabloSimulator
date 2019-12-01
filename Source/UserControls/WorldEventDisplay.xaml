@@ -35,9 +35,12 @@
 					<ColumnDefinition Width="*" MinWidth="200"/>
 				</Grid.ColumnDefinitions>
 				<!-- Content -->
-				<Button Grid.Column="0" Name="btnExploreAttack">Attack / Explore</Button>
-				<Button Grid.Column="1" Name="btnDefend">Defend / Rest</Button>
-				<Button Grid.Column="2" Name="btnFleeTown">Flee / Town Portal</Button>
+				<Button Grid.Column="0" Name="btnExploreAttack" Content=
+								"{Binding ChoiceText.Choice01Text, UpdateSourceTrigger=PropertyChanged}"/>
+				<Button Grid.Column="1" Name="btnDefend" Content=
+								"{Binding ChoiceText.Choice02Text, UpdateSourceTrigger=PropertyChanged}"/>
+				<Button Grid.Column="2" Name="btnFleeTown" Content=
+								"{Binding ChoiceText.Choice03Text, UpdateSourceTrigger=PropertyChanged}"/>
 			</Grid>
 		</Border>
 	</Grid>

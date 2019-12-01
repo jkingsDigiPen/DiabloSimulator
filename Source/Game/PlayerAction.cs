@@ -1,9 +1,19 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	PlayerAction.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
 using System.Collections.Generic;
-using System.Text;
 
 namespace DiabloSimulator.Game
 {
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     public enum PlayerActionType
     {
         Look,
@@ -17,6 +27,10 @@ namespace DiabloSimulator.Game
 
     public class PlayerAction
     {
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
         public PlayerAction(PlayerActionType actionType_)
         {
             actionType = actionType_;
@@ -42,6 +56,10 @@ namespace DiabloSimulator.Game
 
     public class PlayerChoiceText
     {
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
         public PlayerChoiceText(string choice01Text_, 
             string choice02Text_, string choice03Text_)
         {
@@ -50,18 +68,34 @@ namespace DiabloSimulator.Game
             choice03Text = choice03Text_;
         }
 
-        public string choice01Text;
-        public string choice02Text;
-        public string choice03Text;
+        public string Choice01Text { get => choice01Text; }
+        public string Choice02Text { get => choice02Text;}
+        public string Choice03Text { get => choice03Text; }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private string choice01Text;
+        private string choice02Text;
+        private string choice03Text;
     }
 
     public class PlayerActionResult
     {
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
         public PlayerActionResult(string resultText_, PlayerChoiceText choiceText_)
         {
             resultText = resultText_;
             choiceText = choiceText_;
         }
+
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
 
         public PlayerChoiceText choiceText;
         public string resultText;

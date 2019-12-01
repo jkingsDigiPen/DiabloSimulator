@@ -8,7 +8,6 @@
 
 using DiabloSimulator.Game.World;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using static DiabloSimulator.Game.RandomGeneration.WorldEventTable;
 
@@ -26,8 +25,8 @@ namespace DiabloSimulator.Game.Factories
 
         public WorldZoneFactory()
         {
-            AddZoneArchetypes();
-            //LoadArchetypesFromFile();
+            //AddZoneArchetypes();
+            LoadArchetypesFromFile();
         }
 
         public override void AddArchetype(WorldZone archetype)

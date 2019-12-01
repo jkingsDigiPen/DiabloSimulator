@@ -20,6 +20,7 @@
     <None Remove="Data\HeroClasses.txt" />
     <None Remove="Data\Items.txt" />
     <None Remove="Data\Monsters.txt" />
+    <None Remove="Data\WorldZones.txt" />
     <None Remove="Fonts\VollkornSC-Black.ttf" />
     <None Remove="Fonts\VollkornSC-Bold.ttf" />
     <None Remove="Fonts\VollkornSC-Regular.ttf" />
@@ -34,6 +35,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Monsters.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\WorldZones.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

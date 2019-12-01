@@ -52,6 +52,8 @@ namespace DiabloSimulator.Game
             actionFunctions[PlayerActionType.Rest] = Rest;
             actionFunctions[PlayerActionType.Flee] = Flee;
             actionFunctions[PlayerActionType.TownPortal] = TownPortal;
+            actionFunctions[PlayerActionType.Proceed] = Proceed;
+            actionFunctions[PlayerActionType.Back] = Back;
 
             // Populate save list
             saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -64,7 +66,6 @@ namespace DiabloSimulator.Game
             }
 
             // Initial game text (new or otherwise)
-            currentChoiceText = exploreChoiceText;
             nextEvent.WriteLine("Welcome to the world of Sanctuary!");
         }
 
@@ -196,7 +197,7 @@ namespace DiabloSimulator.Game
 
         private void Defend(List<string> args)
         {
-            // TO DO: Add bonus dodge chance
+            // TO DO: Add additive bonus dodge chance, mult bonus to block chance
             nextEvent.WriteLine("You steel yourself, waiting for your enemy to attack.");
 
             if (!Monster.IsDead())
@@ -205,7 +206,7 @@ namespace DiabloSimulator.Game
                 nextEvent.WriteLine(Monster.Name + " attacks you. " + damageDealtString);
             }
 
-            // TO DO: Remove bonus dodge chance
+            // TO DO: Remove bonus dodge chance, block chance
 
             AdvanceTime();
         }
@@ -272,6 +273,21 @@ namespace DiabloSimulator.Game
                 SetZone("Tristram");
                 Look(null);
             }
+        }
+
+        private void Proceed(List<string> args)
+        {
+            SetZone(nextZoneName);
+            Look(null);
+        }
+
+        private void Back(List<string> args)
+        {
+            nextEvent.WriteLine("You step back from the entrance to " + nextZoneName 
+                + ", remaining in " + zone.Name + ".");
+
+            // TO DO: Provide town choices if in town
+            currentChoiceText = exploreChoiceText;
         }
 
         #endregion
@@ -354,6 +370,8 @@ namespace DiabloSimulator.Game
                     break;
 
                 case WorldEventType.ZoneDiscoveryEvent:
+                    currentChoiceText = discoverChoiceText;
+
                     if(!hero.DiscoveredZones.Contains(worldEvent.Name))
                     {
                         hero.DiscoveredZones.Add(worldEvent.Name);
@@ -361,17 +379,14 @@ namespace DiabloSimulator.Game
                     }
                     else
                     {
-                        nextEvent.WriteLine("You have entered " + worldEvent.Name + ".");
+                        nextEvent.WriteLine("You have found the entrance to " + worldEvent.Name + ".");
                     }
 
-                    SetZone(worldEvent.Name);
+                    nextZoneName = worldEvent.Name;
 
-                    /*nextEvent.WriteLine("Click 'Explore' to explore this area. " +
-                        "If you wish to return to the previous area, click 'Town Portal', then 'Explore' " +
-                        "to choose an area to explore.");*/
-
-                    Look(null);
-
+                    nextEvent.WriteLine("Click " + discoverChoiceText.Choice01Text 
+                        + " to explore this area. If you wish to return to the previous area, " +
+                        "click " + discoverChoiceText.Choice02Text + ".");
                     break;
             }
         }
@@ -385,6 +400,9 @@ namespace DiabloSimulator.Game
                 return;
 
             zone = zoneFactory.Create(hero.CurrentZone);
+
+            // TO DO: Provide town choices if in town
+            currentChoiceText = exploreChoiceText;
         }
 
         #endregion
@@ -436,6 +454,29 @@ namespace DiabloSimulator.Game
         #endregion
 
         //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
+        // Pseudo-constants
+        public static PlayerChoiceText exploreChoiceText =
+            new PlayerChoiceText(PlayerActionType.Explore.ToString(),
+                PlayerActionType.Rest.ToString(), 
+                PlayerAction.GetDescription(PlayerActionType.TownPortal));
+
+        public static PlayerChoiceText combatChoiceText =
+            new PlayerChoiceText(PlayerActionType.Attack.ToString(),
+                PlayerActionType.Defend.ToString(), PlayerActionType.Flee.ToString());
+
+        public static PlayerChoiceText discoverChoiceText =
+            new PlayerChoiceText(PlayerActionType.Proceed.ToString(),
+                PlayerActionType.Back.ToString(), 
+                PlayerAction.GetDescription(PlayerActionType.TownPortal));
+
+        public static PlayerChoiceText yesNoChoiceText =
+            new PlayerChoiceText(PlayerActionType.Yes.ToString(),
+                PlayerActionType.No.ToString(), PlayerActionType.Back.ToString());
+
+        //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
@@ -451,6 +492,7 @@ namespace DiabloSimulator.Game
         private Monster monster;
         private Hero hero;
         private WorldZone zone;
+        private string nextZoneName;
 
         // Factories
         private MonsterFactory monsterFactory;
@@ -461,15 +503,5 @@ namespace DiabloSimulator.Game
         // Internal data
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
         private Random random = new Random();
-
-        // Pseudo-constants
-        private PlayerChoiceText exploreChoiceText =
-            new PlayerChoiceText("Explore", "Rest", "Town Portal");
-        private PlayerChoiceText combatChoiceText =
-            new PlayerChoiceText("Attack", "Defend", "Flee");
-        private PlayerChoiceText discoverChoiceText =
-            new PlayerChoiceText("Proceed", "Back", "Town Portal");
-        private PlayerChoiceText yesNoChoiceText =
-            new PlayerChoiceText("Yes", "No", "Back");
     }
 }

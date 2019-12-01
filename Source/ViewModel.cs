@@ -93,7 +93,14 @@ namespace DiabloSimulator
             }
             else if (!Hero.IsDead())
             {
-                AddWorldEvent(PlayerActionType.Explore);
+                if (ChoiceText == GameManager.exploreChoiceText)
+                {
+                    AddWorldEvent(PlayerActionType.Explore);
+                }
+                else if(ChoiceText == GameManager.discoverChoiceText)
+                {
+                    AddWorldEvent(PlayerActionType.Proceed);
+                }
             }
         }
 
@@ -105,7 +112,14 @@ namespace DiabloSimulator
             }
             else if (!Hero.IsDead())
             {
-                AddWorldEvent(PlayerActionType.Rest);
+                if (ChoiceText == GameManager.exploreChoiceText)
+                {
+                    AddWorldEvent(PlayerActionType.Rest);
+                }
+                else if (ChoiceText == GameManager.discoverChoiceText)
+                {
+                    AddWorldEvent(PlayerActionType.Back);
+                }
             }
         }
 

@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace DiabloSimulator.Game
 {
@@ -22,7 +24,12 @@ namespace DiabloSimulator.Game
         Defend,
         Rest,
         Flee,
+        [Description("Town Portal")]
         TownPortal,
+        Proceed,
+        Back,
+        Yes,
+        No,
     }
 
     public class PlayerAction
@@ -52,6 +59,24 @@ namespace DiabloSimulator.Game
 
         public PlayerActionType actionType;
         public List<string> args;
+
+        //------------------------------------------------------------------------------
+        // Public Static Functions:
+        //------------------------------------------------------------------------------
+
+        // Get a friendlier string for player action enums
+        public static string GetDescription(PlayerActionType value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes =
+
+                  (DescriptionAttribute[])fi.GetCustomAttributes(
+
+                  typeof(DescriptionAttribute), false);
+
+            return (attributes.Length > 0) ? attributes[0].Description : value.ToString();
+        }
     }
 
     public class PlayerChoiceText

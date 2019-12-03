@@ -10,10 +10,13 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702;CSC1668;</NoWarn>
+    <DefineConstants>TRACE;WIN64</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;CSC1668;</NoWarn>
+    <DefineConstants>TRACE;WIN64</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,10 +24,14 @@
     <None Remove="Data\Items.txt" />
     <None Remove="Data\Monsters.txt" />
     <None Remove="Data\WorldZones.txt" />
+    <None Remove="fmod64.dll" />
+    <None Remove="fmodstudio64.dll" />
     <None Remove="Fonts\VollkornSC-Black.ttf" />
     <None Remove="Fonts\VollkornSC-Bold.ttf" />
     <None Remove="Fonts\VollkornSC-Regular.ttf" />
     <None Remove="Fonts\VollkornSC-SemiBold.ttf" />
+    <None Remove="fsbank64.dll" />
+    <None Remove="libfsbvorbis64.dll" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +45,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\WorldZones.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fmod64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fmodstudio64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fsbank64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libfsbvorbis64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -63,6 +82,12 @@
     <Resource Include="Fonts\VollkornSC-SemiBold.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="FMOD\Studio\fmod_studio.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

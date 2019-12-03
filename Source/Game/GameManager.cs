@@ -70,6 +70,9 @@ namespace DiabloSimulator.Game
 
             // Initial game text (new or otherwise)
             nextEvent.WriteLine("Welcome to the world of Sanctuary!");
+
+            // FMOD test
+            FMOD.Studio.System.create(out fmodStudioSystem);
         }
 
         #endregion
@@ -506,5 +509,6 @@ namespace DiabloSimulator.Game
         // Internal data
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
         private Random random = new Random();
+        private FMOD.Studio.System fmodStudioSystem;
     }
 }

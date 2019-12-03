@@ -55,9 +55,12 @@ namespace DiabloSimulator.Game
             actionFunctions[PlayerActionType.Proceed] = Proceed;
             actionFunctions[PlayerActionType.Back] = Back;
 
-            // Populate save list
+            // Create save location if it doesn't exist
             saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 + "\\DiabloSimulator\\Saves\\";
+            Directory.CreateDirectory(saveLocation);
+
+            // Populate save list
             savedCharacters = new List<string>();
             string[] saveFileList = Directory.GetDirectories(saveLocation);
             foreach (string file in saveFileList)

@@ -82,6 +82,7 @@ namespace DiabloSimulator.Game.Factories
             WorldEvent worldEvent = new WorldEvent("Old Tristram Road", WorldEventType.ZoneDiscoveryEvent,
                 "Exiting the town's eastern gate, you find a weathered road leading north.");
             zone.EventTable.Events[EventRarity.Common].Add(worldEvent);
+
             AddArchetype(zone);
 
             // OLD TRISTRAM ROAD

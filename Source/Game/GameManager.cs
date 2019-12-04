@@ -30,6 +30,9 @@ namespace DiabloSimulator.Game
 
         public GameManager()
         {
+            // Instantiate Console window
+            ConsoleManager.Show();
+
             // Actors
             hero = new Hero("The Vagabond");
             monster = new Monster();
@@ -75,6 +78,7 @@ namespace DiabloSimulator.Game
             audio = new AudioManager();
             audio.LoadBank("Master.strings");
             audio.LoadBank("Master");
+            audio.LoadBank("Music");
         }
 
         #endregion
@@ -411,6 +415,18 @@ namespace DiabloSimulator.Game
 
             // TO DO: Provide town choices if in town
             currentChoiceText = exploreChoiceText;
+
+            // Set the mood
+            if (ambientTrack.isValid())
+                AudioManager.ErrorCheck(ambientTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
+            if (zone.AmbientTrackName != null)
+                audio.PlayEvent(zone.AmbientTrackName, 0.5f);
+
+            // Play that funky muzak
+            if (musicTrack.isValid())
+                AudioManager.ErrorCheck(musicTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
+            if (zone.MusicTrackName != null)
+                audio.PlayEvent(zone.MusicTrackName, 0.5f);
         }
 
         #endregion
@@ -495,6 +511,8 @@ namespace DiabloSimulator.Game
         private List<string> savedCharacters;
         private string saveLocation;
         private PlayerChoiceText currentChoiceText;
+        private FMOD.Studio.EventInstance musicTrack;
+        private FMOD.Studio.EventInstance ambientTrack;
 
         // Actors
         private Monster monster;
@@ -512,6 +530,5 @@ namespace DiabloSimulator.Game
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
         private Random random = new Random();
         private AudioManager audio;
-
     }
 }

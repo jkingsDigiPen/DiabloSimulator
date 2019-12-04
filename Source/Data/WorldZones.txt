@@ -44,7 +44,9 @@
         "Rare": [],
         "Legendary": []
       }
-    }
+    },
+    "MusicTrackName": null,
+    "AmbientTrackName": null
   },
   "Old Tristram Road": {
     "Name": "Old Tristram Road",
@@ -95,6 +97,8 @@
         "Rare": [],
         "Legendary": []
       }
-    }
+    },
+    "MusicTrackName": null,
+    "AmbientTrackName": null
   }
 }

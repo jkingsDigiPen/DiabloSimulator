@@ -22,6 +22,7 @@
   <ItemGroup>
     <None Remove="Assets\Audio\Master.bank" />
     <None Remove="Assets\Audio\Master.strings.bank" />
+    <None Remove="Assets\Audio\Music.bank" />
     <None Remove="Data\HeroClasses.txt" />
     <None Remove="Data\Items.txt" />
     <None Remove="Data\Monsters.txt" />
@@ -44,6 +45,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Audio\Master.strings.bank">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Audio\Music.bank">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\HeroClasses.txt">
@@ -103,6 +107,13 @@
 
   <ItemGroup>
     <Folder Include="Assets\Textures\" />
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
   </ItemGroup>
 
 </Project>

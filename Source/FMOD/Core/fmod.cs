@@ -35,8 +35,6 @@ namespace FMOD
         public const string dll    = "fmodstudioL";
 #elif (UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN)
         public const string dll    = "fmodstudio";
-#elif WIN64
-        public const string dll    = "fmod64";
 #else
         public const string dll    = "fmod";
 #endif

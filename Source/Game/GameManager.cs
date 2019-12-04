@@ -71,8 +71,10 @@ namespace DiabloSimulator.Game
             // Initial game text (new or otherwise)
             nextEvent.WriteLine("Welcome to the world of Sanctuary!");
 
-            // FMOD test
-            FMOD.Studio.System.create(out fmodStudioSystem);
+            // Load audio shtuff
+            audio = new AudioManager();
+            audio.LoadBank("Master.strings");
+            audio.LoadBank("Master");
         }
 
         #endregion
@@ -509,6 +511,7 @@ namespace DiabloSimulator.Game
         // Internal data
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
         private Random random = new Random();
-        private FMOD.Studio.System fmodStudioSystem;
+        private AudioManager audio;
+
     }
 }

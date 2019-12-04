@@ -20,21 +20,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Audio\Master.bank" />
+    <None Remove="Assets\Audio\Master.strings.bank" />
     <None Remove="Data\HeroClasses.txt" />
     <None Remove="Data\Items.txt" />
     <None Remove="Data\Monsters.txt" />
     <None Remove="Data\WorldZones.txt" />
+    <None Remove="fmod.dll" />
     <None Remove="fmod64.dll" />
+    <None Remove="fmodstudio.dll" />
     <None Remove="fmodstudio64.dll" />
     <None Remove="Fonts\VollkornSC-Black.ttf" />
     <None Remove="Fonts\VollkornSC-Bold.ttf" />
     <None Remove="Fonts\VollkornSC-Regular.ttf" />
     <None Remove="Fonts\VollkornSC-SemiBold.ttf" />
+    <None Remove="fsbank.dll" />
     <None Remove="fsbank64.dll" />
     <None Remove="libfsbvorbis64.dll" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\Audio\Master.bank">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Audio\Master.strings.bank">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\HeroClasses.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -47,13 +58,13 @@
     <Content Include="Data\WorldZones.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="fmod64.dll">
+    <Content Include="fmod.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="fmodstudio64.dll">
+    <Content Include="fmodstudio.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="fsbank64.dll">
+    <Content Include="fsbank.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="libfsbvorbis64.dll">
@@ -88,6 +99,10 @@
     <Compile Update="FMOD\Studio\fmod_studio.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Textures\" />
   </ItemGroup>
 
 </Project>

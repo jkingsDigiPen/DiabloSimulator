@@ -420,13 +420,13 @@ namespace DiabloSimulator.Game
             if (ambientTrack.isValid())
                 AudioManager.ErrorCheck(ambientTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
             if (zone.AmbientTrackName != null)
-                audio.PlayEvent(zone.AmbientTrackName, 0.5f);
+                ambientTrack = audio.PlayEvent(zone.AmbientTrackName, 0.5f);
 
             // Play that funky muzak
             if (musicTrack.isValid())
                 AudioManager.ErrorCheck(musicTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
             if (zone.MusicTrackName != null)
-                audio.PlayEvent(zone.MusicTrackName, 0.5f);
+                musicTrack = audio.PlayEvent(zone.MusicTrackName, 0.5f);
         }
 
         #endregion

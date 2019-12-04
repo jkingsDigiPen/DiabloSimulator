@@ -8,6 +8,8 @@
 
 using FMOD.Studio;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DiabloSimulator.Game
 {
@@ -26,17 +28,26 @@ namespace DiabloSimulator.Game
         public AudioManager()
         { 
             ErrorCheck(FMODSystem.create(out fmodStudioSystem));
-            System.IntPtr extraData = new System.IntPtr();
-            ErrorCheck(fmodStudioSystem.initialize(16, INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, extraData));
+            ErrorCheck(fmodStudioSystem.initialize(16, INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, IntPtr.Zero));
+
+            // Make sure update gets called periodically
+            var dueTime = TimeSpan.FromSeconds(1);
+            var interval = TimeSpan.FromSeconds(2);
+
+            // TODO: Add a CancellationTokenSource and supply the token here instead of None.
+            RunPeriodicAsync(Update, dueTime, interval, CancellationToken.None);
         }
 
-        public EventInstance PlayEvent(string eventName)
+        public EventInstance PlayEvent(string eventName, float volume = 1.0f)
         {
             EventInstance eventInstance;
             EventDescription eventDescription;
 
             ErrorCheck(fmodStudioSystem.getEvent(eventPrefix + eventName, out eventDescription));
             ErrorCheck(eventDescription.createInstance(out eventInstance));
+            ErrorCheck(eventInstance.setVolume(volume));
+            ErrorCheck(eventInstance.start());
+            ErrorCheck(eventInstance.release());
 
             return eventInstance;
         }
@@ -51,16 +62,21 @@ namespace DiabloSimulator.Game
             PrintBankInfo(bank, bankName);
         }
 
+        static public void ErrorCheck(FMOD.RESULT result)
+        {
+            if (result != FMOD.RESULT.OK)
+            {
+                throw new System.Exception("FMOD error! (" + FMOD.Error.String(result) + ")");
+            }
+        }
+
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void ErrorCheck(FMOD.RESULT result)
+        private void Update()
         {
-            if(result != FMOD.RESULT.OK)
-            {
-                throw new System.Exception("FMOD error! (" + FMOD.Error.String(result) + ")");
-            }
+            ErrorCheck(fmodStudioSystem.update());
         }
 
         private void PrintBankInfo(Bank bank, string bankName)
@@ -107,6 +123,28 @@ namespace DiabloSimulator.Game
             Console.WriteLine();
         }
 
+        // The `onTick` method will be called periodically unless cancelled.
+        private static async Task RunPeriodicAsync(Action onTick,
+                                                   TimeSpan dueTime,
+                                                   TimeSpan interval,
+                                                   CancellationToken token)
+        {
+            // Initial wait time before we begin the periodic loop.
+            if (dueTime > TimeSpan.Zero)
+                await Task.Delay(dueTime, token);
+
+            // Repeat this loop until cancelled.
+            while (!token.IsCancellationRequested)
+            {
+                // Call our onTick function.
+                onTick?.Invoke();
+
+                // Wait to repeat again.
+                if (interval > TimeSpan.Zero)
+                    await Task.Delay(interval, token);
+            }
+        }
+
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
@@ -114,6 +152,6 @@ namespace DiabloSimulator.Game
         private FMODSystem fmodStudioSystem;
 
         private const string audioFilePath = "Assets\\Audio\\";
-        private const string eventPrefix = "event:\\";
+        private const string eventPrefix = "event:/";
     }
 }

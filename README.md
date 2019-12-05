@@ -1,5 +1,5 @@
 # DiabloSimulator
-A text-based WPF program with lots of RNG that simulates the "kill monsters, get loot" core loop of Diablo. The player will be able to perform the following actions:
+A text-based WPF (C#) program with lots of RNG that simulates the "kill monsters, get loot" core loop of Diablo. The player will be able to perform the following actions:
 
 * Explore areas in the world of Sanctuary, both overworld and dungeons. Colorful descriptions will be used to convey the world around them.
 * Encounter NPCs, monsters, and other events. Encounters are randomly generated, monster power can scale with the player's level.
@@ -8,7 +8,7 @@ A text-based WPF program with lots of RNG that simulates the "kill monsters, get
 * Sell items, heal, and gamble in town. The player has a fixed number of items they can carry, health regeneration is limited, as are potions, so returning to town will be a necessity.
 
 ## Visual Preview
-Here's a GIF that shows the current features of the project:
+Below is a GIF that shows the current features of the project:
 
 ![Diablo Simulator Game Screen Mockup](/Images/DiabloSimulatorPreview.gif)
 

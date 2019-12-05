@@ -7,10 +7,10 @@ A text-based WPF program with lots of RNG that simulates the "kill monsters, get
 * Acquire items of varying rarities with randomly generated attributes. The player character has numerous equipment slots, all of which can host items that benefit their various stats and attributes.
 * Sell items, heal, and gamble in town. The player has a fixed number of items they can carry, health regeneration is limited, as are potions, so returning to town will be a necessity.
 
-## Visual Mock-Up
-Here's a rough sketch of what the game will look like.
+## Visual Preview
+Here's a GIF that shows the current features of the project:
 
-![Diablo Simulator Game Screen Mockup](/Images/UI_GameScreen_Mockup.png)
+![Diablo Simulator Game Screen Mockup](/Images/DiabloSimulatorPreview.gif)
 
 ## Class Diagram
 The elements and interactions of the game (i.e., the model, separate from the view) will be something like this. This is already somewhat divorced from the model currently used in the game, but should give you a rough idea of the scope and number of moving parts.

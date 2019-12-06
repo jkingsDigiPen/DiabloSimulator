@@ -6,9 +6,9 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.Engine;
 using DiabloSimulator.Game.Factories;
 using DiabloSimulator.Game.World;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +20,7 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class GameManager
+    public class GameManager : IModule
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -30,21 +30,8 @@ namespace DiabloSimulator.Game
 
         public GameManager()
         {
-            // Instantiate Console window
-            ConsoleManager.Show();
-
-            // Actors
-            hero = new Hero("The Vagabond");
-            monster = new Monster();
-
             // Factories
-            heroFactory = new HeroFactory();
-            monsterFactory = new MonsterFactory();
             itemFactory = new ItemFactory();
-            zoneFactory = new WorldZoneFactory();
-
-            // Internal data
-            nextEvent = new StringWriter();
 
             // Action delegates
             actionFunctions = new Dictionary<PlayerActionType, ActionFunction>();
@@ -57,28 +44,19 @@ namespace DiabloSimulator.Game
             actionFunctions[PlayerActionType.TownPortal] = TownPortal;
             actionFunctions[PlayerActionType.Proceed] = Proceed;
             actionFunctions[PlayerActionType.Back] = Back;
+        }
 
-            // Create save location if it doesn't exist
-            saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                + "\\DiabloSimulator\\Saves\\";
-            Directory.CreateDirectory(saveLocation);
-
-            // Populate save list
-            savedCharacters = new List<string>();
-            string[] saveFileList = Directory.GetDirectories(saveLocation);
-            foreach (string file in saveFileList)
-            {
-                savedCharacters.Add(file.Substring(saveLocation.Length));
-            }
-
-            // Initial game text (new or otherwise)
-            nextEvent.WriteLine("Welcome to the world of Sanctuary!");
+        public void Inintialize()
+        {
+            eventManager = EngineCore.GetModule<WorldEventManager>();
+            monsterManager = EngineCore.GetModule<MonsterManager>();
+            heroManager = EngineCore.GetModule<HeroManager>();
+            audioManager = EngineCore.GetModule<AudioManager>();
 
             // Load audio shtuff
-            audio = new AudioManager();
-            audio.LoadBank("Master.strings");
-            audio.LoadBank("Master");
-            audio.LoadBank("Music");
+            audioManager.LoadBank("Master.strings");
+            audioManager.LoadBank("Master");
+            audioManager.LoadBank("Music");
         }
 
         #endregion
@@ -91,15 +69,10 @@ namespace DiabloSimulator.Game
             actionFunctions[action.actionType](action.args);
 
             // Return output
-            string result = nextEvent.ToString();
-            nextEvent.GetStringBuilder().Clear();
+            string result = eventManager.NextEvent;
 
-            return new PlayerActionResult(result, currentChoiceText);
+            return new PlayerActionResult(result, CurrentChoiceText);
         }
-
-        public Hero Hero { get => hero; }
-
-        public Monster Monster { get => monster; }
 
         public bool InCombat 
         { 
@@ -109,59 +82,15 @@ namespace DiabloSimulator.Game
                 inCombat = value;
 
                 if (value == true)
-                    currentChoiceText = combatChoiceText;
+                    CurrentChoiceText = combatChoiceText;
                 else
-                    currentChoiceText = exploreChoiceText;
+                    CurrentChoiceText = exploreChoiceText;
             }
         }
 
         public int Turns { get => turns; }
 
-        #endregion
-
-        #region saveLoad
-
-        public void SaveState()
-        {
-            // Attempt to create directories
-            string heroSaveLocation = saveLocation + Hero.Name.Trim() + "\\";
-            Directory.CreateDirectory(heroSaveLocation);
-
-            // Save hero data, inventory, equipment
-            string heroDataFilename = heroSaveLocation + "HeroData.txt";
-            string heroStrings = JsonConvert.SerializeObject(hero, Formatting.Indented);
-
-            var stream = new StreamWriter(heroDataFilename);
-            stream.Write(heroStrings);
-            stream.Close();
-        }
-
-        public void LoadState(string saveFileName)
-        {
-            string heroSaveLocation = saveLocation + saveFileName + "\\";
-
-            // Load hero data, inventory, equipment
-            string heroDataFilename = heroSaveLocation + "HeroData.txt";
-            var stream = new StreamReader(heroDataFilename);
-            string heroStrings = stream.ReadToEnd();
-            stream.Close();
-
-            hero = JsonConvert.DeserializeObject<Hero>(heroStrings);
-            hero.Stats.RemapModifierSources(hero);
-
-            // Load zone data
-            SetZone(hero.CurrentZone);
-        }
-
-        public List<string> SavedCharacters
-        {
-            get => savedCharacters;
-        }
-
-        public bool CanLoadState
-        {
-            get => SavedCharacters.Count > 0;
-        }
+        public PlayerChoiceText CurrentChoiceText { get; set; }
 
         #endregion
 
@@ -179,25 +108,25 @@ namespace DiabloSimulator.Game
 
         private void Look(List<string> args)
         {
-            nextEvent.WriteLine(zone.LookText);
+            eventManager.NextEvent = zone.LookText;
         }
 
         private void Explore(List<string> args)
         {
             WorldEvent worldEvent = zone.EventTable.GenerateObject(hero);
-            ProcessWorldEvent(worldEvent);
+            eventManager.ProcessWorldEvent(worldEvent);
         }
 
         private void Attack(List<string> args)
         {
             float damageDealt = Hero.GetAttackDamage()[0].amount;
             string damageDealtString = DamageMonster(damageDealt);
-            nextEvent.WriteLine("You attack the " + Monster.Race + ". " + damageDealtString);
+            eventManager.NextEvent = "You attack the " + Monster.Race + ". " + damageDealtString;
 
             if (!Monster.IsDead())
             {
                 damageDealtString = Hero.Damage(Monster.GetAttackDamage());
-                nextEvent.WriteLine(Monster.Name + " attacks you. " + damageDealtString);
+                eventManager.NextEvent = Monster.Name + " attacks you. " + damageDealtString;
             }
             else
             {
@@ -210,12 +139,12 @@ namespace DiabloSimulator.Game
         private void Defend(List<string> args)
         {
             // TO DO: Add additive bonus dodge chance, mult bonus to block chance
-            nextEvent.WriteLine("You steel yourself, waiting for your enemy to attack.");
+            eventManager.NextEvent = "You steel yourself, waiting for your enemy to attack.";
 
             if (!Monster.IsDead())
             {
                 string damageDealtString = Hero.Damage(Monster.GetAttackDamage());
-                nextEvent.WriteLine(Monster.Name + " attacks you. " + damageDealtString);
+                eventManager.NextEvent = Monster.Name + " attacks you. " + damageDealtString;
             }
 
             // TO DO: Remove bonus dodge chance, block chance
@@ -233,7 +162,7 @@ namespace DiabloSimulator.Game
 
             Hero.Stats.AddModifier(regenMultBonus);
             Hero.Stats.AddModifier(regenAddBonus);
-            nextEvent.WriteLine("You rest for a short while. You feel healthier!");
+            eventManager.NextEvent = "You rest for a short while. You feel healthier!";
 
             // Step time forward to heal
             AdvanceTime();
@@ -251,19 +180,19 @@ namespace DiabloSimulator.Game
             bool fleeSuccess = random.NextDouble() <= 0.6f;
             if(fleeSuccess)
             {
-                nextEvent.WriteLine("You have successfully escaped from " + Monster.Name + ".");
+                eventManager.NextEvent = "You have successfully escaped from " + Monster.Name + ".";
                 DestroyMonster();
                 Look(null);
             }
             else
             {
-                nextEvent.WriteLine("You can't seem to find an opening to escape! " +
-                    "You are locked in combat with " + Monster.Name + ".");
+                eventManager.NextEvent = "You can't seem to find an opening to escape! " +
+                    "You are locked in combat with " + Monster.Name + ".";
 
                 if (!Monster.IsDead())
                 {
                     string damageDealtString = Hero.Damage(Monster.GetAttackDamage());
-                    nextEvent.WriteLine(Monster.Name + " attacks you. " + damageDealtString);
+                    eventManager.NextEvent = Monster.Name + " attacks you. " + damageDealtString;
                 }
 
                 AdvanceTime();
@@ -274,14 +203,15 @@ namespace DiabloSimulator.Game
         {
             if (zone.ZoneType == WorldZoneType.Town)
             {
-                nextEvent.WriteLine("There is no need to cast 'Town Portal' at this time. You are already in town.");
+                eventManager.NextEvent = "There is no need to cast 'Town Portal' at this time. " +
+                    "You are already in town.";
             }
             else
             {
-                nextEvent.WriteLine("You reach into your pack and take out a dusty blue tome containing " +
+                eventManager.NextEvent = "You reach into your pack and take out a dusty blue tome containing " +
                     "the 'Town Portal' spell. You read the words aloud and suddenly a glowing, translucent " +
                     "portal opens up in the air in front of you. Stepping through it, you find yourself " +
-                    "back in town.");
+                    "back in town.";
                 SetZone("Tristram");
                 Look(null);
             }
@@ -295,138 +225,11 @@ namespace DiabloSimulator.Game
 
         private void Back(List<string> args)
         {
-            nextEvent.WriteLine("You step back from the entrance to " + nextZoneName 
-                + ", remaining in " + zone.Name + ".");
+            eventManager.NextEvent = "You step back from the entrance to " + nextZoneName 
+                + ", remaining in " + zone.Name + ".";
 
             // TO DO: Provide town choices if in town
             currentChoiceText = exploreChoiceText;
-        }
-
-        #endregion
-
-        #region heroFunctions
-
-        public void CreateHero()
-        {
-            // Create hero class, set name and description
-            hero = heroFactory.Create(Hero.Archetype, Hero);
-
-            // Set starting zone
-            SetZone("Tristram");
-            hero.DiscoveredZones.Add(hero.CurrentZone);
-
-            // Add starting equipment
-            hero.Inventory.PotionsHeld = 3;
-            hero.Inventory.AddItem(itemFactory.Create("Simple Dagger", hero));
-            hero.Inventory.AddItem(itemFactory.Create("Short Sword", hero));
-            hero.Inventory.AddItem(itemFactory.Create("Leather Hood", hero));
-        }
-
-        private void HeroLifeRegen()
-        {
-            float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
-            if (lifeRegenAmount != 0)
-            {
-                nextEvent.WriteLine(Hero.Heal(lifeRegenAmount) + " from natural healing.");
-            }
-        }
-
-        #endregion
-
-        #region monsterFunctions
-
-        public void DestroyMonster()
-        {
-            Monster.Kill();
-            monster = new Monster();
-            InCombat = false;
-        }
-
-        public string DamageMonster(float amount)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(amount));
-            return Monster.Damage(damageList);
-        }
-
-        #endregion
-
-        #region zoneFunctions
-
-        private void ProcessWorldEvent(WorldEvent worldEvent)
-        {
-            nextEvent.WriteLine(worldEvent.EventText);
-
-            switch (worldEvent.EventType)
-            {
-                // Monster generation
-                case WorldEventType.MonsterEvent:
-                    turns = 0;
-                    InCombat = true;
-
-                    if (worldEvent.Name == "Wandering Monster")
-                    {
-                        // Get random monster name
-                        monster = zone.MonsterTable.GenerateObject(hero, monsterFactory);
-                    }
-                    else
-                    {
-                        string monsterName = worldEvent.EventData[0];
-                        monster = monsterFactory.Create(monsterName, hero);
-                    }
-
-                    nextEvent.WriteLine(Monster.Name + ", a level "
-                            + Monster.Stats.Level + " " + Monster.Race + ", appeared!");
-                    break;
-                default:
-                    break;
-
-                case WorldEventType.ZoneDiscoveryEvent:
-                    currentChoiceText = discoverChoiceText;
-
-                    if(!hero.DiscoveredZones.Contains(worldEvent.Name))
-                    {
-                        hero.DiscoveredZones.Add(worldEvent.Name);
-                        nextEvent.WriteLine("You have discovered " + worldEvent.Name + "!");
-                    }
-                    else
-                    {
-                        nextEvent.WriteLine("You have found the entrance to " + worldEvent.Name + ".");
-                    }
-
-                    nextZoneName = worldEvent.Name;
-
-                    nextEvent.WriteLine("Click " + discoverChoiceText.Choice01Text 
-                        + " to explore this area. If you wish to return to the previous area, " +
-                        "click " + discoverChoiceText.Choice02Text + ".");
-                    break;
-            }
-        }
-
-        private void SetZone(string name)
-        {
-            hero.CurrentZone = name;
-
-            // Only change zones if necessary
-            if (zone != null && hero.CurrentZone == zone.Name)
-                return;
-
-            zone = zoneFactory.Create(hero.CurrentZone);
-
-            // TO DO: Provide town choices if in town
-            currentChoiceText = exploreChoiceText;
-
-            // Set the mood
-            if (ambientTrack.isValid())
-                AudioManager.ErrorCheck(ambientTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
-            if (zone.AmbientTrackName != null)
-                ambientTrack = audio.PlayEvent(zone.AmbientTrackName, 0.5f);
-
-            // Play that funky muzak
-            if (musicTrack.isValid())
-                AudioManager.ErrorCheck(musicTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
-            if (zone.MusicTrackName != null)
-                musicTrack = audio.PlayEvent(zone.MusicTrackName, 0.5f);
         }
 
         #endregion
@@ -468,9 +271,9 @@ namespace DiabloSimulator.Game
             Hero.Revive();
             DestroyMonster();
 
-            nextEvent.WriteLine("A fellow wanderer stumbles upon your lifeless body " +
+            eventManager.NextEvent = "A fellow wanderer stumbles upon your lifeless body " +
                 "and brings you back to town, where the healers somehow manage to breathe life " +
-                "into you once again.");
+                "into you once again.";
             SetZone("Tristram");
             Look(null);
         }
@@ -507,28 +310,18 @@ namespace DiabloSimulator.Game
         // Game state
         private bool inCombat;
         private int turns;
-        private StringWriter nextEvent;
-        private List<string> savedCharacters;
-        private string saveLocation;
-        private PlayerChoiceText currentChoiceText;
-        private FMOD.Studio.EventInstance musicTrack;
-        private FMOD.Studio.EventInstance ambientTrack;
-
-        // Actors
-        private Monster monster;
-        private Hero hero;
-        private WorldZone zone;
-        private string nextZoneName;
 
         // Factories
-        private MonsterFactory monsterFactory;
-        private HeroFactory heroFactory;
         private ItemFactory itemFactory;
-        private WorldZoneFactory zoneFactory;
 
         // Internal data
         private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
         private Random random = new Random();
-        private AudioManager audio;
+
+        // Module references
+        WorldEventManager eventManager;
+        MonsterManager monsterManager;
+        HeroManager heroManager;
+        AudioManager audioManager;
     }
 }

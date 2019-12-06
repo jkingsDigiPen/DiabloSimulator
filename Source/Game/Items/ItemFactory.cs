@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace DiabloSimulator.Game.Factories
+namespace DiabloSimulator.Game
 {
     //------------------------------------------------------------------------------
     // Public Structures:

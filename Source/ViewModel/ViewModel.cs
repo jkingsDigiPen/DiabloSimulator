@@ -28,7 +28,6 @@ namespace DiabloSimulator
 
         public ViewModel()
         {
-            gameManager = new GameManager();
             wasInCombat = false;
             ChoiceText = new PlayerChoiceText("Explore", "Rest", "Town Portal");
         }
@@ -253,7 +252,6 @@ namespace DiabloSimulator
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private GameManager gameManager;
         private bool wasInCombat;
         private PlayerChoiceText choiceText;
     }

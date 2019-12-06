@@ -6,10 +6,11 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.Engine;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace DiabloSimulator.Game.Factories
+namespace DiabloSimulator.Game
 {
     public class HeroFactory : IFactory<Hero>
     {

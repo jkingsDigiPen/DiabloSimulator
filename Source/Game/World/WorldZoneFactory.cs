@@ -6,12 +6,12 @@
 //
 //------------------------------------------------------------------------------
 
-using DiabloSimulator.Game.World;
+using DiabloSimulator.Engine;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using static DiabloSimulator.Game.RandomGeneration.WorldEventTable;
 
-namespace DiabloSimulator.Game.Factories
+namespace DiabloSimulator.Game.World
 {
     //------------------------------------------------------------------------------
     // Public Structures:

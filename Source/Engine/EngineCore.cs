@@ -22,11 +22,11 @@ namespace DiabloSimulator.Engine
             }
         }
 
-        public static T GetModule<T>() where T : class
+        public static T GetModule<T>() where T : class, IModule
         {
             foreach(IModule module in modules)
             {
-                if(module.GetType() is T)
+                if(module.GetType() == typeof(T))
                 {
                     return module as T;
                 }
@@ -40,6 +40,6 @@ namespace DiabloSimulator.Engine
             modules.Add(module);
         }
 
-        private static List<IModule> modules;
+        private static List<IModule> modules = new List<IModule>();
     }
 }

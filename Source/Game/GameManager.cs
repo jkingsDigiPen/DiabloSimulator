@@ -7,11 +7,9 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
-using DiabloSimulator.Game.Factories;
 using DiabloSimulator.Game.World;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 
 namespace DiabloSimulator.Game
@@ -30,11 +28,7 @@ namespace DiabloSimulator.Game
 
         public GameManager()
         {
-            // Factories
-            itemFactory = new ItemFactory();
-
             // Action delegates
-            actionFunctions = new Dictionary<PlayerActionType, ActionFunction>();
             actionFunctions[PlayerActionType.Look] = Look;
             actionFunctions[PlayerActionType.Attack] = Attack;
             actionFunctions[PlayerActionType.Defend] = Defend;
@@ -52,6 +46,7 @@ namespace DiabloSimulator.Game
             monsterManager = EngineCore.GetModule<MonsterManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
             audioManager = EngineCore.GetModule<AudioManager>();
+            zoneManager = EngineCore.GetModule<ZoneManager>();
 
             // Load audio shtuff
             audioManager.LoadBank("Master.strings");
@@ -88,7 +83,7 @@ namespace DiabloSimulator.Game
             }
         }
 
-        public int Turns { get => turns; }
+        public int Turns { get; set; }
 
         public PlayerChoiceText CurrentChoiceText { get; set; }
 
@@ -108,29 +103,29 @@ namespace DiabloSimulator.Game
 
         private void Look(List<string> args)
         {
-            eventManager.NextEvent = zone.LookText;
+            eventManager.NextEvent = zoneManager.CurrentZone.LookText;
         }
 
         private void Explore(List<string> args)
         {
-            WorldEvent worldEvent = zone.EventTable.GenerateObject(hero);
+            WorldEvent worldEvent = zoneManager.CurrentZone.EventTable.GenerateObject(heroManager.Hero);
             eventManager.ProcessWorldEvent(worldEvent);
         }
 
         private void Attack(List<string> args)
         {
-            float damageDealt = Hero.GetAttackDamage()[0].amount;
-            string damageDealtString = DamageMonster(damageDealt);
-            eventManager.NextEvent = "You attack the " + Monster.Race + ". " + damageDealtString;
+            float damageDealt = heroManager.Hero.GetAttackDamage()[0].amount;
+            string damageDealtString = monsterManager.DamageMonster(damageDealt);
+            eventManager.NextEvent = "You attack the " + monsterManager.Monster.Race + ". " + damageDealtString;
 
-            if (!Monster.IsDead())
+            if (!monsterManager.Monster.IsDead())
             {
-                damageDealtString = Hero.Damage(Monster.GetAttackDamage());
-                eventManager.NextEvent = Monster.Name + " attacks you. " + damageDealtString;
+                damageDealtString = heroManager.Hero.Damage(monsterManager.Monster.GetAttackDamage());
+                eventManager.NextEvent = monsterManager.Monster.Name + " attacks you. " + damageDealtString;
             }
             else
             {
-                hero.AddExperience(monster);
+                heroManager.Hero.AddExperience(monsterManager.Monster);
             }
 
             AdvanceTime();
@@ -141,10 +136,10 @@ namespace DiabloSimulator.Game
             // TO DO: Add additive bonus dodge chance, mult bonus to block chance
             eventManager.NextEvent = "You steel yourself, waiting for your enemy to attack.";
 
-            if (!Monster.IsDead())
+            if (!monsterManager.Monster.IsDead())
             {
-                string damageDealtString = Hero.Damage(Monster.GetAttackDamage());
-                eventManager.NextEvent = Monster.Name + " attacks you. " + damageDealtString;
+                string damageDealtString = heroManager.Hero.Damage(monsterManager.Monster.GetAttackDamage());
+                eventManager.NextEvent = monsterManager.Monster.Name + " attacks you. " + damageDealtString;
             }
 
             // TO DO: Remove bonus dodge chance, block chance
@@ -160,39 +155,39 @@ namespace DiabloSimulator.Game
             StatModifier regenAddBonus = new StatModifier("HealthRegen",
                 "Rest", Game.ModifierType.Additive, 2);
 
-            Hero.Stats.AddModifier(regenMultBonus);
-            Hero.Stats.AddModifier(regenAddBonus);
+            heroManager.Hero.Stats.AddModifier(regenMultBonus);
+            heroManager.Hero.Stats.AddModifier(regenAddBonus);
             eventManager.NextEvent = "You rest for a short while. You feel healthier!";
 
             // Step time forward to heal
             AdvanceTime();
 
             // Remove temporary regen
-            Hero.Stats.RemoveModifier(regenMultBonus);
-            Hero.Stats.RemoveModifier(regenAddBonus);
+            heroManager.Hero.Stats.RemoveModifier(regenMultBonus);
+            heroManager.Hero.Stats.RemoveModifier(regenAddBonus);
         }
 
         private void Flee(List<string> args)
         {
-            nextEvent.WriteLine("You attempt to flee from the " + Monster.Race + "...");
+            eventManager.NextEvent = "You attempt to flee from the " + monsterManager.Monster.Race + "...";
 
             // 60% flee chance
             bool fleeSuccess = random.NextDouble() <= 0.6f;
             if(fleeSuccess)
             {
-                eventManager.NextEvent = "You have successfully escaped from " + Monster.Name + ".";
-                DestroyMonster();
+                eventManager.NextEvent = "You have successfully escaped from " + monsterManager.Monster.Name + ".";
+                monsterManager.DestroyMonster();
                 Look(null);
             }
             else
             {
                 eventManager.NextEvent = "You can't seem to find an opening to escape! " +
-                    "You are locked in combat with " + Monster.Name + ".";
+                    "You are locked in combat with " + monsterManager.Monster.Name + ".";
 
-                if (!Monster.IsDead())
+                if (!monsterManager.Monster.IsDead())
                 {
-                    string damageDealtString = Hero.Damage(Monster.GetAttackDamage());
-                    eventManager.NextEvent = Monster.Name + " attacks you. " + damageDealtString;
+                    string damageDealtString = heroManager.Hero.Damage(monsterManager.Monster.GetAttackDamage());
+                    eventManager.NextEvent = monsterManager.Monster.Name + " attacks you. " + damageDealtString;
                 }
 
                 AdvanceTime();
@@ -201,7 +196,7 @@ namespace DiabloSimulator.Game
 
         private void TownPortal(List<string> args)
         {
-            if (zone.ZoneType == WorldZoneType.Town)
+            if (zoneManager.CurrentZone.ZoneType == WorldZoneType.Town)
             {
                 eventManager.NextEvent = "There is no need to cast 'Town Portal' at this time. " +
                     "You are already in town.";
@@ -212,24 +207,24 @@ namespace DiabloSimulator.Game
                     "the 'Town Portal' spell. You read the words aloud and suddenly a glowing, translucent " +
                     "portal opens up in the air in front of you. Stepping through it, you find yourself " +
                     "back in town.";
-                SetZone("Tristram");
+                zoneManager.SetZone("Tristram");
                 Look(null);
             }
         }
 
         private void Proceed(List<string> args)
         {
-            SetZone(nextZoneName);
+            zoneManager.AdvanceToNextZone();
             Look(null);
         }
 
         private void Back(List<string> args)
         {
-            eventManager.NextEvent = "You step back from the entrance to " + nextZoneName 
-                + ", remaining in " + zone.Name + ".";
+            eventManager.NextEvent = "You step back from the entrance to " + zoneManager.NextZoneName 
+                + ", remaining in " + zoneManager.CurrentZone.Name + ".";
 
             // TO DO: Provide town choices if in town
-            currentChoiceText = exploreChoiceText;
+            CurrentChoiceText = exploreChoiceText;
         }
 
         #endregion
@@ -238,8 +233,8 @@ namespace DiabloSimulator.Game
 
         private void AdvanceTime()
         {
-            bool heroDead = Hero.IsDead();
-            bool monsterDead = Monster.IsDead();
+            bool heroDead = heroManager.Hero.IsDead();
+            bool monsterDead = monsterManager.Monster.IsDead();
 
             if (heroDead || monsterDead)
             {
@@ -253,13 +248,13 @@ namespace DiabloSimulator.Game
             }
             else
             {
-                ++turns;
+                ++Turns;
                 //nextEvent.WriteLine("A round of combat ends. (Round " + Turns + ")");
             }
 
             if (!heroDead)
             {
-                HeroLifeRegen();
+                heroManager.HeroLifeRegen();
             }
         }
 
@@ -268,13 +263,13 @@ namespace DiabloSimulator.Game
             MessageBox.Show("You have died. You will be revived in town.", 
                 "Diablo Simulator", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            Hero.Revive();
-            DestroyMonster();
+            heroManager.Hero.Revive();
+            monsterManager.DestroyMonster();
 
             eventManager.NextEvent = "A fellow wanderer stumbles upon your lifeless body " +
                 "and brings you back to town, where the healers somehow manage to breathe life " +
                 "into you once again.";
-            SetZone("Tristram");
+            zoneManager.SetZone("Tristram");
             Look(null);
         }
 
@@ -309,13 +304,10 @@ namespace DiabloSimulator.Game
 
         // Game state
         private bool inCombat;
-        private int turns;
-
-        // Factories
-        private ItemFactory itemFactory;
 
         // Internal data
-        private Dictionary<PlayerActionType, ActionFunction> actionFunctions;
+        private Dictionary<PlayerActionType, ActionFunction> actionFunctions 
+            = new Dictionary<PlayerActionType, ActionFunction>();
         private Random random = new Random();
 
         // Module references
@@ -323,5 +315,6 @@ namespace DiabloSimulator.Game
         MonsterManager monsterManager;
         HeroManager heroManager;
         AudioManager audioManager;
+        ZoneManager zoneManager;
     }
 }

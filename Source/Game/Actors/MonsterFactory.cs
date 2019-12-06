@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using DiabloSimulator.Engine;
 using Newtonsoft.Json;
 
 namespace DiabloSimulator.Game

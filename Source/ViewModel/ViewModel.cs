@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.Engine;
 using DiabloSimulator.Game;
 using DiabloSimulator.Windows;
 using System.Collections.Generic;
@@ -28,20 +29,24 @@ namespace DiabloSimulator
 
         public ViewModel()
         {
+            gameManager = EngineCore.GetModule<GameManager>();
+            heroManager = EngineCore.GetModule<HeroManager>();
+            monsterManager = EngineCore.GetModule<MonsterManager>();
+
             wasInCombat = false;
             ChoiceText = new PlayerChoiceText("Explore", "Rest", "Town Portal");
         }
 
         #region actors
 
-        public Hero Hero { get => gameManager.Hero; }
+        public Hero Hero { get => heroManager.Hero; }
 
         public void CreateHero()
         {
-            gameManager.CreateHero();
+            heroManager.CreateHero();
         }
 
-        public Monster Monster { get => gameManager.Monster; }
+        public Monster Monster { get => monsterManager.Monster; }
 
         #endregion
 
@@ -79,7 +84,7 @@ namespace DiabloSimulator
 
                 if (result == MessageBoxResult.OK)
                 {
-                    gameManager.SaveState();
+                    heroManager.SaveState();
                 }
             }
         }
@@ -170,7 +175,7 @@ namespace DiabloSimulator
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    gameManager.SaveState();
+                    heroManager.SaveState();
                 }
             }
 
@@ -182,17 +187,17 @@ namespace DiabloSimulator
 
         public bool CanLoadGame
         {
-            get => gameManager.CanLoadState;
+            get => heroManager.CanLoadState;
         }
 
         public List<string> SavedCharacters
         {
-            get => gameManager.SavedCharacters;
+            get => heroManager.SavedCharacters;
         }
 
         public void LoadGame(string saveFileName)
         {
-            gameManager.LoadState(saveFileName);
+            heroManager.LoadState(saveFileName);
         }
 
         #endregion
@@ -254,5 +259,10 @@ namespace DiabloSimulator
 
         private bool wasInCombat;
         private PlayerChoiceText choiceText;
+
+        // Modules
+        HeroManager heroManager;
+        MonsterManager monsterManager;
+        GameManager gameManager;
     }
 }

@@ -9,25 +9,22 @@ namespace DiabloSimulator.Game
 {
     class HeroManager : IModule
     {
-        HeroManager()
+        public void Inintialize()
         {
+            eventManager = EngineCore.GetModule<WorldEventManager>();
+            zoneManager = EngineCore.GetModule<ZoneManager>();
+
             // Create save location if it doesn't exist
             saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 + "\\DiabloSimulator\\Saves\\";
             Directory.CreateDirectory(saveLocation);
 
             // Populate save list
-            savedCharacters = new List<string>();
             string[] saveFileList = Directory.GetDirectories(saveLocation);
             foreach (string file in saveFileList)
             {
-                savedCharacters.Add(file.Substring(saveLocation.Length));
+                SavedCharacters.Add(file.Substring(saveLocation.Length));
             }
-        }
-
-        public void Inintialize()
-        {
-
         }
 
         public void CreateHero()
@@ -46,12 +43,12 @@ namespace DiabloSimulator.Game
             Hero.Inventory.AddItem(itemFactory.Create("Leather Hood", Hero));
         }
 
-        private void HeroLifeRegen()
+        public void HeroLifeRegen()
         {
             float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
             if (lifeRegenAmount != 0)
             {
-                nextEvent.WriteLine(Hero.Heal(lifeRegenAmount) + " from natural healing.");
+                eventManager.NextEvent = Hero.Heal(lifeRegenAmount) + " from natural healing.";
             }
         }
 
@@ -84,15 +81,12 @@ namespace DiabloSimulator.Game
             Hero.Stats.RemapModifierSources(Hero);
 
             // Load zone data
-            SetZone(Hero.CurrentZone);
+            zoneManager.SetZone(Hero.CurrentZone);
         }
 
         public Hero Hero { get; set; } = new Hero("The Vagabond");
 
-        public List<string> SavedCharacters
-        {
-            get => savedCharacters;
-        }
+        public List<string> SavedCharacters { get; } = new List<string>();
 
         public bool CanLoadState
         {
@@ -100,7 +94,11 @@ namespace DiabloSimulator.Game
         }
 
         private HeroFactory heroFactory = new HeroFactory();
-        private List<string> savedCharacters = new List<string>();
+        private ItemFactory itemFactory = new ItemFactory();
         private string saveLocation;
+
+        // Modules
+        private WorldEventManager eventManager;
+        private ZoneManager zoneManager;
     }
 }

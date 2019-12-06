@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.Engine;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

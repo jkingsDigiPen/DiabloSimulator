@@ -1,44 +1,55 @@
 ﻿using DiabloSimulator.Engine;
-using DiabloSimulator.Game.Factories;
-using System;
 
 namespace DiabloSimulator.Game.World
 {
     public class ZoneManager : IModule
     {
-        public ZoneManager()
+        public void Inintialize()
         {
+            heroManager = EngineCore.GetModule<HeroManager>();
+            audioManager = EngineCore.GetModule<AudioManager>();
+            gameManager = EngineCore.GetModule<GameManager>();
+        }
 
-        } 
+        public void AdvanceToNextZone()
+        {
+            SetZone(NextZoneName);
+        }
 
         public void SetZone(string name)
         {
-            hero.CurrentZone = name;
+            heroManager.Hero.CurrentZone = name;
 
             // Only change zones if necessary
-            if (zone != null && hero.CurrentZone == zone.Name)
+            if (CurrentZone != null && heroManager.Hero.CurrentZone == CurrentZone.Name)
                 return;
 
-            zone = zoneFactory.Create(hero.CurrentZone);
+            CurrentZone = zoneFactory.Create(heroManager.Hero.CurrentZone);
 
             // TO DO: Provide town choices if in town
-            currentChoiceText = exploreChoiceText;
+            gameManager.CurrentChoiceText = GameManager.exploreChoiceText;
 
             // Set the mood
-            if (ambientTrack.isValid())
-                AudioManager.ErrorCheck(ambientTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
-            if (zone.AmbientTrackName != null)
-                ambientTrack = audio.PlayEvent(zone.AmbientTrackName, 0.5f);
+            if (audioManager.ambientTrack.isValid())
+                AudioManager.ErrorCheck(audioManager.ambientTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
+            if (CurrentZone.AmbientTrackName != null)
+                audioManager.ambientTrack = audioManager.PlayEvent(CurrentZone.AmbientTrackName, 0.5f);
 
             // Play that funky muzak
-            if (musicTrack.isValid())
-                AudioManager.ErrorCheck(musicTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
-            if (zone.MusicTrackName != null)
-                musicTrack = audio.PlayEvent(zone.MusicTrackName, 0.5f);
+            if (audioManager.musicTrack.isValid())
+                AudioManager.ErrorCheck(audioManager.musicTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
+            if (CurrentZone.MusicTrackName != null)
+                audioManager.musicTrack = audioManager.PlayEvent(CurrentZone.MusicTrackName, 0.5f);
         }
 
-        private WorldZoneFactory zoneFactory;
-        private WorldZone zone;
-        private string nextZoneName;
+        public WorldZone CurrentZone { get; set; }
+        public string NextZoneName { get; set; }
+
+        private WorldZoneFactory zoneFactory = new WorldZoneFactory();
+
+        // Modules
+        private HeroManager heroManager;
+        private AudioManager audioManager;
+        private GameManager gameManager;
     }
 }

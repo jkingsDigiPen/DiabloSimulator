@@ -1,20 +1,19 @@
 ﻿using DiabloSimulator.Engine;
-using System;
 using System.IO;
 
 namespace DiabloSimulator.Game.World
 {
     public class WorldEventManager : IModule
     {
-        public WorldEventManager()
-        {
-            // Initial game text (new or otherwise)
-            NextEvent = "Welcome to the world of Sanctuary!";
-        }
-
         public void Inintialize()
         {
-            throw new NotImplementedException();
+            zoneManager = EngineCore.GetModule<ZoneManager>();
+            gameManager = EngineCore.GetModule<GameManager>();
+            monsterManager = EngineCore.GetModule<MonsterManager>();
+            heroManager = EngineCore.GetModule<HeroManager>();
+
+            // Initial game text (new or otherwise)
+            NextEvent = "Welcome to the world of Sanctuary!";
         }
 
         public string NextEvent
@@ -39,32 +38,31 @@ namespace DiabloSimulator.Game.World
             {
                 // Monster generation
                 case WorldEventType.MonsterEvent:
-                    turns = 0;
-                    InCombat = true;
+                    gameManager.Turns = 0;
+                    gameManager.InCombat = true;
 
-                    if (worldEvent.Name == "Wandering Monster")
+                    // Assume random monster
+                    string monsterName = null;
+                    if (worldEvent.Name != "Wandering Monster")
                     {
-                        // Get random monster name
-                        monster = zone.MonsterTable.GenerateObject(hero, monsterFactory);
+                        // Get specific monster name
+                        monsterName = worldEvent.EventData[0];
                     }
-                    else
-                    {
-                        string monsterName = worldEvent.EventData[0];
-                        monster = monsterFactory.Create(monsterName, hero);
-                    }
+                    monsterManager.CreateMonster(monsterName);
 
-                    nextEvent.WriteLine(Monster.Name + ", a level "
-                            + Monster.Stats.Level + " " + Monster.Race + ", appeared!");
+                    nextEvent.WriteLine(monsterManager.Monster.Name + ", a level "
+                            + monsterManager.Monster.Stats.Level + " " 
+                            + monsterManager.Monster.Race + ", appeared!");
                     break;
                 default:
                     break;
 
                 case WorldEventType.ZoneDiscoveryEvent:
-                    currentChoiceText = discoverChoiceText;
+                    gameManager.CurrentChoiceText = GameManager.discoverChoiceText;
 
-                    if (!hero.DiscoveredZones.Contains(worldEvent.Name))
+                    if (!heroManager.Hero.DiscoveredZones.Contains(worldEvent.Name))
                     {
-                        hero.DiscoveredZones.Add(worldEvent.Name);
+                        heroManager.Hero.DiscoveredZones.Add(worldEvent.Name);
                         nextEvent.WriteLine("You have discovered " + worldEvent.Name + "!");
                     }
                     else
@@ -72,15 +70,21 @@ namespace DiabloSimulator.Game.World
                         nextEvent.WriteLine("You have found the entrance to " + worldEvent.Name + ".");
                     }
 
-                    nextZoneName = worldEvent.Name;
+                    zoneManager.NextZoneName = worldEvent.Name;
 
-                    nextEvent.WriteLine("Click " + discoverChoiceText.Choice01Text
+                    nextEvent.WriteLine("Click " + GameManager.discoverChoiceText.Choice01Text
                         + " to explore this area. If you wish to return to the previous area, " +
-                        "click " + discoverChoiceText.Choice02Text + ".");
+                        "click " + GameManager.discoverChoiceText.Choice02Text + ".");
                     break;
             }
         }
 
         private StringWriter nextEvent = new StringWriter();
+
+        // Modules
+        private ZoneManager zoneManager;
+        private GameManager gameManager;
+        private MonsterManager monsterManager;
+        private HeroManager heroManager;
     }
 }

@@ -1,14 +1,34 @@
-﻿using DiabloSimulator.Engine;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	ZoneManager.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using DiabloSimulator.Engine;
 
 namespace DiabloSimulator.Game.World
 {
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     public class ZoneManager : IModule
     {
-        public void Inintialize()
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
+        public override void Inintialize()
         {
             heroManager = EngineCore.GetModule<HeroManager>();
             audioManager = EngineCore.GetModule<AudioManager>();
             gameManager = EngineCore.GetModule<GameManager>();
+            worldEventManager = EngineCore.GetModule<WorldEventManager>();
+
+            AddEventHandler(PlayerActionType.Look.ToString(), OnPlayerLook);
+            AddEventHandler(PlayerActionType.Explore.ToString(), OnPlayerExplore);
         }
 
         public void AdvanceToNextZone()
@@ -42,8 +62,31 @@ namespace DiabloSimulator.Game.World
                 audioManager.musicTrack = audioManager.PlayEvent(CurrentZone.MusicTrackName, 0.5f);
         }
 
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
         public WorldZone CurrentZone { get; set; }
         public string NextZoneName { get; set; }
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        private void OnPlayerLook(object sender, GameEventArgs args)
+        {
+            worldEventManager.NextEvent = CurrentZone.LookText;
+        }
+
+        private void OnPlayerExplore(object sender, GameEventArgs args)
+        {
+            WorldEvent worldEvent = CurrentZone.EventTable.GenerateObject(heroManager.Hero);
+            worldEventManager.ProcessWorldEvent(worldEvent);
+        }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
 
         private WorldZoneFactory zoneFactory = new WorldZoneFactory();
 
@@ -51,5 +94,6 @@ namespace DiabloSimulator.Game.World
         private HeroManager heroManager;
         private AudioManager audioManager;
         private GameManager gameManager;
+        private WorldEventManager worldEventManager;
     }
 }

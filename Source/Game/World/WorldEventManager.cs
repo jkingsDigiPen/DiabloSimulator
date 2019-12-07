@@ -5,7 +5,7 @@ namespace DiabloSimulator.Game.World
 {
     public class WorldEventManager : IModule
     {
-        public void Inintialize()
+        public override void Inintialize()
         {
             zoneManager = EngineCore.GetModule<ZoneManager>();
             gameManager = EngineCore.GetModule<GameManager>();

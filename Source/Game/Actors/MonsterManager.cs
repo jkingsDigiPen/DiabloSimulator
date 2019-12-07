@@ -6,7 +6,7 @@ namespace DiabloSimulator.Game
 {
     class MonsterManager : IModule
     {
-        public void Inintialize()
+        public override void Inintialize()
         {
             gameManager = EngineCore.GetModule<GameManager>();
             heroManager = EngineCore.GetModule<HeroManager>();

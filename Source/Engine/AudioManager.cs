@@ -31,7 +31,7 @@ namespace DiabloSimulator.Engine
             ErrorCheck(fmodStudioSystem.initialize(16, INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, IntPtr.Zero));
         }
 
-        public void Inintialize()
+        public override void Inintialize()
         {
             // Make sure update gets called periodically
             var dueTime = TimeSpan.FromSeconds(1);

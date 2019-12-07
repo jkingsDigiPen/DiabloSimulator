@@ -1,4 +1,12 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	HeroManager.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using DiabloSimulator.Engine;
@@ -7,9 +15,17 @@ using Newtonsoft.Json;
 
 namespace DiabloSimulator.Game
 {
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     class HeroManager : IModule
     {
-        public void Inintialize()
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
+        public override void Inintialize()
         {
             eventManager = EngineCore.GetModule<WorldEventManager>();
             zoneManager = EngineCore.GetModule<ZoneManager>();
@@ -25,6 +41,9 @@ namespace DiabloSimulator.Game
             {
                 SavedCharacters.Add(file.Substring(saveLocation.Length));
             }
+
+            // Register for events
+            AddEventHandler(PlayerActionType.Attack.ToString(), OnPlayerAttack);
         }
 
         public void CreateHero()
@@ -84,6 +103,10 @@ namespace DiabloSimulator.Game
             zoneManager.SetZone(Hero.CurrentZone);
         }
 
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
         public Hero Hero { get; set; } = new Hero("The Vagabond");
 
         public List<string> SavedCharacters { get; } = new List<string>();
@@ -92,6 +115,19 @@ namespace DiabloSimulator.Game
         {
             get => SavedCharacters.Count > 0;
         }
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        private void OnPlayerAttack(object sender, GameEventArgs e)
+        {
+            float damageDealt = Hero.GetAttackDamage()[0].amount;
+        }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
 
         private HeroFactory heroFactory = new HeroFactory();
         private ItemFactory itemFactory = new ItemFactory();

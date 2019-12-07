@@ -1,7 +1,7 @@
 ﻿namespace DiabloSimulator.Engine
 {
-    public interface IModule
+    public abstract class IModule : IEventHandler
     {
-        public void Inintialize();
+        public abstract void Inintialize();
     }
 }

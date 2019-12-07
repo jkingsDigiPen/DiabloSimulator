@@ -1,5 +1,6 @@
 ﻿using DiabloSimulator.Game;
 using DiabloSimulator.Game.World;
+using System;
 using System.Collections.Generic;
 
 namespace DiabloSimulator.Engine
@@ -22,7 +23,7 @@ namespace DiabloSimulator.Engine
             }
         }
 
-        public static T GetModule<T>() where T : class, IModule
+        public static T GetModule<T>() where T : IModule
         {
             foreach(IModule module in modules)
             {
@@ -38,6 +39,14 @@ namespace DiabloSimulator.Engine
         public static void AddModule(IModule module)
         {
             modules.Add(module);
+        }
+
+        public static void RaiseGameEvent(object sender, GameEventArgs e)
+        {
+            foreach(IModule module in modules)
+            {
+                module.OnGameEvent(sender, e);
+            }
         }
 
         private static List<IModule> modules = new List<IModule>();

@@ -25,7 +25,7 @@ namespace DiabloSimulator.Engine
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public void Inintialize()
+        public override void Inintialize()
         {
             Show();
         }

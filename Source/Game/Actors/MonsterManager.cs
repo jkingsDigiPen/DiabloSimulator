@@ -29,7 +29,7 @@ namespace DiabloSimulator.Game
             zoneManager = EngineCore.GetModule<ZoneManager>();
 
             // Register for events
-            AddEventHandler("HeroAttack", OnHeroAttack);
+            AddEventHandler(GameEvents.HeroAttack, OnHeroAttack);
         }
 
         public void CreateMonster(string name = null)
@@ -74,17 +74,17 @@ namespace DiabloSimulator.Game
         private void OnHeroAttack(object sender, GameEventArgs e)
         {
             string damageDealtString = Monster.Damage(e.Get<List<DamageArgs>>());
-            RaiseGameEvent("AddWorldEvent", this,
+            RaiseGameEvent(GameEvents.WorldEventText, this,
                 "You attack the " + Monster.Race + ". " + damageDealtString);
 
             if (!Monster.IsDead)
             {
                 var damageArgs = Monster.GetAttackDamage();
-                RaiseGameEvent("MonsterAttack", Monster, damageArgs);
+                RaiseGameEvent(GameEvents.MonsterAttack, Monster, damageArgs);
             }
             else
             {
-                RaiseGameEvent("MonsterDead", Monster);
+                RaiseGameEvent(GameEvents.MonsterDead, Monster);
             }
         }
 

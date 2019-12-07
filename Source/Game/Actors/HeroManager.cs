@@ -43,10 +43,10 @@ namespace DiabloSimulator.Game
             }
 
             // Register for events
-            AddEventHandler(PlayerActionType.Attack.ToString(), OnPlayerAttack);
-            AddEventHandler("MonsterAttack", OnMonsterAttack);
-            AddEventHandler("MonsterDead", OnMonsterDead);
-            AddEventHandler("AdvanceTime", OnAdvanceTime);
+            AddEventHandler(GameEvents.PlayerAttack, OnPlayerAttack);
+            AddEventHandler(GameEvents.MonsterAttack, OnMonsterAttack);
+            AddEventHandler(GameEvents.MonsterDead, OnMonsterDead);
+            AddEventHandler(GameEvents.AdvanceTime, OnAdvanceTime);
         }
 
         public void CreateHero()
@@ -119,17 +119,17 @@ namespace DiabloSimulator.Game
             var damageDealt = Hero.GetAttackDamage();
 
             // TO DO: Specify target monster
-            RaiseGameEvent("HeroAttack", Hero, damageDealt);
+            RaiseGameEvent(GameEvents.HeroAttack, Hero, damageDealt);
         }
 
         private void OnMonsterAttack(object sender, GameEventArgs e)
         {
             Monster monster = sender as Monster;
             string damageDealtString = Hero.Damage(e.Get<List<DamageArgs>>());
-            RaiseGameEvent("AddWorldEvent", this, monster.Name + " attacks you. " + damageDealtString);
+            RaiseGameEvent(GameEvents.WorldEventText, this, monster.Name + " attacks you. " + damageDealtString);
 
             if(Hero.IsDead)
-                RaiseGameEvent("HeroDead", Hero);
+                RaiseGameEvent(GameEvents.HeroDead, Hero);
         }
 
         private void OnMonsterDead(object sender, GameEventArgs e)
@@ -145,7 +145,7 @@ namespace DiabloSimulator.Game
             float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
             if (lifeRegenAmount != 0)
             {
-                RaiseGameEvent("AddWorldEvent", Hero, 
+                RaiseGameEvent(GameEvents.WorldEventText, Hero, 
                     Hero.Heal(lifeRegenAmount) + " from natural healing.");
             }
         }

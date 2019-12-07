@@ -29,25 +29,25 @@ namespace DiabloSimulator.Game.World
             heroManager = EngineCore.GetModule<HeroManager>();
 
             // Register for events
-            AddEventHandler("AddWorldEvent", OnAddWorldEvent);
+            AddEventHandler(GameEvents.WorldEventText, OnWorldEventText);
 
             // Initial game text (new or otherwise)
-            RaiseGameEvent("AddWorldEvent", this, "Welcome to the world of Sanctuary!");
+            RaiseGameEvent(GameEvents.WorldEventText, this, "Welcome to the world of Sanctuary!");
         }
 
-        public List<string> WorldEvents
+        public List<string> WorldEventsText
         {
             get 
             {
-                List<string> result = new List<string>(worldEventStrings);
-                worldEventStrings.Clear();
+                List<string> result = new List<string>(worldEventsText);
+                worldEventsText.Clear();
                 return result;
             }
         }
 
         public void ProcessWorldEvent(WorldEvent worldEvent)
         {
-            RaiseGameEvent("AddWorldEvent", this, worldEvent.EventText);
+            RaiseGameEvent(GameEvents.WorldEventText, this, worldEvent.EventText);
 
             switch (worldEvent.EventType)
             {
@@ -65,7 +65,7 @@ namespace DiabloSimulator.Game.World
                     }
                     monsterManager.CreateMonster(monsterName);
 
-                    RaiseGameEvent("AddWorldEvent", this, monsterManager.Monster.Name + ", a level "
+                    RaiseGameEvent(GameEvents.WorldEventText, this, monsterManager.Monster.Name + ", a level "
                             + monsterManager.Monster.Stats.Level + " " 
                             + monsterManager.Monster.Race + ", appeared!");
                     break;
@@ -78,18 +78,18 @@ namespace DiabloSimulator.Game.World
                     if (!heroManager.Hero.DiscoveredZones.Contains(worldEvent.Name))
                     {
                         heroManager.Hero.DiscoveredZones.Add(worldEvent.Name);
-                        RaiseGameEvent("AddWorldEvent", this, 
+                        RaiseGameEvent(GameEvents.WorldEventText, this, 
                             "You have discovered " + worldEvent.Name + "!");
                     }
                     else
                     {
-                        RaiseGameEvent("AddWorldEvent", this, 
+                        RaiseGameEvent(GameEvents.WorldEventText, this, 
                             "You have found the entrance to " + worldEvent.Name + ".");
                     }
 
                     zoneManager.NextZoneName = worldEvent.Name;
 
-                    RaiseGameEvent("AddWorldEvent", this, 
+                    RaiseGameEvent(GameEvents.WorldEventText, this, 
                         "Click " + GameManager.discoverChoiceText.Choice01Text
                         + " to explore this area. If you wish to return to the previous area, " +
                         "click " + GameManager.discoverChoiceText.Choice02Text + ".");
@@ -101,16 +101,16 @@ namespace DiabloSimulator.Game.World
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void OnAddWorldEvent(object sender, GameEventArgs e)
+        private void OnWorldEventText(object sender, GameEventArgs e)
         {
-            worldEventStrings.Add(e.Get<string>());
+            worldEventsText.Add(e.Get<string>());
         }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private List<string> worldEventStrings = new List<string>();
+        private List<string> worldEventsText = new List<string>();
 
         // Modules
         private ZoneManager zoneManager;

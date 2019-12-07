@@ -16,48 +16,32 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public enum PlayerActionType
-    {
-        Look,
-        Attack,
-        Explore,
-        Defend,
-        Rest,
-        Flee,
-        [Description("Town Portal")]
-        TownPortal,
-        Proceed,
-        Back,
-        Yes,
-        No,
-    }
-
     public class PlayerAction
     {
         //------------------------------------------------------------------------------
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public PlayerAction(PlayerActionType actionType_)
+        public PlayerAction(GameEvents actionType_)
         {
             actionType = actionType_;
             args = new List<string>();
         }
 
-        public PlayerAction(PlayerActionType actionType_, string arg)
+        public PlayerAction(GameEvents actionType_, string arg)
         {
             actionType = actionType_;
             args = new List<string>();
             args.Add(arg);
         }
 
-        public PlayerAction(PlayerActionType actionType_, List<string> args_)
+        public PlayerAction(GameEvents actionType_, List<string> args_)
         {
             actionType = actionType_;
             args = new List<string>(args_);
         }
 
-        public PlayerActionType actionType;
+        public GameEvents actionType;
         public List<string> args;
 
         //------------------------------------------------------------------------------
@@ -65,7 +49,7 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         // Get a friendlier string for player action enums
-        public static string GetDescription(PlayerActionType value)
+        public static string GetDescription(GameEvents value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
 

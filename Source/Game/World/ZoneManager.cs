@@ -27,8 +27,8 @@ namespace DiabloSimulator.Game.World
             gameManager = EngineCore.GetModule<GameManager>();
             worldEventManager = EngineCore.GetModule<WorldEventManager>();
 
-            AddEventHandler(PlayerActionType.Look.ToString(), OnPlayerLook);
-            AddEventHandler(PlayerActionType.Explore.ToString(), OnPlayerExplore);
+            AddEventHandler(GameEvents.PlayerLook, OnPlayerLook);
+            AddEventHandler(GameEvents.PlayerExplore, OnPlayerExplore);
         }
 
         public void AdvanceToNextZone()
@@ -75,7 +75,7 @@ namespace DiabloSimulator.Game.World
 
         private void OnPlayerLook(object sender, GameEventArgs args)
         {
-            RaiseGameEvent("AddWorldEvent", this, CurrentZone.LookText);
+            RaiseGameEvent(GameEvents.WorldEventText, this, CurrentZone.LookText);
         }
 
         private void OnPlayerExplore(object sender, GameEventArgs args)

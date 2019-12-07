@@ -22,18 +22,18 @@ namespace DiabloSimulator.Engine
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public GameEventArgs(string name)
+        public GameEventArgs(Game.GameEvents name)
         {
             Name = name;
         }
 
-        public GameEventArgs(string name, float value)
+        public GameEventArgs(Game.GameEvents name, float value)
         {
             Name = name;
             Args.Add(value);
         }
 
-        public static GameEventArgs Create<T>(string name, T value)
+        public static GameEventArgs Create<T>(Game.GameEvents name, T value)
         {
             GameEventArgs eventArgs = new GameEventArgs(name);
             eventArgs.Add(value);
@@ -54,7 +54,7 @@ namespace DiabloSimulator.Engine
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public string Name { get; private set; }
+        public Game.GameEvents Name { get; private set; }
 
         //------------------------------------------------------------------------------
         // Private Variables:
@@ -79,23 +79,23 @@ namespace DiabloSimulator.Engine
             EngineCore.RaiseGameEvent(sender, e);
         }
 
-        public void RaiseGameEvent(string eventName)
+        public void RaiseGameEvent(Game.GameEvents eventName)
         {
             RaiseGameEvent(eventName, this);
         }
 
-        public void RaiseGameEvent(string eventName, object sender)
+        public void RaiseGameEvent(Game.GameEvents eventName, object sender)
         {
             RaiseGameEvent(new GameEventArgs(eventName), sender);
         }
 
-        public void RaiseGameEvent<T>(string eventName, object sender, T arg0)
+        public void RaiseGameEvent<T>(Game.GameEvents eventName, object sender, T arg0)
         {
             GameEventArgs e = GameEventArgs.Create(eventName, arg0);
             RaiseGameEvent(e, sender);
         }
 
-        public void AddEventHandler(string eventType, GameEventHandler handler)
+        public void AddEventHandler(Game.GameEvents eventType, GameEventHandler handler)
         {
             EventHandlers[eventType] = handler;
         }
@@ -115,6 +115,7 @@ namespace DiabloSimulator.Engine
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private Dictionary<string, GameEventHandler> EventHandlers { get; } = new Dictionary<string, GameEventHandler>();
+        private Dictionary<Game.GameEvents, GameEventHandler> EventHandlers { get; } 
+            = new Dictionary<Game.GameEvents, GameEventHandler>();
     }
 }

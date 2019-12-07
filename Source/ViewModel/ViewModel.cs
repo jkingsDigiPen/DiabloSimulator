@@ -93,17 +93,17 @@ namespace DiabloSimulator
         {
             if (InCombat)
             {
-                AddWorldEvent(PlayerActionType.Attack);
+                AddWorldEvent(GameEvents.PlayerAttack);
             }
             else if (!Hero.IsDead)
             {
                 if (ChoiceText == GameManager.exploreChoiceText)
                 {
-                    AddWorldEvent(PlayerActionType.Explore);
+                    AddWorldEvent(GameEvents.PlayerExplore);
                 }
                 else if(ChoiceText == GameManager.discoverChoiceText)
                 {
-                    AddWorldEvent(PlayerActionType.Proceed);
+                    AddWorldEvent(GameEvents.PlayerProceed);
                 }
             }
         }
@@ -112,17 +112,17 @@ namespace DiabloSimulator
         {
             if (InCombat)
             {
-                AddWorldEvent(PlayerActionType.Defend);
+                AddWorldEvent(GameEvents.PlayerDefend);
             }
             else if (!Hero.IsDead)
             {
                 if (ChoiceText == GameManager.exploreChoiceText)
                 {
-                    AddWorldEvent(PlayerActionType.Rest);
+                    AddWorldEvent(GameEvents.PlayerRest);
                 }
                 else if (ChoiceText == GameManager.discoverChoiceText)
                 {
-                    AddWorldEvent(PlayerActionType.Back);
+                    AddWorldEvent(GameEvents.PlayerBack);
                 }
             }
         }
@@ -131,11 +131,11 @@ namespace DiabloSimulator
         {
             if (InCombat)
             {
-                AddWorldEvent(PlayerActionType.Flee);
+                AddWorldEvent(GameEvents.PlayerFlee);
             }
             else
             {
-                AddWorldEvent(PlayerActionType.TownPortal);
+                AddWorldEvent(GameEvents.PlayerTownPortal);
             }
         }
 
@@ -155,7 +155,7 @@ namespace DiabloSimulator
 
         public void OnGameLoaded(object sender, RoutedEventArgs e)
         {
-            AddWorldEvent(PlayerActionType.Look);
+            AddWorldEvent(GameEvents.PlayerLook);
         }
 
         public void OnQuitGame(object sender, CancelEventArgs e)
@@ -221,7 +221,7 @@ namespace DiabloSimulator
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void AddWorldEvent(PlayerActionType action)
+        private void AddWorldEvent(GameEvents action)
         {
             var eventsText = GetActionResult(action);
 
@@ -238,7 +238,7 @@ namespace DiabloSimulator
                 .ctrlMonster.OnMonsterChanged(null, null));
         }
 
-        private List<string> GetActionResult(PlayerActionType actionType)
+        private List<string> GetActionResult(GameEvents actionType)
         {
             return GetActionResult(new PlayerAction(actionType));
         }

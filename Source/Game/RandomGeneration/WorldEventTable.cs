@@ -6,7 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
-using DiabloSimulator.Game.Factories;
+using DiabloSimulator.Engine;
 using DiabloSimulator.Game.World;
 using Newtonsoft.Json;
 using System;

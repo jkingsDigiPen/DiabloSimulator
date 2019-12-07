@@ -7,8 +7,9 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using DiabloSimulator.Game;
 
-namespace DiabloSimulator.Game.Factories
+namespace DiabloSimulator.Engine
 {
     //------------------------------------------------------------------------------
     // Public Structures:

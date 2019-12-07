@@ -8,25 +8,29 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace DiabloSimulator.Game
+namespace DiabloSimulator.Engine
 {
     //------------------------------------------------------------------------------
     // Public Structures:
     //------------------------------------------------------------------------------
 
     [SuppressUnmanagedCodeSecurity]
-    public static class ConsoleManager
+    public class ConsoleManager : IModule
     {
         //------------------------------------------------------------------------------
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public static bool HasConsole
+        public override void Inintialize()
+        {
+            Show();
+        }
+
+        public bool HasConsole
         {
             get { return GetConsoleWindow() != IntPtr.Zero; }
         }
@@ -34,7 +38,7 @@ namespace DiabloSimulator.Game
         /// <summary>
         /// Creates a new console instance if the process is not attached to a console already.
         /// </summary>
-        public static void Show()
+        public void Show()
         {
             #if DEBUG
             if (!HasConsole)
@@ -48,7 +52,7 @@ namespace DiabloSimulator.Game
         /// <summary>
         /// If the process has a console attached to it, it will be detached and no longer visible. Writing to the System.Console is still possible, but no output will be shown.
         /// </summary>
-        public static void Hide()
+        public void Hide()
         {
             #if DEBUG
             if (HasConsole)
@@ -59,7 +63,7 @@ namespace DiabloSimulator.Game
             #endif
         }
 
-        public static void Toggle()
+        public void Toggle()
         {
             if (HasConsole)
             {
@@ -75,7 +79,7 @@ namespace DiabloSimulator.Game
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private static void InvalidateOutAndError()
+        private void InvalidateOutAndError()
         {
             Type type = typeof(Console);
 
@@ -88,6 +92,9 @@ namespace DiabloSimulator.Game
             System.Reflection.MethodInfo _InitializeStdOutError = type.GetMethod("InitializeStdOutError",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
 
+            // TO DO: Following code causes a crash. Figure out why 
+            // everything is null or figure out why this code is not needed.
+
             //Debug.Assert(_out != null);
             //Debug.Assert(_error != null);
 
@@ -99,7 +106,7 @@ namespace DiabloSimulator.Game
             //_InitializeStdOutError.Invoke(null, new object[] { true });
         }
 
-        private static void SetOutAndErrorNull()
+        private void SetOutAndErrorNull()
         {
             Console.SetOut(TextWriter.Null);
             Console.SetError(TextWriter.Null);

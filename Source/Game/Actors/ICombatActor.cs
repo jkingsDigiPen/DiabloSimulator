@@ -61,6 +61,6 @@ namespace DiabloSimulator.Game
 
         public void Revive();
 
-        public bool IsDead();
+        public bool IsDead { get; }
     }
 }

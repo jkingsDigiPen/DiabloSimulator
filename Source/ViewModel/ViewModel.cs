@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.Engine;
 using DiabloSimulator.Game;
 using DiabloSimulator.Windows;
 using System.Collections.Generic;
@@ -28,21 +29,24 @@ namespace DiabloSimulator
 
         public ViewModel()
         {
-            gameManager = new GameManager();
+            gameManager = EngineCore.GetModule<GameManager>();
+            heroManager = EngineCore.GetModule<HeroManager>();
+            monsterManager = EngineCore.GetModule<MonsterManager>();
+
             wasInCombat = false;
             ChoiceText = new PlayerChoiceText("Explore", "Rest", "Town Portal");
         }
 
         #region actors
 
-        public Hero Hero { get => gameManager.Hero; }
+        public Hero Hero { get => heroManager.Hero; }
 
         public void CreateHero()
         {
-            gameManager.CreateHero();
+            heroManager.CreateHero();
         }
 
-        public Monster Monster { get => gameManager.Monster; }
+        public Monster Monster { get => monsterManager.Monster; }
 
         #endregion
 
@@ -80,7 +84,7 @@ namespace DiabloSimulator
 
                 if (result == MessageBoxResult.OK)
                 {
-                    gameManager.SaveState();
+                    heroManager.SaveState();
                 }
             }
         }
@@ -91,7 +95,7 @@ namespace DiabloSimulator
             {
                 AddWorldEvent(PlayerActionType.Attack);
             }
-            else if (!Hero.IsDead())
+            else if (!Hero.IsDead)
             {
                 if (ChoiceText == GameManager.exploreChoiceText)
                 {
@@ -110,7 +114,7 @@ namespace DiabloSimulator
             {
                 AddWorldEvent(PlayerActionType.Defend);
             }
-            else if (!Hero.IsDead())
+            else if (!Hero.IsDead)
             {
                 if (ChoiceText == GameManager.exploreChoiceText)
                 {
@@ -171,7 +175,7 @@ namespace DiabloSimulator
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    gameManager.SaveState();
+                    heroManager.SaveState();
                 }
             }
 
@@ -183,17 +187,17 @@ namespace DiabloSimulator
 
         public bool CanLoadGame
         {
-            get => gameManager.CanLoadState;
+            get => heroManager.CanLoadState;
         }
 
         public List<string> SavedCharacters
         {
-            get => gameManager.SavedCharacters;
+            get => heroManager.SavedCharacters;
         }
 
         public void LoadGame(string saveFileName)
         {
-            gameManager.LoadState(saveFileName);
+            heroManager.LoadState(saveFileName);
         }
 
         #endregion
@@ -219,13 +223,13 @@ namespace DiabloSimulator
 
         private void AddWorldEvent(PlayerActionType action)
         {
-            string eventText = GetActionResult(action);
-
-            // Remove last newline and carriage return
-            eventText = eventText.Remove(eventText.Length - 2);
+            var eventsText = GetActionResult(action);
 
             // Add to list view
-            WorldEventLog.Add(eventText);
+            foreach (string eventString in eventsText)
+            {
+                WorldEventLog.Add(eventString);
+            }
 
             // TO DO: Figure out way to correctly propagate monster change
             if (InCombat)
@@ -234,12 +238,12 @@ namespace DiabloSimulator
                 .ctrlMonster.OnMonsterChanged(null, null));
         }
 
-        private string GetActionResult(PlayerActionType actionType)
+        private List<string> GetActionResult(PlayerActionType actionType)
         {
             return GetActionResult(new PlayerAction(actionType));
         }
 
-        private string GetActionResult(PlayerAction action)
+        private List<string> GetActionResult(PlayerAction action)
         {
             PlayerActionResult result = gameManager.GetActionResult(action);
             ChoiceText = result.choiceText;
@@ -253,8 +257,12 @@ namespace DiabloSimulator
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private GameManager gameManager;
         private bool wasInCombat;
         private PlayerChoiceText choiceText;
+
+        // Modules
+        HeroManager heroManager;
+        MonsterManager monsterManager;
+        GameManager gameManager;
     }
 }

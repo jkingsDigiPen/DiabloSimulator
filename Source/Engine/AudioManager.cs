@@ -11,7 +11,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DiabloSimulator.Game
+namespace DiabloSimulator.Engine
 {
     //------------------------------------------------------------------------------
     // Public Structures:
@@ -19,7 +19,7 @@ namespace DiabloSimulator.Game
 
     using FMODSystem = FMOD.Studio.System;
 
-    public class AudioManager
+    public class AudioManager : IModule
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -29,13 +29,19 @@ namespace DiabloSimulator.Game
         { 
             ErrorCheck(FMODSystem.create(out fmodStudioSystem));
             ErrorCheck(fmodStudioSystem.initialize(16, INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, IntPtr.Zero));
+        }
 
+        public override void Inintialize()
+        {
             // Make sure update gets called periodically
             var dueTime = TimeSpan.FromSeconds(1);
             var interval = TimeSpan.FromSeconds(2);
 
             // TODO: Add a CancellationTokenSource and supply the token here instead of None.
+            // TODO: Figure out whether warning needs to be fixed.
+            #pragma warning disable 4014
             RunPeriodicAsync(Update, dueTime, interval, CancellationToken.None);
+            #pragma warning restore 4014
         }
 
         public EventInstance PlayEvent(string eventName, float volume = 1.0f)
@@ -69,6 +75,13 @@ namespace DiabloSimulator.Game
                 throw new System.Exception("FMOD error! (" + FMOD.Error.String(result) + ")");
             }
         }
+
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
+        public EventInstance musicTrack;
+        public EventInstance ambientTrack;
 
         //------------------------------------------------------------------------------
         // Private Functions:

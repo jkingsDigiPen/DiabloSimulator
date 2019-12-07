@@ -6,7 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
-using DiabloSimulator.Game.Factories;
+using DiabloSimulator.Engine;
 using System;
 
 namespace DiabloSimulator.Game.RandomGeneration

@@ -74,17 +74,17 @@ namespace DiabloSimulator.Game
         private void OnHeroAttack(object sender, GameEventArgs e)
         {
             string damageDealtString = Monster.Damage(e.Get<List<DamageArgs>>());
-            RaiseGameEvent(GameEventArgs.Create("SetNextWorldEvent",
-                "You attack the " + Monster.Race + ". " + damageDealtString));
+            RaiseGameEvent("AddWorldEvent", this,
+                "You attack the " + Monster.Race + ". " + damageDealtString);
 
-            if (!Monster.IsDead())
+            if (!Monster.IsDead)
             {
                 var damageArgs = Monster.GetAttackDamage();
-                RaiseGameEvent(GameEventArgs.Create("MonsterAttack", damageArgs), Monster);
+                RaiseGameEvent("MonsterAttack", Monster, damageArgs);
             }
             else
             {
-                RaiseGameEvent(new GameEventArgs("MonsterDead"), Monster);
+                RaiseGameEvent("MonsterDead", Monster);
             }
         }
 

@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
-using System.IO;
+using System.Collections.Generic;
 
 namespace DiabloSimulator.Game.World
 {
@@ -28,30 +28,26 @@ namespace DiabloSimulator.Game.World
             monsterManager = EngineCore.GetModule<MonsterManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
 
-            // Initial game text (new or otherwise)
-            NextEvent = "Welcome to the world of Sanctuary!";
-
             // Register for events
-            AddEventHandler("SetNextWorldEvent", OnSetNextWorldEvent);
+            AddEventHandler("AddWorldEvent", OnAddWorldEvent);
+
+            // Initial game text (new or otherwise)
+            RaiseGameEvent("AddWorldEvent", this, "Welcome to the world of Sanctuary!");
         }
 
-        public string NextEvent
+        public List<string> WorldEvents
         {
             get 
             {
-                string result = nextEvent.ToString();
-                nextEvent.GetStringBuilder().Clear();
+                List<string> result = new List<string>(worldEventStrings);
+                worldEventStrings.Clear();
                 return result;
-            }
-            set
-            {
-                nextEvent.WriteLine(value);
             }
         }
 
         public void ProcessWorldEvent(WorldEvent worldEvent)
         {
-            nextEvent.WriteLine(worldEvent.EventText);
+            RaiseGameEvent("AddWorldEvent", this, worldEvent.EventText);
 
             switch (worldEvent.EventType)
             {
@@ -69,7 +65,7 @@ namespace DiabloSimulator.Game.World
                     }
                     monsterManager.CreateMonster(monsterName);
 
-                    nextEvent.WriteLine(monsterManager.Monster.Name + ", a level "
+                    RaiseGameEvent("AddWorldEvent", this, monsterManager.Monster.Name + ", a level "
                             + monsterManager.Monster.Stats.Level + " " 
                             + monsterManager.Monster.Race + ", appeared!");
                     break;
@@ -82,16 +78,19 @@ namespace DiabloSimulator.Game.World
                     if (!heroManager.Hero.DiscoveredZones.Contains(worldEvent.Name))
                     {
                         heroManager.Hero.DiscoveredZones.Add(worldEvent.Name);
-                        nextEvent.WriteLine("You have discovered " + worldEvent.Name + "!");
+                        RaiseGameEvent("AddWorldEvent", this, 
+                            "You have discovered " + worldEvent.Name + "!");
                     }
                     else
                     {
-                        nextEvent.WriteLine("You have found the entrance to " + worldEvent.Name + ".");
+                        RaiseGameEvent("AddWorldEvent", this, 
+                            "You have found the entrance to " + worldEvent.Name + ".");
                     }
 
                     zoneManager.NextZoneName = worldEvent.Name;
 
-                    nextEvent.WriteLine("Click " + GameManager.discoverChoiceText.Choice01Text
+                    RaiseGameEvent("AddWorldEvent", this, 
+                        "Click " + GameManager.discoverChoiceText.Choice01Text
                         + " to explore this area. If you wish to return to the previous area, " +
                         "click " + GameManager.discoverChoiceText.Choice02Text + ".");
                     break;
@@ -102,16 +101,16 @@ namespace DiabloSimulator.Game.World
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        private void OnSetNextWorldEvent(object sender, GameEventArgs e)
+        private void OnAddWorldEvent(object sender, GameEventArgs e)
         {
-            NextEvent = e.Get<string>();
+            worldEventStrings.Add(e.Get<string>());
         }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private StringWriter nextEvent = new StringWriter();
+        private List<string> worldEventStrings = new List<string>();
 
         // Modules
         private ZoneManager zoneManager;

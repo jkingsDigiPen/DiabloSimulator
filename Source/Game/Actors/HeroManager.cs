@@ -46,6 +46,7 @@ namespace DiabloSimulator.Game
             AddEventHandler(PlayerActionType.Attack.ToString(), OnPlayerAttack);
             AddEventHandler("MonsterAttack", OnMonsterAttack);
             AddEventHandler("MonsterDead", OnMonsterDead);
+            AddEventHandler("AdvanceTime", OnAdvanceTime);
         }
 
         public void CreateHero()
@@ -62,15 +63,6 @@ namespace DiabloSimulator.Game
             Hero.Inventory.AddItem(itemFactory.Create("Simple Dagger", Hero));
             Hero.Inventory.AddItem(itemFactory.Create("Short Sword", Hero));
             Hero.Inventory.AddItem(itemFactory.Create("Leather Hood", Hero));
-        }
-
-        public void HeroLifeRegen()
-        {
-            float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
-            if (lifeRegenAmount != 0)
-            {
-                worldEventManager.NextEvent = Hero.Heal(lifeRegenAmount) + " from natural healing.";
-            }
         }
 
         public void SaveState()
@@ -127,21 +119,35 @@ namespace DiabloSimulator.Game
             var damageDealt = Hero.GetAttackDamage();
 
             // TO DO: Specify target monster
-            RaiseGameEvent(GameEventArgs.Create("HeroAttack", damageDealt), Hero);
+            RaiseGameEvent("HeroAttack", Hero, damageDealt);
         }
 
         private void OnMonsterAttack(object sender, GameEventArgs e)
         {
             Monster monster = sender as Monster;
             string damageDealtString = Hero.Damage(e.Get<List<DamageArgs>>());
+            RaiseGameEvent("AddWorldEvent", this, monster.Name + " attacks you. " + damageDealtString);
 
-            RaiseGameEvent(GameEventArgs.Create("SetNextWorldEvent", monster.Name + " attacks you. " + damageDealtString));
+            if(Hero.IsDead)
+                RaiseGameEvent("HeroDead", Hero);
         }
 
         private void OnMonsterDead(object sender, GameEventArgs e)
         {
             Monster monster = sender as Monster;
             Hero.AddExperience(monster);
+        }
+
+        private void OnAdvanceTime(object sender, GameEventArgs e)
+        {
+            if (Hero.IsDead) return;
+
+            float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
+            if (lifeRegenAmount != 0)
+            {
+                RaiseGameEvent("AddWorldEvent", Hero, 
+                    Hero.Heal(lifeRegenAmount) + " from natural healing.");
+            }
         }
 
         //------------------------------------------------------------------------------

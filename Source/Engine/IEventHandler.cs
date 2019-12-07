@@ -79,6 +79,22 @@ namespace DiabloSimulator.Engine
             EngineCore.RaiseGameEvent(sender, e);
         }
 
+        public void RaiseGameEvent(string eventName)
+        {
+            RaiseGameEvent(eventName, this);
+        }
+
+        public void RaiseGameEvent(string eventName, object sender)
+        {
+            RaiseGameEvent(new GameEventArgs(eventName), sender);
+        }
+
+        public void RaiseGameEvent<T>(string eventName, object sender, T arg0)
+        {
+            GameEventArgs e = GameEventArgs.Create(eventName, arg0);
+            RaiseGameEvent(e, sender);
+        }
+
         public void AddEventHandler(string eventType, GameEventHandler handler)
         {
             EventHandlers[eventType] = handler;

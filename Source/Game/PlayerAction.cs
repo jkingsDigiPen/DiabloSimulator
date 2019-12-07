@@ -88,22 +88,14 @@ namespace DiabloSimulator.Game
         public PlayerChoiceText(string choice01Text_, 
             string choice02Text_, string choice03Text_)
         {
-            choice01Text = choice01Text_;
-            choice02Text = choice02Text_;
-            choice03Text = choice03Text_;
+            Choice01Text = choice01Text_;
+            Choice02Text = choice02Text_;
+            Choice03Text = choice03Text_;
         }
 
-        public string Choice01Text { get => choice01Text; }
-        public string Choice02Text { get => choice02Text;}
-        public string Choice03Text { get => choice03Text; }
-
-        //------------------------------------------------------------------------------
-        // Private Variables:
-        //------------------------------------------------------------------------------
-
-        private string choice01Text;
-        private string choice02Text;
-        private string choice03Text;
+        public string Choice01Text { get; }
+        public string Choice02Text { get; }
+        public string Choice03Text { get; }
     }
 
     public class PlayerActionResult
@@ -112,7 +104,7 @@ namespace DiabloSimulator.Game
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public PlayerActionResult(string resultText_, PlayerChoiceText choiceText_)
+        public PlayerActionResult(List<string> resultText_, PlayerChoiceText choiceText_)
         {
             resultText = resultText_;
             choiceText = choiceText_;
@@ -123,6 +115,6 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         public PlayerChoiceText choiceText;
-        public string resultText;
+        public List<string> resultText;
     }
 }

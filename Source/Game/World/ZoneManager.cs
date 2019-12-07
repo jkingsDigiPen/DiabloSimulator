@@ -75,7 +75,7 @@ namespace DiabloSimulator.Game.World
 
         private void OnPlayerLook(object sender, GameEventArgs args)
         {
-            worldEventManager.NextEvent = CurrentZone.LookText;
+            RaiseGameEvent("AddWorldEvent", this, CurrentZone.LookText);
         }
 
         private void OnPlayerExplore(object sender, GameEventArgs args)

@@ -38,7 +38,10 @@ namespace DiabloSimulator.Engine
             var interval = TimeSpan.FromSeconds(2);
 
             // TODO: Add a CancellationTokenSource and supply the token here instead of None.
+            // TODO: Figure out whether warning needs to be fixed.
+            #pragma warning disable 4014
             RunPeriodicAsync(Update, dueTime, interval, CancellationToken.None);
+            #pragma warning restore 4014
         }
 
         public EventInstance PlayEvent(string eventName, float volume = 1.0f)

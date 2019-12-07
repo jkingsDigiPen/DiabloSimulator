@@ -71,7 +71,7 @@ namespace DiabloSimulator.Game
             foreach(DamageArgs damage in damageList)
             {
                 if (i != 0)
-                    result += "\r\n";
+                    result += "\n";
                 ++i;
 
                 Stats["CurrentHealth"] = Math.Max(Stats.BaseValues["CurrentHealth"] - damage.amount,
@@ -83,9 +83,9 @@ namespace DiabloSimulator.Game
                 result += " damage.";
             }
 
-            if (IsDead())
+            if (IsDead)
             {
-                result += "\r\n";
+                result += "\n";
                 Kill();
                 result += Name + " has been been slain!";
             }
@@ -139,10 +139,7 @@ namespace DiabloSimulator.Game
             Stats["CurrentHealth"] = 0;
         }
 
-        public bool IsDead()
-        {
-            return Name == Monster.EmptyMonster || Stats.ModifiedValues["CurrentHealth"] == 0;
-        }
+        public bool IsDead => Name == Monster.EmptyMonster || Stats.ModifiedValues["CurrentHealth"] == 0;
 
         public float HealthPercent
         {

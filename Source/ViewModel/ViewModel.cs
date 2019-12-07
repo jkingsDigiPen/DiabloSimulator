@@ -95,7 +95,7 @@ namespace DiabloSimulator
             {
                 AddWorldEvent(PlayerActionType.Attack);
             }
-            else if (!Hero.IsDead())
+            else if (!Hero.IsDead)
             {
                 if (ChoiceText == GameManager.exploreChoiceText)
                 {
@@ -114,7 +114,7 @@ namespace DiabloSimulator
             {
                 AddWorldEvent(PlayerActionType.Defend);
             }
-            else if (!Hero.IsDead())
+            else if (!Hero.IsDead)
             {
                 if (ChoiceText == GameManager.exploreChoiceText)
                 {
@@ -223,13 +223,13 @@ namespace DiabloSimulator
 
         private void AddWorldEvent(PlayerActionType action)
         {
-            string eventText = GetActionResult(action);
-
-            // Remove last newline and carriage return
-            eventText = eventText.Remove(eventText.Length - 2);
+            var eventsText = GetActionResult(action);
 
             // Add to list view
-            WorldEventLog.Add(eventText);
+            foreach (string eventString in eventsText)
+            {
+                WorldEventLog.Add(eventString);
+            }
 
             // TO DO: Figure out way to correctly propagate monster change
             if (InCombat)
@@ -238,12 +238,12 @@ namespace DiabloSimulator
                 .ctrlMonster.OnMonsterChanged(null, null));
         }
 
-        private string GetActionResult(PlayerActionType actionType)
+        private List<string> GetActionResult(PlayerActionType actionType)
         {
             return GetActionResult(new PlayerAction(actionType));
         }
 
-        private string GetActionResult(PlayerAction action)
+        private List<string> GetActionResult(PlayerAction action)
         {
             PlayerActionResult result = gameManager.GetActionResult(action);
             ChoiceText = result.choiceText;

@@ -1,10 +1,26 @@
-﻿using DiabloSimulator.Engine;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	WorldEventManager.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using DiabloSimulator.Engine;
 using System.IO;
 
 namespace DiabloSimulator.Game.World
 {
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     public class WorldEventManager : IModule
     {
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
         public override void Inintialize()
         {
             zoneManager = EngineCore.GetModule<ZoneManager>();
@@ -14,6 +30,9 @@ namespace DiabloSimulator.Game.World
 
             // Initial game text (new or otherwise)
             NextEvent = "Welcome to the world of Sanctuary!";
+
+            // Register for events
+            AddEventHandler("SetNextWorldEvent", OnSetNextWorldEvent);
         }
 
         public string NextEvent
@@ -78,6 +97,19 @@ namespace DiabloSimulator.Game.World
                     break;
             }
         }
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        private void OnSetNextWorldEvent(object sender, GameEventArgs e)
+        {
+            NextEvent = e.Get<string>();
+        }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
 
         private StringWriter nextEvent = new StringWriter();
 

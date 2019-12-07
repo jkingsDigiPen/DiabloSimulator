@@ -1,29 +1,82 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	IEventHandler.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace DiabloSimulator.Engine
 {
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     public class GameEventArgs : EventArgs
     {
-        public GameEventArgs(string name, ArrayList args = null)
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
+        public GameEventArgs(string name)
         {
             Name = name;
-            if (args != null)
-                Args = args;
         }
 
-        public string Name { get; set; }
-        public ArrayList Args { get; set; } = new ArrayList();
+        public GameEventArgs(string name, float value)
+        {
+            Name = name;
+            Args.Add(value);
+        }
+
+        public static GameEventArgs Create<T>(string name, T value)
+        {
+            GameEventArgs eventArgs = new GameEventArgs(name);
+            eventArgs.Add(value);
+            return eventArgs;
+        }
+
+        public T Get<T>(int index = 0)
+        {
+            return (T)Args[index];
+        }
+
+        public void Add<T>(T value)
+        {
+            Args.Add(value);
+        }
+
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
+        public string Name { get; private set; }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
+
+        private ArrayList Args { get; set; } = new ArrayList();
     }
+
+    public delegate void GameEventHandler(object sender, GameEventArgs e);
 
     public abstract class IEventHandler
     {
-        public delegate void GameEventHandler(object sender, GameEventArgs e);
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
 
-        public void RaiseGameEvent(GameEventArgs e)
+        public void RaiseGameEvent(GameEventArgs e, object sender = null)
         {
-            EngineCore.RaiseGameEvent(this, e);
+            if (sender == null)
+                sender = this;
+
+            EngineCore.RaiseGameEvent(sender, e);
         }
 
         public void AddEventHandler(string eventType, GameEventHandler handler)
@@ -41,6 +94,10 @@ namespace DiabloSimulator.Engine
                 }
             }
         }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
 
         private Dictionary<string, GameEventHandler> EventHandlers { get; } = new Dictionary<string, GameEventHandler>();
     }

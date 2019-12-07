@@ -1,16 +1,35 @@
-﻿using DiabloSimulator.Engine;
+﻿//------------------------------------------------------------------------------
+//
+// File Name:	MonsterManager.cs
+// Author(s):	Jeremy Kings
+// Project:		DiabloSimulator
+//
+//------------------------------------------------------------------------------
+
+using DiabloSimulator.Engine;
 using DiabloSimulator.Game.World;
 using System.Collections.Generic;
 
 namespace DiabloSimulator.Game
 {
+    //------------------------------------------------------------------------------
+    // Public Structures:
+    //------------------------------------------------------------------------------
+
     class MonsterManager : IModule
     {
+        //------------------------------------------------------------------------------
+        // Public Functions:
+        //------------------------------------------------------------------------------
+
         public override void Inintialize()
         {
             gameManager = EngineCore.GetModule<GameManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
             zoneManager = EngineCore.GetModule<ZoneManager>();
+
+            // Register for events
+            AddEventHandler("HeroAttack", OnHeroAttack);
         }
 
         public void CreateMonster(string name = null)
@@ -42,7 +61,36 @@ namespace DiabloSimulator.Game
             return Monster.Damage(damageList);
         }
 
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
         public Monster Monster { get; set; } = new Monster();
+
+        //------------------------------------------------------------------------------
+        // Private Functions:
+        //------------------------------------------------------------------------------
+
+        private void OnHeroAttack(object sender, GameEventArgs e)
+        {
+            string damageDealtString = Monster.Damage(e.Get<List<DamageArgs>>());
+            RaiseGameEvent(GameEventArgs.Create("SetNextWorldEvent",
+                "You attack the " + Monster.Race + ". " + damageDealtString));
+
+            if (!Monster.IsDead())
+            {
+                var damageArgs = Monster.GetAttackDamage();
+                RaiseGameEvent(GameEventArgs.Create("MonsterAttack", damageArgs), Monster);
+            }
+            else
+            {
+                RaiseGameEvent(new GameEventArgs("MonsterDead"), Monster);
+            }
+        }
+
+        //------------------------------------------------------------------------------
+        // Private Variables:
+        //------------------------------------------------------------------------------
 
         private MonsterFactory monsterFactory = new MonsterFactory();
 

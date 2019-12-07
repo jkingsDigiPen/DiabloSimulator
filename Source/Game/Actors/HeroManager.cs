@@ -27,7 +27,7 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            eventManager = EngineCore.GetModule<WorldEventManager>();
+            worldEventManager = EngineCore.GetModule<WorldEventManager>();
             zoneManager = EngineCore.GetModule<ZoneManager>();
 
             // Create save location if it doesn't exist
@@ -44,6 +44,8 @@ namespace DiabloSimulator.Game
 
             // Register for events
             AddEventHandler(PlayerActionType.Attack.ToString(), OnPlayerAttack);
+            AddEventHandler("MonsterAttack", OnMonsterAttack);
+            AddEventHandler("MonsterDead", OnMonsterDead);
         }
 
         public void CreateHero()
@@ -52,7 +54,7 @@ namespace DiabloSimulator.Game
             Hero = heroFactory.Create(Hero.Archetype, Hero);
 
             // Set starting zone
-            EngineCore.GetModule<ZoneManager>().SetZone("Tristram");
+            zoneManager.SetZone("Tristram");
             Hero.DiscoveredZones.Add(Hero.CurrentZone);
 
             // Add starting equipment
@@ -67,7 +69,7 @@ namespace DiabloSimulator.Game
             float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
             if (lifeRegenAmount != 0)
             {
-                eventManager.NextEvent = Hero.Heal(lifeRegenAmount) + " from natural healing.";
+                worldEventManager.NextEvent = Hero.Heal(lifeRegenAmount) + " from natural healing.";
             }
         }
 
@@ -122,7 +124,24 @@ namespace DiabloSimulator.Game
 
         private void OnPlayerAttack(object sender, GameEventArgs e)
         {
-            float damageDealt = Hero.GetAttackDamage()[0].amount;
+            var damageDealt = Hero.GetAttackDamage();
+
+            // TO DO: Specify target monster
+            RaiseGameEvent(GameEventArgs.Create("HeroAttack", damageDealt), Hero);
+        }
+
+        private void OnMonsterAttack(object sender, GameEventArgs e)
+        {
+            Monster monster = sender as Monster;
+            string damageDealtString = Hero.Damage(e.Get<List<DamageArgs>>());
+
+            RaiseGameEvent(GameEventArgs.Create("SetNextWorldEvent", monster.Name + " attacks you. " + damageDealtString));
+        }
+
+        private void OnMonsterDead(object sender, GameEventArgs e)
+        {
+            Monster monster = sender as Monster;
+            Hero.AddExperience(monster);
         }
 
         //------------------------------------------------------------------------------
@@ -134,7 +153,7 @@ namespace DiabloSimulator.Game
         private string saveLocation;
 
         // Modules
-        private WorldEventManager eventManager;
+        private WorldEventManager worldEventManager;
         private ZoneManager zoneManager;
     }
 }

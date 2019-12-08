@@ -28,8 +28,6 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            zoneManager = EngineCore.GetModule<WorldZoneManager>();
-
             // Create save location if it doesn't exist
             saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 + "\\DiabloSimulator\\Saves\\";
@@ -57,7 +55,7 @@ namespace DiabloSimulator.Game
             Hero = heroFactory.Create(Hero.Archetype, Hero);
 
             // Set starting zone
-            zoneManager.SetZone("New Tristram");
+            RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
             Hero.DiscoveredZones.Add(Hero.CurrentZone);
 
             // Add starting equipment
@@ -193,8 +191,5 @@ namespace DiabloSimulator.Game
         private HeroFactory heroFactory = new HeroFactory();
         private ItemFactory itemFactory = new ItemFactory();
         private string saveLocation;
-
-        // Modules
-        private WorldZoneManager zoneManager;
     }
 }

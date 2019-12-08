@@ -24,11 +24,7 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            heroManager = EngineCore.GetModule<HeroManager>();
-
             // Register for player actions
-            AddEventHandler(GameEvents.PlayerAttack, OnPlayerAttack);
-            AddEventHandler(GameEvents.PlayerRest, OnPlayerRest);
             AddEventHandler(GameEvents.PlayerProceed, OnPlayerProceed);
             AddEventHandler(GameEvents.PlayerBack, OnPlayerBack);
 
@@ -72,31 +68,6 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
 
         #region playerActions
-
-        private void OnPlayerAttack(object sender, GameEventArgs e)
-        {
-            RaiseGameEvent(GameEvents.AdvanceTime);
-        }
-
-        private void OnPlayerRest(object sender, GameEventArgs e)
-        {
-            // Add regen - additive and multiplicative
-            StatModifier regenMultBonus = new StatModifier("HealthRegen",
-                "Rest", Game.ModifierType.Multiplicative, 0.5f);
-            StatModifier regenAddBonus = new StatModifier("HealthRegen",
-                "Rest", Game.ModifierType.Additive, 2);
-
-            heroManager.Hero.Stats.AddModifier(regenMultBonus);
-            heroManager.Hero.Stats.AddModifier(regenAddBonus);
-            RaiseGameEvent(GameEvents.AddWorldEventText, this, "You rest for a short while. You feel healthier!");
-
-            // Step time forward to heal
-            RaiseGameEvent(GameEvents.AdvanceTime);
-
-            // Remove temporary regen
-            heroManager.Hero.Stats.RemoveModifier(regenMultBonus);
-            heroManager.Hero.Stats.RemoveModifier(regenAddBonus);
-        }
 
         private void OnPlayerProceed(object sender, GameEventArgs e)
         {
@@ -164,8 +135,5 @@ namespace DiabloSimulator.Game
 
         // Game state
         private bool inCombat;
-
-        // Module references
-        HeroManager heroManager;
     }
 }

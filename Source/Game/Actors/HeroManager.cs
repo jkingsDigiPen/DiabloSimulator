@@ -48,6 +48,7 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.MonsterDead, OnMonsterDead);
             AddEventHandler(GameEvents.AdvanceTime, OnAdvanceTime);
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
+            AddEventHandler(GameEvents.PlayerRest, OnPlayerRest);
         }
 
         public void CreateHero()
@@ -131,6 +132,8 @@ namespace DiabloSimulator.Game
 
             if(Hero.IsDead)
                 RaiseGameEvent(GameEvents.HeroDead, Hero);
+            else
+                RaiseGameEvent(GameEvents.AdvanceTime);
         }
 
         private void OnMonsterDead(object sender, GameEventArgs e)
@@ -161,6 +164,26 @@ namespace DiabloSimulator.Game
                "and brings you back to town, where the healers somehow manage to breathe life " +
                "into you once again.");
             RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
+        }
+
+        private void OnPlayerRest(object sender, GameEventArgs e)
+        {
+            // Add regen - additive and multiplicative
+            StatModifier regenMultBonus = new StatModifier("HealthRegen",
+                "Rest", ModifierType.Multiplicative, 0.5f);
+            StatModifier regenAddBonus = new StatModifier("HealthRegen",
+                "Rest", ModifierType.Additive, 2);
+
+            Hero.Stats.AddModifier(regenMultBonus);
+            Hero.Stats.AddModifier(regenAddBonus);
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, "You rest for a short while. You feel healthier!");
+
+            // Step time forward to heal
+            RaiseGameEvent(GameEvents.AdvanceTime);
+
+            // Remove temporary regen
+            Hero.Stats.RemoveModifier(regenMultBonus);
+            Hero.Stats.RemoveModifier(regenAddBonus);
         }
 
         //------------------------------------------------------------------------------

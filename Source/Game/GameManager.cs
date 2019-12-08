@@ -27,7 +27,6 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            worldEventManager = EngineCore.GetModule<WorldEventManager>();
             monsterManager = EngineCore.GetModule<MonsterManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
 
@@ -53,14 +52,6 @@ namespace DiabloSimulator.Game
         #endregion
 
         #region gameFunctions
-
-        public PlayerActionResult GetActionResult(PlayerAction action)
-        {
-            // Return output
-            var result = worldEventManager.WorldEventsText;
-
-            return new PlayerActionResult(result, CurrentChoiceText);
-        }
 
         public bool InCombat 
         { 
@@ -209,7 +200,6 @@ namespace DiabloSimulator.Game
                 "and brings you back to town, where the healers somehow manage to breathe life " +
                 "into you once again.");
             RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
-            RaiseGameEvent(GameEvents.PlayerLook);
         }
 
         #endregion
@@ -248,7 +238,6 @@ namespace DiabloSimulator.Game
         private Random random = new Random();
 
         // Module references
-        WorldEventManager worldEventManager;
         MonsterManager monsterManager;
         HeroManager heroManager;
     }

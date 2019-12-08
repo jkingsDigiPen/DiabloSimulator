@@ -8,6 +8,7 @@
 
 using DiabloSimulator.Engine;
 using DiabloSimulator.Game;
+using DiabloSimulator.Game.World;
 using DiabloSimulator.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,6 +31,7 @@ namespace DiabloSimulator
         public ViewModel()
         {
             gameManager = EngineCore.GetModule<GameManager>();
+            worldEventManager = EngineCore.GetModule<WorldEventManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
             monsterManager = EngineCore.GetModule<MonsterManager>();
 
@@ -224,10 +226,10 @@ namespace DiabloSimulator
         private void AddWorldEvent(GameEvents action)
         {
             EngineCore.RaiseGameEvent(this, action);
-            var eventsText = GetActionResult(action);
+            ChoiceText = gameManager.CurrentChoiceText;
 
             // Add to list view
-            foreach (string eventString in eventsText)
+            foreach (string eventString in worldEventManager.WorldEventsText)
             {
                 WorldEventLog.Add(eventString);
             }
@@ -237,19 +239,6 @@ namespace DiabloSimulator
                 Application.Current.Dispatcher?.Invoke(() =>
                 (Application.Current.MainWindow as GameWindow)
                 .ctrlMonster.OnMonsterChanged(this, null));
-        }
-
-        private List<string> GetActionResult(GameEvents actionType)
-        {
-            return GetActionResult(new PlayerAction(actionType));
-        }
-
-        private List<string> GetActionResult(PlayerAction action)
-        {
-            PlayerActionResult result = gameManager.GetActionResult(action);
-            ChoiceText = gameManager.CurrentChoiceText;
-
-            return result.resultText;
         }
 
         #endregion
@@ -265,5 +254,6 @@ namespace DiabloSimulator
         HeroManager heroManager;
         MonsterManager monsterManager;
         GameManager gameManager;
+        WorldEventManager worldEventManager;
     }
 }

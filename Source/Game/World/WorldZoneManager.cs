@@ -35,10 +35,8 @@ namespace DiabloSimulator.Game.World
 
         public void SetZone(string name)
         {
-            heroManager.Hero.CurrentZone = name;
-
             // Only change zones if necessary
-            if (CurrentZone != null && heroManager.Hero.CurrentZone == CurrentZone.Name)
+            if (CurrentZone != null && CurrentZone.Name == name)
                 return;
 
             CurrentZone = zoneFactory.Create(name);

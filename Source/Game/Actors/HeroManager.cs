@@ -48,6 +48,7 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
             AddEventHandler(GameEvents.PlayerRest, OnPlayerRest);
             AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
+            AddEventHandler(GameEvents.SetWorldZone, OnSetWorldZone);
         }
 
         public void CreateHero()
@@ -203,6 +204,11 @@ namespace DiabloSimulator.Game
                 "Click " + GameManager.discoverChoiceText.Choice01Text
                 + " to explore this area. If you wish to return to the previous area, " +
                 "click " + GameManager.discoverChoiceText.Choice02Text + ".");
+        }
+
+        private void OnSetWorldZone(object sender, GameEventArgs e)
+        {
+            Hero.CurrentZone = e.Get<string>();
         }
 
         //------------------------------------------------------------------------------

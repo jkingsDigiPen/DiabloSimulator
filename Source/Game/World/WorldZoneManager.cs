@@ -97,7 +97,6 @@ namespace DiabloSimulator.Game.World
                     "and suddenly a glowing, translucent portal opens up in the air in front of you. " +
                     "Stepping through it, you find yourself back in town.");
                 SetZone("New Tristram");
-                RaiseGameEvent(GameEvents.PlayerLook);
             }
         }
 

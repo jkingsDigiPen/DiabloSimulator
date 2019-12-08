@@ -8,6 +8,7 @@
 
 using DiabloSimulator.Engine;
 using DiabloSimulator.Game.World;
+using System;
 using System.Collections.Generic;
 
 namespace DiabloSimulator.Game
@@ -24,13 +25,14 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            gameManager = EngineCore.GetModule<GameManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
             zoneManager = EngineCore.GetModule<WorldZoneManager>();
 
             // Register for events
             AddEventHandler(GameEvents.HeroAttack, OnHeroAttack);
             AddEventHandler(GameEvents.PlayerFlee, OnPlayerFlee);
+            AddEventHandler(GameEvents.HeroDead, OnHeroDead);
+            AddEventHandler(GameEvents.PlayerDefend, OnPlayerDefend);
         }
 
         public void CreateMonster(string name = null)
@@ -46,13 +48,6 @@ namespace DiabloSimulator.Game
                 Monster = zoneManager.CurrentZone.MonsterTable.GenerateObject(
                     heroManager.Hero, monsterFactory);
             }
-        }
-
-        public void DestroyMonster()
-        {
-            Monster.Kill();
-            Monster = new Monster();
-            gameManager.InCombat = false;
         }
 
         public string DamageMonster(float amount)
@@ -80,8 +75,7 @@ namespace DiabloSimulator.Game
 
             if (!Monster.IsDead)
             {
-                var damageArgs = Monster.GetAttackDamage();
-                RaiseGameEvent(GameEvents.MonsterAttack, Monster, damageArgs);
+                RaiseGameEvent(GameEvents.MonsterAttack, Monster, Monster.GetAttackDamage());
             }
             else
             {
@@ -91,7 +85,58 @@ namespace DiabloSimulator.Game
 
         private void OnPlayerFlee(object sender, GameEventArgs e)
         {
+            RaiseGameEvent(GameEvents.AddWorldEventText, this,
+               "You attempt to flee from the " + Monster.Race + "...");
 
+            bool fleeSuccess = random.NextDouble() <= 0.6f;
+            if (fleeSuccess)
+            {
+                RaiseGameEvent(GameEvents.AddWorldEventText, this,
+                    "You have successfully escaped from " + Monster.Name + ".");
+                DestroyAllMonsters();
+                RaiseGameEvent(GameEvents.PlayerLook);
+            }
+            else
+            {
+                RaiseGameEvent(GameEvents.AddWorldEventText, this, "You can't seem to find an opening" +
+                    " to escape! You are locked in combat with " + Monster.Name + ".");
+
+                if (!Monster.IsDead)
+                {
+                    RaiseGameEvent(GameEvents.MonsterAttack, Monster, Monster.GetAttackDamage());
+                }
+
+                RaiseGameEvent(GameEvents.AdvanceTime);
+            }
+        }
+
+        private void OnPlayerDefend(object sender, GameEventArgs e)
+        {
+            // TO DO: Add additive bonus dodge chance to hero, mult bonus to block chance
+
+            RaiseGameEvent(GameEvents.AddWorldEventText, this,
+                "You steel yourself, waiting for your enemy to attack.");
+
+            if (!Monster.IsDead)
+            {
+                RaiseGameEvent(GameEvents.MonsterAttack, Monster, Monster.GetAttackDamage());
+            }
+
+            // TO DO: Remove bonus dodge chance, block chance
+
+            RaiseGameEvent(GameEvents.AdvanceTime);
+        }
+
+        private void OnHeroDead(object sender, GameEventArgs e)
+        {
+            DestroyAllMonsters();
+        }
+
+        private void DestroyAllMonsters()
+        {
+            Monster.Kill();
+            Monster = new Monster();
+            RaiseGameEvent(GameEvents.MonsterDead, Monster);
         }
 
         //------------------------------------------------------------------------------
@@ -101,8 +146,10 @@ namespace DiabloSimulator.Game
         private MonsterFactory monsterFactory = new MonsterFactory();
 
         // Modules
-        GameManager gameManager;
         HeroManager heroManager;
         WorldZoneManager zoneManager;
+
+        // Internal data
+        private Random random = new Random();
     }
 }

@@ -7,9 +7,6 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
-using DiabloSimulator.Game.World;
-using System;
-using System.Windows;
 
 namespace DiabloSimulator.Game
 {
@@ -27,14 +24,11 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            monsterManager = EngineCore.GetModule<MonsterManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
 
             // Register for player actions
             AddEventHandler(GameEvents.PlayerAttack, OnPlayerAttack);
-            AddEventHandler(GameEvents.PlayerDefend, OnPlayerDefend);
             AddEventHandler(GameEvents.PlayerRest, OnPlayerRest);
-            AddEventHandler(GameEvents.PlayerFlee, OnPlayerFlee);
             AddEventHandler(GameEvents.PlayerProceed, OnPlayerProceed);
             AddEventHandler(GameEvents.PlayerBack, OnPlayerBack);
 
@@ -84,24 +78,6 @@ namespace DiabloSimulator.Game
             RaiseGameEvent(GameEvents.AdvanceTime);
         }
 
-        private void OnPlayerDefend(object sender, GameEventArgs e)
-        {
-            // TO DO: Add additive bonus dodge chance, mult bonus to block chance
-            RaiseGameEvent(GameEvents.AddWorldEventText, this,
-                "You steel yourself, waiting for your enemy to attack.");
-
-            if (!monsterManager.Monster.IsDead)
-            {
-                string damageDealtString = heroManager.Hero.Damage(monsterManager.Monster.GetAttackDamage());
-                RaiseGameEvent(GameEvents.AddWorldEventText, this, monsterManager.Monster.Name 
-                    + " attacks you. " + damageDealtString);
-            }
-
-            // TO DO: Remove bonus dodge chance, block chance
-
-            RaiseGameEvent(GameEvents.AdvanceTime);
-        }
-
         private void OnPlayerRest(object sender, GameEventArgs e)
         {
             // Add regen - additive and multiplicative
@@ -120,36 +96,6 @@ namespace DiabloSimulator.Game
             // Remove temporary regen
             heroManager.Hero.Stats.RemoveModifier(regenMultBonus);
             heroManager.Hero.Stats.RemoveModifier(regenAddBonus);
-        }
-
-        private void OnPlayerFlee(object sender, GameEventArgs e)
-        {
-            RaiseGameEvent(GameEvents.AddWorldEventText, this, 
-                "You attempt to flee from the " + monsterManager.Monster.Race + "...");
-
-            // 60% flee chance
-            bool fleeSuccess = random.NextDouble() <= 0.6f;
-            if(fleeSuccess)
-            {
-                RaiseGameEvent(GameEvents.AddWorldEventText, this, 
-                    "You have successfully escaped from " + monsterManager.Monster.Name + ".");
-                monsterManager.DestroyMonster();
-                RaiseGameEvent(GameEvents.PlayerLook);
-            }
-            else
-            {
-                RaiseGameEvent(GameEvents.AddWorldEventText, this, "You can't seem to find an opening to escape! " +
-                    "You are locked in combat with " + monsterManager.Monster.Name + ".");
-
-                if (!monsterManager.Monster.IsDead)
-                {
-                    string damageDealtString = heroManager.Hero.Damage(monsterManager.Monster.GetAttackDamage());
-                    RaiseGameEvent(GameEvents.AddWorldEventText, this, 
-                        monsterManager.Monster.Name + " attacks you. " + damageDealtString);
-                }
-
-                RaiseGameEvent(GameEvents.AdvanceTime);
-            }
         }
 
         private void OnPlayerProceed(object sender, GameEventArgs e)
@@ -176,7 +122,6 @@ namespace DiabloSimulator.Game
         private void OnHeroDead(object sender, GameEventArgs e)
         {
             InCombat = false;
-            GameOver();
         }
 
         #endregion
@@ -186,20 +131,6 @@ namespace DiabloSimulator.Game
         private void OnAdvanceTime(object sender, GameEventArgs e)
         {
             if(InCombat) ++Turns;
-        }
-
-        private void GameOver()
-        {
-            MessageBox.Show("You have died. You will be revived in town.", 
-                "Diablo Simulator", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            heroManager.Hero.Revive();
-            monsterManager.DestroyMonster();
-
-            RaiseGameEvent(GameEvents.AddWorldEventText, this, "A fellow wanderer stumbles upon your lifeless body " +
-                "and brings you back to town, where the healers somehow manage to breathe life " +
-                "into you once again.");
-            RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
         }
 
         #endregion
@@ -234,11 +165,7 @@ namespace DiabloSimulator.Game
         // Game state
         private bool inCombat;
 
-        // Internal data
-        private Random random = new Random();
-
         // Module references
-        MonsterManager monsterManager;
         HeroManager heroManager;
     }
 }

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using DiabloSimulator.Engine;
 using DiabloSimulator.Game.World;
 using Newtonsoft.Json;
@@ -46,6 +47,7 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.MonsterAttack, OnMonsterAttack);
             AddEventHandler(GameEvents.MonsterDead, OnMonsterDead);
             AddEventHandler(GameEvents.AdvanceTime, OnAdvanceTime);
+            AddEventHandler(GameEvents.HeroDead, OnHeroDead);
         }
 
         public void CreateHero()
@@ -134,7 +136,8 @@ namespace DiabloSimulator.Game
         private void OnMonsterDead(object sender, GameEventArgs e)
         {
             Monster monster = sender as Monster;
-            Hero.AddExperience(monster);
+            if(monster.Name != Monster.EmptyMonster)
+                Hero.AddExperience(monster);
         }
 
         private void OnAdvanceTime(object sender, GameEventArgs e)
@@ -147,6 +150,17 @@ namespace DiabloSimulator.Game
                 RaiseGameEvent(GameEvents.AddWorldEventText, Hero, 
                     Hero.Heal(lifeRegenAmount) + " from natural healing.");
             }
+        }
+
+        private void OnHeroDead(object sender, GameEventArgs e)
+        {
+            MessageBox.Show("You have died. You will be revived in town.",
+                "Diablo Simulator", MessageBoxButton.OK, MessageBoxImage.Information);
+            Hero.Revive();
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, "A fellow wanderer stumbles upon your lifeless body " +
+               "and brings you back to town, where the healers somehow manage to breathe life " +
+               "into you once again.");
+            RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
         }
 
         //------------------------------------------------------------------------------

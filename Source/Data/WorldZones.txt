@@ -1,7 +1,7 @@
 {
-  "Tristram": {
-    "Name": "Tristram",
-    "LookText": "You are in the town of Tristram, a place of relative safety.",
+  "New Tristram": {
+    "Name": "New Tristram",
+    "LookText": "You are in the town of New Tristram, a place of relative safety.",
     "ConnectedZones": [
       "Old Tristram Road"
     ],
@@ -34,7 +34,7 @@
             "PreviousEventName": null,
             "NextEventName": null,
             "EventText": "Exiting the town's eastern gate, you find a weathered road leading north.",
-            "EventType": 4,
+            "EventType": 13,
             "EventData": [],
             "UniquePerSession": false,
             "UniquePerHero": false
@@ -45,7 +45,7 @@
         "Legendary": []
       }
     },
-    "MusicTrackName": null,
+    "BackgroundTrackName": null,
     "AmbientTrackName": null
   },
   "Old Tristram Road": {
@@ -87,7 +87,7 @@
             "PreviousEventName": null,
             "NextEventName": null,
             "EventText": "As you wander, you stumble into the territory of a monster.",
-            "EventType": 0,
+            "EventType": 12,
             "EventData": [],
             "UniquePerSession": false,
             "UniquePerHero": false
@@ -98,7 +98,7 @@
         "Legendary": []
       }
     },
-    "MusicTrackName": null,
+    "BackgroundTrackName": null,
     "AmbientTrackName": null
   }
 }

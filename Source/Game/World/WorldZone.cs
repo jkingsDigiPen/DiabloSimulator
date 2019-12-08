@@ -49,7 +49,7 @@ namespace DiabloSimulator.Game.World
             ConnectedZones = new List<string>(other.ConnectedZones);
             MonsterTable = new MonsterTable(other.MonsterTable);
             EventTable = new WorldEventTable(other.EventTable);
-            MusicTrackName = other.MusicTrackName;
+            BackgroundTrackName = other.BackgroundTrackName;
             AmbientTrackName = other.AmbientTrackName;
         }
 
@@ -71,7 +71,7 @@ namespace DiabloSimulator.Game.World
         public WorldEventTable EventTable { get; set; }
 
         // Name of the event used for music in this level
-        public string MusicTrackName { get; set; }
+        public string BackgroundTrackName { get; set; }
 
         // Name of the event used for ambience in this level
         public string AmbientTrackName { get; set; }

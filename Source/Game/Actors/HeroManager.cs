@@ -27,8 +27,7 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            worldEventManager = EngineCore.GetModule<WorldEventManager>();
-            zoneManager = EngineCore.GetModule<ZoneManager>();
+            zoneManager = EngineCore.GetModule<WorldZoneManager>();
 
             // Create save location if it doesn't exist
             saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
@@ -55,7 +54,7 @@ namespace DiabloSimulator.Game
             Hero = heroFactory.Create(Hero.Archetype, Hero);
 
             // Set starting zone
-            zoneManager.SetZone("Tristram");
+            zoneManager.SetZone("New Tristram");
             Hero.DiscoveredZones.Add(Hero.CurrentZone);
 
             // Add starting equipment
@@ -94,7 +93,7 @@ namespace DiabloSimulator.Game
             Hero.Stats.RemapModifierSources(Hero);
 
             // Load zone data
-            zoneManager.SetZone(Hero.CurrentZone);
+            RaiseGameEvent(GameEvents.SetWorldZone, this, Hero.CurrentZone);
         }
 
         //------------------------------------------------------------------------------
@@ -126,7 +125,7 @@ namespace DiabloSimulator.Game
         {
             Monster monster = sender as Monster;
             string damageDealtString = Hero.Damage(e.Get<List<DamageArgs>>());
-            RaiseGameEvent(GameEvents.WorldEventText, this, monster.Name + " attacks you. " + damageDealtString);
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, monster.Name + " attacks you. " + damageDealtString);
 
             if(Hero.IsDead)
                 RaiseGameEvent(GameEvents.HeroDead, Hero);
@@ -145,7 +144,7 @@ namespace DiabloSimulator.Game
             float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
             if (lifeRegenAmount != 0)
             {
-                RaiseGameEvent(GameEvents.WorldEventText, Hero, 
+                RaiseGameEvent(GameEvents.AddWorldEventText, Hero, 
                     Hero.Heal(lifeRegenAmount) + " from natural healing.");
             }
         }
@@ -159,7 +158,6 @@ namespace DiabloSimulator.Game
         private string saveLocation;
 
         // Modules
-        private WorldEventManager worldEventManager;
-        private ZoneManager zoneManager;
+        private WorldZoneManager zoneManager;
     }
 }

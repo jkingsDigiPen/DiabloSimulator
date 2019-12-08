@@ -155,7 +155,7 @@ namespace DiabloSimulator
 
         public void OnGameLoaded(object sender, RoutedEventArgs e)
         {
-            AddWorldEvent(GameEvents.PlayerLook);
+            AddWorldEvent(GameEvents.GameStart);
         }
 
         public void OnQuitGame(object sender, CancelEventArgs e)
@@ -223,6 +223,7 @@ namespace DiabloSimulator
 
         private void AddWorldEvent(GameEvents action)
         {
+            EngineCore.RaiseGameEvent(this, action);
             var eventsText = GetActionResult(action);
 
             // Add to list view
@@ -233,9 +234,9 @@ namespace DiabloSimulator
 
             // TO DO: Figure out way to correctly propagate monster change
             if (InCombat)
-                App.Current.Dispatcher?.Invoke(() =>
-                (App.Current.MainWindow as GameWindow)
-                .ctrlMonster.OnMonsterChanged(null, null));
+                Application.Current.Dispatcher?.Invoke(() =>
+                (Application.Current.MainWindow as GameWindow)
+                .ctrlMonster.OnMonsterChanged(this, null));
         }
 
         private List<string> GetActionResult(GameEvents actionType)
@@ -246,7 +247,7 @@ namespace DiabloSimulator
         private List<string> GetActionResult(PlayerAction action)
         {
             PlayerActionResult result = gameManager.GetActionResult(action);
-            ChoiceText = result.choiceText;
+            ChoiceText = gameManager.CurrentChoiceText;
 
             return result.resultText;
         }

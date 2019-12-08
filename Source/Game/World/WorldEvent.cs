@@ -14,24 +14,13 @@ namespace DiabloSimulator.Game.World
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public enum WorldEventType
-    {
-        MonsterEvent,
-        ItemEvent,
-        GoldEvent,
-        PotionEvent,
-        ZoneDiscoveryEvent,
-        TextEvent,
-        ChoiceEvent,
-    }
-
     public class WorldEvent
     {
         //------------------------------------------------------------------------------
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public WorldEvent(string name_, WorldEventType type_, string eventText_)
+        public WorldEvent(string name_, GameEvents type_, string eventText_)
         {
             Name = name_;
             EventType = type_;
@@ -50,7 +39,7 @@ namespace DiabloSimulator.Game.World
 
         public string EventText { get; set; } = null;
 
-        public WorldEventType EventType { get; set; } = WorldEventType.TextEvent;
+        public GameEvents EventType { get; set; } = GameEvents.WorldText;
 
         public List<string> EventData { get; set; } = new List<string>();
 

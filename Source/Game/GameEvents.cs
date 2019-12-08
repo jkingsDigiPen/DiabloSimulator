@@ -28,10 +28,20 @@ namespace DiabloSimulator.Game
         [Description("No")]
         PlayerNo,
 
-        // World
-        WorldEventText,
+        // World Text
+        AddWorldEventText,
+
+        // World Event
+        WorldMonster,
+        WorldZoneDiscovery,
+        WorldText,
+        WorldItem,
+        WorldGold,
+        WorldPotion,
+        WorldChoice,
 
         // Game
+        GameStart,
         AdvanceTime,
 
         // Monster
@@ -41,5 +51,13 @@ namespace DiabloSimulator.Game
         // Hero
         HeroDead,
         HeroAttack,
+
+        // World Zone
+        SetWorldZone,
+
+        // Audio
+        SetAmbientTrack,
+        SetBackgroundTrack,
+        LoadAudioBank,
     }
 }

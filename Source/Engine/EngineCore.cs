@@ -12,7 +12,7 @@ namespace DiabloSimulator.Engine
             AddModule(new ConsoleManager());
             AddModule(new AudioManager());
             AddModule(new GameManager());
-            AddModule(new ZoneManager());
+            AddModule(new WorldZoneManager());
             AddModule(new WorldEventManager());
             AddModule(new HeroManager());
             AddModule(new MonsterManager());
@@ -39,6 +39,11 @@ namespace DiabloSimulator.Engine
         public static void AddModule(IModule module)
         {
             modules.Add(module);
+        }
+
+        public static void RaiseGameEvent(object sender, GameEvents name)
+        {
+            RaiseGameEvent(sender, new GameEventArgs(name));
         }
 
         public static void RaiseGameEvent(object sender, GameEventArgs e)

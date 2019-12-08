@@ -25,8 +25,8 @@ namespace DiabloSimulator.Game.World
 
         public WorldZoneFactory()
         {
-            //AddZoneArchetypes();
-            LoadArchetypesFromFile();
+            AddZoneArchetypes();
+            //LoadArchetypesFromFile();
         }
 
         public override void AddArchetype(WorldZone archetype)
@@ -74,12 +74,12 @@ namespace DiabloSimulator.Game.World
         private void AddZoneArchetypes()
         {
             // TRISTRAM
-            WorldZone zone = new WorldZone("Tristram", WorldZoneType.Town, 
-                "You are in the town of Tristram, a place of relative safety.");
+            WorldZone zone = new WorldZone("New Tristram", WorldZoneType.Town, 
+                "You are in the town of New Tristram, a place of relative safety.");
             zone.ConnectedZones.Add("Old Tristram Road");
 
             // Discover next zone
-            WorldEvent worldEvent = new WorldEvent("Old Tristram Road", WorldEventType.ZoneDiscoveryEvent,
+            WorldEvent worldEvent = new WorldEvent("Old Tristram Road", GameEvents.WorldZoneDiscovery,
                 "Exiting the town's eastern gate, you find a weathered road leading north.");
             zone.EventTable.Events[EventRarity.Common].Add(worldEvent);
 
@@ -93,7 +93,7 @@ namespace DiabloSimulator.Game.World
             zone.MonsterTable.Monsters[MonsterRarity.Common].Add("Fallen Imp");
             zone.MonsterTable.Monsters[MonsterRarity.Uncommon].Add("Fallen Shaman");
 
-            worldEvent = new WorldEvent("Wandering Monster", WorldEventType.MonsterEvent,
+            worldEvent = new WorldEvent("Wandering Monster", GameEvents.WorldMonster,
                 "As you wander, you stumble into the territory of a monster.");
             zone.EventTable.Events[EventRarity.Common].Add(worldEvent);
 

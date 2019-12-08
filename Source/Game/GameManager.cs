@@ -30,20 +30,12 @@ namespace DiabloSimulator.Game
             worldEventManager = EngineCore.GetModule<WorldEventManager>();
             monsterManager = EngineCore.GetModule<MonsterManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
-            audioManager = EngineCore.GetModule<AudioManager>();
-            zoneManager = EngineCore.GetModule<ZoneManager>();
-
-            // Load audio shtuff
-            audioManager.LoadBank("Master.strings");
-            audioManager.LoadBank("Master");
-            audioManager.LoadBank("Music");
 
             // Register for player actions
             AddEventHandler(GameEvents.PlayerAttack, OnPlayerAttack);
             AddEventHandler(GameEvents.PlayerDefend, OnPlayerDefend);
             AddEventHandler(GameEvents.PlayerRest, OnPlayerRest);
             AddEventHandler(GameEvents.PlayerFlee, OnPlayerFlee);
-            AddEventHandler(GameEvents.PlayerTownPortal, OnPlayerTownPortal);
             AddEventHandler(GameEvents.PlayerProceed, OnPlayerProceed);
             AddEventHandler(GameEvents.PlayerBack, OnPlayerBack);
 
@@ -51,6 +43,11 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.MonsterDead, OnMonsterDead);
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
             AddEventHandler(GameEvents.AdvanceTime, OnAdvanceTime);
+
+            // Load audio shtuff
+            RaiseGameEvent(GameEvents.LoadAudioBank, this, "Master.strings");
+            RaiseGameEvent(GameEvents.LoadAudioBank, this, "Master");
+            RaiseGameEvent(GameEvents.LoadAudioBank, this, "Music");
         }
 
         #endregion
@@ -59,9 +56,6 @@ namespace DiabloSimulator.Game
 
         public PlayerActionResult GetActionResult(PlayerAction action)
         {
-            // Raise action event
-            RaiseGameEvent(action.actionType);
-
             // Return output
             var result = worldEventManager.WorldEventsText;
 
@@ -84,7 +78,7 @@ namespace DiabloSimulator.Game
 
         public int Turns { get; set; }
 
-        public PlayerChoiceText CurrentChoiceText { get; set; }
+        public PlayerChoiceText CurrentChoiceText { get; set; } = exploreChoiceText;
 
         #endregion
 
@@ -102,13 +96,13 @@ namespace DiabloSimulator.Game
         private void OnPlayerDefend(object sender, GameEventArgs e)
         {
             // TO DO: Add additive bonus dodge chance, mult bonus to block chance
-            RaiseGameEvent(GameEvents.WorldEventText, this,
+            RaiseGameEvent(GameEvents.AddWorldEventText, this,
                 "You steel yourself, waiting for your enemy to attack.");
 
             if (!monsterManager.Monster.IsDead)
             {
                 string damageDealtString = heroManager.Hero.Damage(monsterManager.Monster.GetAttackDamage());
-                RaiseGameEvent(GameEvents.WorldEventText, this, monsterManager.Monster.Name 
+                RaiseGameEvent(GameEvents.AddWorldEventText, this, monsterManager.Monster.Name 
                     + " attacks you. " + damageDealtString);
             }
 
@@ -127,7 +121,7 @@ namespace DiabloSimulator.Game
 
             heroManager.Hero.Stats.AddModifier(regenMultBonus);
             heroManager.Hero.Stats.AddModifier(regenAddBonus);
-            RaiseGameEvent(GameEvents.WorldEventText, this, "You rest for a short while. You feel healthier!");
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, "You rest for a short while. You feel healthier!");
 
             // Step time forward to heal
             RaiseGameEvent(GameEvents.AdvanceTime);
@@ -139,27 +133,27 @@ namespace DiabloSimulator.Game
 
         private void OnPlayerFlee(object sender, GameEventArgs e)
         {
-            RaiseGameEvent(GameEvents.WorldEventText, this, 
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, 
                 "You attempt to flee from the " + monsterManager.Monster.Race + "...");
 
             // 60% flee chance
             bool fleeSuccess = random.NextDouble() <= 0.6f;
             if(fleeSuccess)
             {
-                RaiseGameEvent(GameEvents.WorldEventText, this, 
+                RaiseGameEvent(GameEvents.AddWorldEventText, this, 
                     "You have successfully escaped from " + monsterManager.Monster.Name + ".");
                 monsterManager.DestroyMonster();
                 RaiseGameEvent(GameEvents.PlayerLook);
             }
             else
             {
-                RaiseGameEvent(GameEvents.WorldEventText, this, "You can't seem to find an opening to escape! " +
+                RaiseGameEvent(GameEvents.AddWorldEventText, this, "You can't seem to find an opening to escape! " +
                     "You are locked in combat with " + monsterManager.Monster.Name + ".");
 
                 if (!monsterManager.Monster.IsDead)
                 {
                     string damageDealtString = heroManager.Hero.Damage(monsterManager.Monster.GetAttackDamage());
-                    RaiseGameEvent(GameEvents.WorldEventText, this, 
+                    RaiseGameEvent(GameEvents.AddWorldEventText, this, 
                         monsterManager.Monster.Name + " attacks you. " + damageDealtString);
                 }
 
@@ -167,36 +161,14 @@ namespace DiabloSimulator.Game
             }
         }
 
-        private void OnPlayerTownPortal(object sender, GameEventArgs e)
-        {
-            if (zoneManager.CurrentZone.ZoneType == WorldZoneType.Town)
-            {
-                RaiseGameEvent(GameEvents.WorldEventText, this, 
-                    "There is no need to cast 'Town Portal' at this time. " +
-                    "You are already in town.");
-            }
-            else
-            {
-                RaiseGameEvent(GameEvents.WorldEventText, this, "You reach into your pack and take out " +
-                    "a dusty blue tome containing the 'Town Portal' spell. You read the words aloud " +
-                    "and suddenly a glowing, translucent portal opens up in the air in front of you. " +
-                    "Stepping through it, you find yourself back in town.");
-                zoneManager.SetZone("Tristram");
-                RaiseGameEvent(GameEvents.PlayerLook);
-            }
-        }
-
         private void OnPlayerProceed(object sender, GameEventArgs e)
         {
-            zoneManager.AdvanceToNextZone();
-            RaiseGameEvent(GameEvents.PlayerLook);
+            // TO DO: Provide town choices if in town
+            CurrentChoiceText = exploreChoiceText;
         }
 
         private void OnPlayerBack(object sender, GameEventArgs e)
         {
-            RaiseGameEvent(GameEvents.WorldEventText, this, "You step back from the entrance to " 
-                + zoneManager.NextZoneName + ", remaining in " + zoneManager.CurrentZone.Name + ".");
-
             // TO DO: Provide town choices if in town
             CurrentChoiceText = exploreChoiceText;
         }
@@ -233,10 +205,10 @@ namespace DiabloSimulator.Game
             heroManager.Hero.Revive();
             monsterManager.DestroyMonster();
 
-            RaiseGameEvent(GameEvents.WorldEventText, this, "A fellow wanderer stumbles upon your lifeless body " +
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, "A fellow wanderer stumbles upon your lifeless body " +
                 "and brings you back to town, where the healers somehow manage to breathe life " +
                 "into you once again.");
-            zoneManager.SetZone("Tristram");
+            RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
             RaiseGameEvent(GameEvents.PlayerLook);
         }
 
@@ -279,7 +251,5 @@ namespace DiabloSimulator.Game
         WorldEventManager worldEventManager;
         MonsterManager monsterManager;
         HeroManager heroManager;
-        AudioManager audioManager;
-        ZoneManager zoneManager;
     }
 }

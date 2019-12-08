@@ -42,6 +42,11 @@ namespace DiabloSimulator.Engine
             #pragma warning disable 4014
             RunPeriodicAsync(Update, dueTime, interval, CancellationToken.None);
             #pragma warning restore 4014
+
+            // Register for events
+            AddEventHandler(Game.GameEvents.SetBackgroundTrack, OnSetBackgroundTrack);
+            AddEventHandler(Game.GameEvents.SetAmbientTrack, OnSetAmbientTrack);
+            AddEventHandler(Game.GameEvents.LoadAudioBank, OnLoadAudioBank);
         }
 
         public EventInstance PlayEvent(string eventName, float volume = 1.0f)
@@ -77,15 +82,41 @@ namespace DiabloSimulator.Engine
         }
 
         //------------------------------------------------------------------------------
-        // Public Functions:
-        //------------------------------------------------------------------------------
-
-        public EventInstance musicTrack;
-        public EventInstance ambientTrack;
-
-        //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
+
+        #region eventHandlers
+        private void OnSetAmbientTrack(object sender, GameEventArgs e)
+        {
+            string ambientTrackName = e.Get<string>();
+
+            // Set the mood
+            if (ambientTrack.isValid())
+                AudioManager.ErrorCheck(ambientTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
+            if (ambientTrackName != null)
+                ambientTrack = PlayEvent(ambientTrackName, 0.5f);
+        }
+
+        private void OnSetBackgroundTrack(object sender, GameEventArgs e)
+        {
+            string backgroundTrackName = e.Get<string>();
+
+            // Play that funky muzak
+            if (backgroundTrack.isValid())
+                AudioManager.ErrorCheck(backgroundTrack.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
+            if (backgroundTrackName != null)
+                backgroundTrack = PlayEvent(backgroundTrackName, 0.5f);
+        }
+
+        private void OnLoadAudioBank(object sender, GameEventArgs e)
+        {
+            LoadBank(e.Get<string>());
+        }
+
+        #endregion
+
+        #region audioEngine
+
 
         private void Update()
         {
@@ -158,6 +189,8 @@ namespace DiabloSimulator.Engine
             }
         }
 
+        #endregion
+
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
@@ -166,5 +199,8 @@ namespace DiabloSimulator.Engine
 
         private const string audioFilePath = "Assets\\Audio\\";
         private const string eventPrefix = "event:/";
+
+        private EventInstance backgroundTrack;
+        private EventInstance ambientTrack;
     }
 }

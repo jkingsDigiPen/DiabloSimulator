@@ -30,6 +30,7 @@ namespace DiabloSimulator.Game.World
             AddEventHandler(GameEvents.PlayerBack, OnPlayerBack);
             AddEventHandler(GameEvents.SetWorldZone, OnSetWorldZone);
             AddEventHandler(GameEvents.PlayerTownPortal, OnPlayerTownPortal);
+            AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
         }
 
         public void SetZone(string name)
@@ -103,6 +104,12 @@ namespace DiabloSimulator.Game.World
         private void OnSetWorldZone(object sender, GameEventArgs e)
         {
             SetZone(e.Get<string>());
+        }
+
+        private void OnWorldZoneDiscovery(object sender, GameEventArgs e)
+        {
+            WorldEvent worldEvent = e.Get<WorldEvent>();
+            NextZoneName = worldEvent.Name;
         }
 
         //------------------------------------------------------------------------------

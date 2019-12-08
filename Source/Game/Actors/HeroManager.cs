@@ -47,6 +47,7 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.AdvanceTime, OnAdvanceTime);
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
             AddEventHandler(GameEvents.PlayerRest, OnPlayerRest);
+            AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
         }
 
         public void CreateHero()
@@ -182,6 +183,26 @@ namespace DiabloSimulator.Game
             // Remove temporary regen
             Hero.Stats.RemoveModifier(regenMultBonus);
             Hero.Stats.RemoveModifier(regenAddBonus);
+        }
+
+        private void OnWorldZoneDiscovery(object sender, GameEventArgs e)
+        {
+            WorldEvent worldEvent = e.Get<WorldEvent>();
+            if (!Hero.DiscoveredZones.Contains(worldEvent.Name))
+            {
+                Hero.DiscoveredZones.Add(worldEvent.Name);
+                RaiseGameEvent(GameEvents.AddWorldEventText, this,
+                    "You have discovered " + worldEvent.Name + "!");
+            }
+            else
+            {
+                RaiseGameEvent(GameEvents.AddWorldEventText, this,
+                    "You have found the entrance to " + worldEvent.Name + ".");
+            }
+            RaiseGameEvent(GameEvents.AddWorldEventText, this,
+                "Click " + GameManager.discoverChoiceText.Choice01Text
+                + " to explore this area. If you wish to return to the previous area, " +
+                "click " + GameManager.discoverChoiceText.Choice02Text + ".");
         }
 
         //------------------------------------------------------------------------------

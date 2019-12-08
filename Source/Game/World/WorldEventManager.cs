@@ -23,13 +23,8 @@ namespace DiabloSimulator.Game.World
 
         public override void Inintialize()
         {
-            zoneManager = EngineCore.GetModule<WorldZoneManager>();
-            gameManager = EngineCore.GetModule<GameManager>();
-            heroManager = EngineCore.GetModule<HeroManager>();
-
             // Register for events
             AddEventHandler(GameEvents.AddWorldEventText, OnAddWorldEventText);
-            AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
 
             // Initial game text (new or otherwise)
             RaiseGameEvent(GameEvents.AddWorldEventText, this, "Welcome to the world of Sanctuary!");
@@ -54,41 +49,10 @@ namespace DiabloSimulator.Game.World
             worldEventsText.Add(e.Get<string>());
         }
 
-        private void OnWorldZoneDiscovery(object sender, GameEventArgs e)
-        {
-            WorldEvent worldEvent = e.Get<WorldEvent>();
-
-            gameManager.CurrentChoiceText = GameManager.discoverChoiceText;
-
-            if (!heroManager.Hero.DiscoveredZones.Contains(worldEvent.Name))
-            {
-                heroManager.Hero.DiscoveredZones.Add(worldEvent.Name);
-                RaiseGameEvent(GameEvents.AddWorldEventText, this,
-                    "You have discovered " + worldEvent.Name + "!");
-            }
-            else
-            {
-                RaiseGameEvent(GameEvents.AddWorldEventText, this,
-                    "You have found the entrance to " + worldEvent.Name + ".");
-            }
-
-            zoneManager.NextZoneName = worldEvent.Name;
-
-            RaiseGameEvent(GameEvents.AddWorldEventText, this,
-                "Click " + GameManager.discoverChoiceText.Choice01Text
-                + " to explore this area. If you wish to return to the previous area, " +
-                "click " + GameManager.discoverChoiceText.Choice02Text + ".");
-        }
-
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private List<string> worldEventsText = new List<string>();
-
-        // Modules
-        private WorldZoneManager zoneManager;
-        private GameManager gameManager;
-        private HeroManager heroManager;
     }
 }

@@ -36,6 +36,7 @@ namespace DiabloSimulator.Game
 
             // Register for world events
             AddEventHandler(GameEvents.WorldMonster, OnWorldMonster);
+            AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
 
             // Load audio shtuff
             RaiseGameEvent(GameEvents.LoadAudioBank, this, "Master.strings");
@@ -112,6 +113,11 @@ namespace DiabloSimulator.Game
         private void OnAdvanceTime(object sender, GameEventArgs e)
         {
             if(InCombat) ++Turns;
+        }
+
+        private void OnWorldZoneDiscovery(object sender, GameEventArgs e)
+        {
+            CurrentChoiceText = discoverChoiceText;
         }
 
         #endregion

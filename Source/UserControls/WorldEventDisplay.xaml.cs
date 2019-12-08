@@ -45,7 +45,7 @@ namespace DiabloSimulator.UserControls
             View.WorldEventLog.CollectionChanged += OnCollectionChanged;
 
             // Tell view we are ready to start
-            View.OnGameLoaded(null, null);
+            View.OnGameLoaded(this, null);
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

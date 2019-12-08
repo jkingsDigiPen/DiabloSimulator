@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using System;
 using DiabloSimulator.Engine;
 
 namespace DiabloSimulator.Game
@@ -32,6 +33,9 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.MonsterDead, OnMonsterDead);
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
             AddEventHandler(GameEvents.AdvanceTime, OnAdvanceTime);
+
+            // Register for world events
+            AddEventHandler(GameEvents.WorldMonster, OnWorldMonster);
 
             // Load audio shtuff
             RaiseGameEvent(GameEvents.LoadAudioBank, this, "Master.strings");
@@ -93,6 +97,12 @@ namespace DiabloSimulator.Game
         private void OnHeroDead(object sender, GameEventArgs e)
         {
             InCombat = false;
+        }
+
+        private void OnWorldMonster(object sender, GameEventArgs e)
+        {
+            Turns = 0;
+            InCombat = true;
         }
 
         #endregion

@@ -25,12 +25,10 @@ namespace DiabloSimulator.Game.World
         {
             zoneManager = EngineCore.GetModule<WorldZoneManager>();
             gameManager = EngineCore.GetModule<GameManager>();
-            monsterManager = EngineCore.GetModule<MonsterManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
 
             // Register for events
             AddEventHandler(GameEvents.AddWorldEventText, OnAddWorldEventText);
-            AddEventHandler(GameEvents.WorldMonster, OnWorldMonster);
             AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
 
             // Initial game text (new or otherwise)
@@ -54,27 +52,6 @@ namespace DiabloSimulator.Game.World
         private void OnAddWorldEventText(object sender, GameEventArgs e)
         {
             worldEventsText.Add(e.Get<string>());
-        }
-
-        private void OnWorldMonster(object sender, GameEventArgs e)
-        {
-            WorldEvent worldEvent = e.Get<WorldEvent>();
-
-            gameManager.Turns = 0;
-            gameManager.InCombat = true;
-
-            // Assume random monster
-            string monsterName = null;
-            if (worldEvent.Name != "Wandering Monster")
-            {
-                // Get specific monster name
-                monsterName = worldEvent.EventData[0];
-            }
-            monsterManager.CreateMonster(monsterName);
-
-            RaiseGameEvent(GameEvents.AddWorldEventText, this, monsterManager.Monster.Name + ", a level "
-                    + monsterManager.Monster.Stats.Level + " "
-                    + monsterManager.Monster.Race + ", appeared!");
         }
 
         private void OnWorldZoneDiscovery(object sender, GameEventArgs e)
@@ -112,7 +89,6 @@ namespace DiabloSimulator.Game.World
         // Modules
         private WorldZoneManager zoneManager;
         private GameManager gameManager;
-        private MonsterManager monsterManager;
         private HeroManager heroManager;
     }
 }

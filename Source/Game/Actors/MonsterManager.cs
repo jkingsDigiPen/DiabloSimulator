@@ -33,28 +33,7 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.PlayerFlee, OnPlayerFlee);
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
             AddEventHandler(GameEvents.PlayerDefend, OnPlayerDefend);
-        }
-
-        public void CreateMonster(string name = null)
-        {
-            // Create specific monster
-            if(name != null)
-            {
-                Monster = monsterFactory.Create(name, heroManager.Hero);
-            }
-            // Create monster using monster table
-            else 
-            {
-                Monster = zoneManager.CurrentZone.MonsterTable.GenerateObject(
-                    heroManager.Hero, monsterFactory);
-            }
-        }
-
-        public string DamageMonster(float amount)
-        {
-            var damageList = new List<DamageArgs>();
-            damageList.Add(new DamageArgs(amount));
-            return Monster.Damage(damageList);
+            AddEventHandler(GameEvents.WorldMonster, OnWorldMonster);
         }
 
         //------------------------------------------------------------------------------
@@ -67,6 +46,7 @@ namespace DiabloSimulator.Game
         // Private Functions:
         //------------------------------------------------------------------------------
 
+        #region eventHandlers
         private void OnHeroAttack(object sender, GameEventArgs e)
         {
             string damageDealtString = Monster.Damage(e.Get<List<DamageArgs>>());
@@ -130,6 +110,41 @@ namespace DiabloSimulator.Game
         private void OnHeroDead(object sender, GameEventArgs e)
         {
             DestroyAllMonsters();
+        }
+
+        private void OnWorldMonster(object sender, GameEventArgs e)
+        {
+            WorldEvent worldEvent = e.Get<WorldEvent>();
+
+            // Assume random monster
+            string monsterName = null;
+            if (worldEvent.Name != "Wandering Monster")
+            {
+                // Get specific monster name
+                monsterName = worldEvent.EventData[0];
+            }
+            CreateMonster(monsterName);
+
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, Monster.Name + ", a level "
+                    + Monster.Stats.Level + " "
+                    + Monster.Race + ", appeared!");
+        }
+
+        #endregion
+
+        private void CreateMonster(string name = null)
+        {
+            // Create specific monster
+            if (name != null)
+            {
+                Monster = monsterFactory.Create(name, heroManager.Hero);
+            }
+            // Create monster using monster table
+            else
+            {
+                Monster = zoneManager.CurrentZone.MonsterTable.GenerateObject(
+                    heroManager.Hero, monsterFactory);
+            }
         }
 
         private void DestroyAllMonsters()

@@ -6,7 +6,6 @@
 //
 //------------------------------------------------------------------------------
 
-using System;
 using DiabloSimulator.Engine;
 
 namespace DiabloSimulator.Game

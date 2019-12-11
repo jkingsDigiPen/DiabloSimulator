@@ -31,6 +31,7 @@ namespace DiabloSimulator.Game.World
             AddEventHandler(GameEvents.SetWorldZone, OnSetWorldZone);
             AddEventHandler(GameEvents.PlayerTownPortal, OnPlayerTownPortal);
             AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
+            AddEventHandler(GameEvents.WorldMonster, OnWorldMonster);
         }
 
         public void SetZone(string name)
@@ -110,11 +111,41 @@ namespace DiabloSimulator.Game.World
             NextZoneName = worldEvent.Name;
         }
 
+        private void OnWorldMonster(object sender, GameEventArgs e)
+        {
+            WorldEvent worldEvent = e.Get<WorldEvent>();
+
+            // Assume random monster
+            string monsterName = null;
+            if (worldEvent.Name != "Wandering Monster")
+            {
+                // Get specific monster name
+                monsterName = worldEvent.EventData[0];
+            }
+
+            // Create specific monster
+            Monster monster;
+            if (monsterName != null)
+            {
+                monster = monsterFactory.Create(monsterName, heroManager.Hero);
+            }
+            // Create monster using monster table
+            else
+            {
+                monster = CurrentZone.MonsterTable.GenerateObject(
+                    heroManager.Hero, monsterFactory);
+            }
+
+            RaiseGameEvent(GameEvents.SetMonster, this, monster);
+        }
+
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
         private WorldZoneFactory zoneFactory = new WorldZoneFactory();
+        private MonsterFactory monsterFactory = new MonsterFactory();
+
 
         // Modules
         private HeroManager heroManager;

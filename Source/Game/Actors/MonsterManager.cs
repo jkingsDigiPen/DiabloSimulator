@@ -7,7 +7,6 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
-using DiabloSimulator.Game.World;
 using System;
 using System.Collections.Generic;
 
@@ -25,15 +24,12 @@ namespace DiabloSimulator.Game
 
         public override void Inintialize()
         {
-            heroManager = EngineCore.GetModule<HeroManager>();
-            zoneManager = EngineCore.GetModule<WorldZoneManager>();
-
             // Register for events
             AddEventHandler(GameEvents.HeroAttack, OnHeroAttack);
             AddEventHandler(GameEvents.PlayerFlee, OnPlayerFlee);
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
             AddEventHandler(GameEvents.PlayerDefend, OnPlayerDefend);
-            AddEventHandler(GameEvents.WorldMonster, OnWorldMonster);
+            AddEventHandler(GameEvents.SetMonster, OnSetMonster);
         }
 
         //------------------------------------------------------------------------------
@@ -112,40 +108,15 @@ namespace DiabloSimulator.Game
             DestroyAllMonsters();
         }
 
-        private void OnWorldMonster(object sender, GameEventArgs e)
+        private void OnSetMonster(object sender, GameEventArgs e)
         {
-            WorldEvent worldEvent = e.Get<WorldEvent>();
-
-            // Assume random monster
-            string monsterName = null;
-            if (worldEvent.Name != "Wandering Monster")
-            {
-                // Get specific monster name
-                monsterName = worldEvent.EventData[0];
-            }
-            CreateMonster(monsterName);
-
+            Monster = e.Get<Monster>();
             RaiseGameEvent(GameEvents.AddWorldEventText, this, Monster.Name + ", a level "
                     + Monster.Stats.Level + " "
                     + Monster.Race + ", appeared!");
         }
 
         #endregion
-
-        private void CreateMonster(string name = null)
-        {
-            // Create specific monster
-            if (name != null)
-            {
-                Monster = monsterFactory.Create(name, heroManager.Hero);
-            }
-            // Create monster using monster table
-            else
-            {
-                Monster = zoneManager.CurrentZone.MonsterTable.GenerateObject(
-                    heroManager.Hero, monsterFactory);
-            }
-        }
 
         private void DestroyAllMonsters()
         {
@@ -157,12 +128,6 @@ namespace DiabloSimulator.Game
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
-
-        private MonsterFactory monsterFactory = new MonsterFactory();
-
-        // Modules
-        HeroManager heroManager;
-        WorldZoneManager zoneManager;
 
         // Internal data
         private Random random = new Random();

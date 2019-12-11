@@ -47,6 +47,7 @@ namespace DiabloSimulator.Game
         // Monster
         MonsterDead,
         MonsterAttack,
+        SetMonster,
 
         // Hero
         HeroDead,

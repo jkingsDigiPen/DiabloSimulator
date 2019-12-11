@@ -48,5 +48,8 @@ namespace DiabloSimulator.Game.World
 
         // Only happens once per hero
         public bool UniquePerHero { get; set; } = false;
+
+        // Hero reference - for convenience
+        public Hero Hero { get; set; } = null;
     }
 }

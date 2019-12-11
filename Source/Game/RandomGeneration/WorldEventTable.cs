@@ -85,6 +85,7 @@ namespace DiabloSimulator.Game.RandomGeneration
                 }
             }
 
+            worldEvent.Hero = hero;
             return worldEvent;
         }
 

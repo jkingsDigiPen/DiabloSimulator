@@ -41,11 +41,6 @@ namespace DiabloSimulator.Engine
             modules.Add(module);
         }
 
-        public static void RaiseGameEvent(object sender, GameEvents name)
-        {
-            RaiseGameEvent(sender, new GameEventArgs(name));
-        }
-
         public static void RaiseGameEvent(object sender, GameEventArgs e)
         {
             foreach(IModule module in modules)

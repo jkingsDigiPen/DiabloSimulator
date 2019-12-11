@@ -22,8 +22,6 @@ namespace DiabloSimulator.Game.World
 
         public override void Inintialize()
         {
-            heroManager = EngineCore.GetModule<HeroManager>();
-
             AddEventHandler(GameEvents.PlayerLook, OnPlayerLook);
             AddEventHandler(GameEvents.PlayerExplore, OnPlayerExplore);
             AddEventHandler(GameEvents.PlayerProceed, OnPlayerProceed);
@@ -67,7 +65,7 @@ namespace DiabloSimulator.Game.World
 
         private void OnPlayerExplore(object sender, GameEventArgs e)
         {
-            WorldEvent worldEvent = CurrentZone.EventTable.GenerateObject(heroManager.Hero);
+            WorldEvent worldEvent = CurrentZone.EventTable.GenerateObject(e.Get<Hero>());
             RaiseGameEvent(worldEvent.EventType, this, worldEvent);
         }
 
@@ -127,13 +125,13 @@ namespace DiabloSimulator.Game.World
             Monster monster;
             if (monsterName != null)
             {
-                monster = monsterFactory.Create(monsterName, heroManager.Hero);
+                monster = monsterFactory.Create(monsterName, worldEvent.Hero);
             }
             // Create monster using monster table
             else
             {
                 monster = CurrentZone.MonsterTable.GenerateObject(
-                    heroManager.Hero, monsterFactory);
+                    worldEvent.Hero, monsterFactory);
             }
 
             RaiseGameEvent(GameEvents.SetMonster, this, monster);
@@ -145,9 +143,5 @@ namespace DiabloSimulator.Game.World
 
         private WorldZoneFactory zoneFactory = new WorldZoneFactory();
         private MonsterFactory monsterFactory = new MonsterFactory();
-
-
-        // Modules
-        private HeroManager heroManager;
     }
 }

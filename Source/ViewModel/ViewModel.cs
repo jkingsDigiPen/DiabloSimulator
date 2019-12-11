@@ -225,7 +225,11 @@ namespace DiabloSimulator
 
         private void AddWorldEvent(GameEvents action)
         {
-            EngineCore.RaiseGameEvent(this, action);
+            // No hero? No point in being here.
+            if (heroManager == null)
+                return;
+
+            EngineCore.RaiseGameEvent(this, GameEventArgs.Create(action, heroManager.Hero));
             ChoiceText = gameManager.CurrentChoiceText;
 
             // Add to list view

@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.ViewModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,9 +59,9 @@ namespace DiabloSimulator.UserControls
             }
         }
 
-        private ViewModel View
+        private WorldViewModel View
         {
-            get => (DataContext as ViewModel);
+            get => (DataContext as WorldViewModel);
         }
     }
 }

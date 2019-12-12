@@ -16,19 +16,19 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace DiabloSimulator
+namespace DiabloSimulator.ViewModel
 {
     //------------------------------------------------------------------------------
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public sealed class ViewModel : INotifyPropertyChanged
+    public sealed class WorldViewModel : INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public ViewModel()
+        public WorldViewModel()
         {
             gameManager = EngineCore.GetModule<GameManager>();
             worldEventManager = EngineCore.GetModule<WorldEventManager>();
@@ -58,7 +58,7 @@ namespace DiabloSimulator
         {
             get
             {
-                if(wasInCombat != gameManager.InCombat)
+                if (wasInCombat != gameManager.InCombat)
                 {
                     wasInCombat = gameManager.InCombat;
                     OnPropertyChange("InCombat");
@@ -103,7 +103,7 @@ namespace DiabloSimulator
                 {
                     AddWorldEvent(GameEvents.PlayerExplore);
                 }
-                else if(ChoiceText == GameManager.discoverChoiceText)
+                else if (ChoiceText == GameManager.discoverChoiceText)
                 {
                     AddWorldEvent(GameEvents.PlayerProceed);
                 }
@@ -139,6 +139,11 @@ namespace DiabloSimulator
             {
                 AddWorldEvent(GameEvents.PlayerTownPortal);
             }
+        }
+
+        public void OnUsePotionClicked(object sender, RoutedEventArgs e)
+        {
+            heroManager.Hero.UsePotion();
         }
 
         public PlayerChoiceText ChoiceText

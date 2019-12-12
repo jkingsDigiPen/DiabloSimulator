@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.ViewModel;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -23,7 +24,7 @@ namespace DiabloSimulator.Windows
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public GameWindow(ViewModel viewModel_)
+        public GameWindow(WorldViewModel viewModel_)
         {
             viewModel = viewModel_;
             DataContext = viewModel;
@@ -65,14 +66,14 @@ namespace DiabloSimulator.Windows
             ctrlMonster.ClearValue(HeightProperty);
 
             // Don't want our window to be able to get any smaller than this.
-            SetValue(MinWidthProperty, this.Width);
-            SetValue(MinHeightProperty, this.Height);
+            SetValue(MinWidthProperty, Width);
+            SetValue(MinHeightProperty, Height);
         }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private readonly ViewModel viewModel;
+        private readonly WorldViewModel viewModel;
     }
 }

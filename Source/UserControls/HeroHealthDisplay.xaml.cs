@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -24,9 +25,6 @@ namespace DiabloSimulator.UserControls
         public HeroHealthDisplay()
         {
             InitializeComponent();
-
-            // Register event handlers
-            btnUsePotion.Click += btnUsePotion_Click;
         }
 
         //------------------------------------------------------------------------------
@@ -35,16 +33,13 @@ namespace DiabloSimulator.UserControls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Register event handlers
+            btnUsePotion.Click += View.OnUsePotionClicked;
         }
 
-        private void btnUsePotion_Click(object sender, RoutedEventArgs e)
+        private WorldViewModel View
         {
-            View.Hero.UsePotion();
-        }
-
-        private ViewModel View
-        {
-            get => (DataContext as ViewModel);
+            get => (DataContext as WorldViewModel);
         }
     }
 }

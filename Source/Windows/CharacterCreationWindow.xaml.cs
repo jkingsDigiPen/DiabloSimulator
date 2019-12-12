@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,7 +22,7 @@ namespace DiabloSimulator.Windows
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public CharacterCreationWindow(ViewModel view)
+        public CharacterCreationWindow(WorldViewModel view)
         {
             InitializeComponent();
 
@@ -82,6 +83,6 @@ namespace DiabloSimulator.Windows
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private readonly ViewModel viewModel;
+        private readonly WorldViewModel viewModel;
     }
 }

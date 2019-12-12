@@ -107,7 +107,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\Textures\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
 
   <ItemGroup>

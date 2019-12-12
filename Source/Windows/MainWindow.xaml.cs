@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.ViewModel;
 using System.Windows;
 
 namespace DiabloSimulator.Windows
@@ -25,7 +26,7 @@ namespace DiabloSimulator.Windows
             InitializeComponent();
 
             // Create view model
-            viewModel = new ViewModel();
+            viewModel = new WorldViewModel();
             DataContext = viewModel;
 
             // Event handlers
@@ -75,6 +76,6 @@ namespace DiabloSimulator.Windows
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private readonly ViewModel viewModel;
+        private readonly WorldViewModel viewModel;
     }
 }

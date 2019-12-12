@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DiabloSimulator.Game;
+using DiabloSimulator.ViewModel;
 
 namespace DiabloSimulator.UserControls
 {
@@ -121,9 +122,9 @@ namespace DiabloSimulator.UserControls
 
         #region properties
 
-        private ViewModel View
+        private WorldViewModel View
         {
-            get => (DataContext as ViewModel);
+            get => (DataContext as WorldViewModel);
         }
 
         #endregion

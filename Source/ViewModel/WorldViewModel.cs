@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------------
 //
-// File Name:	ViewModel.cs
+// File Name:	WorldViewModel.cs
 // Author(s):	Jeremy Kings
 // Project:		DiabloSimulator
 //
@@ -260,9 +260,9 @@ namespace DiabloSimulator.ViewModel
         private PlayerChoiceText choiceText;
 
         // Modules
-        HeroManager heroManager;
-        MonsterManager monsterManager;
-        GameManager gameManager;
-        WorldEventManager worldEventManager;
+        private HeroManager heroManager;
+        private MonsterManager monsterManager;
+        private GameManager gameManager;
+        private WorldEventManager worldEventManager;
     }
 }

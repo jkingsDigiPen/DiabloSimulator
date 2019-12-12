@@ -28,6 +28,9 @@ namespace DiabloSimulator.UserControls
         {
             InitializeComponent();
 
+            // Create view model
+            DataContext = new EquipmentViewModel();
+
             liMainHand.MouseDoubleClick += liMainHand_DoubleClick;
             liOffHand.MouseDoubleClick += liOffHand_DoubleClick;
             liHead.MouseDoubleClick += liHead_DoubleClick;
@@ -122,9 +125,9 @@ namespace DiabloSimulator.UserControls
 
         #region properties
 
-        private WorldViewModel View
+        private EquipmentViewModel View
         {
-            get => (DataContext as WorldViewModel);
+            get => (DataContext as EquipmentViewModel);
         }
 
         #endregion

@@ -28,6 +28,9 @@ namespace DiabloSimulator.UserControls
         {
             InitializeComponent();
 
+            // Create view model
+            DataContext = new InventoryViewModel(lbInventory);
+
             btnItemEquip.Click += btnItemEquip_Click;
             btnItemDiscardSell.Click += btnItemDiscardSell_Click;
             btnItemJunk.Click += btnItemJunk_Click;
@@ -91,9 +94,9 @@ namespace DiabloSimulator.UserControls
 
         #region properties
 
-        private WorldViewModel View
+        private InventoryViewModel View
         {
-            get => (DataContext as WorldViewModel);
+            get => (DataContext as InventoryViewModel);
         }
 
         #endregion

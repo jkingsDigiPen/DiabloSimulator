@@ -55,6 +55,7 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.ItemSell, OnItemSell);
             AddEventHandler(GameEvents.ItemJunk, OnItemJunk);
             AddEventHandler(GameEvents.ItemKeep, OnItemKeep);
+            AddEventHandler(GameEvents.ItemUnequip, OnItemUnequip);
         }
 
         public void CreateHero()
@@ -136,7 +137,7 @@ namespace DiabloSimulator.Game
             string damageDealtString = Hero.Damage(e.Get<List<DamageArgs>>());
             RaiseGameEvent(GameEvents.AddWorldEventText, this, monster.Name + " attacks you. " + damageDealtString);
 
-            if(Hero.IsDead)
+            if (Hero.IsDead)
                 RaiseGameEvent(GameEvents.HeroDead, Hero);
             else
                 RaiseGameEvent(GameEvents.AdvanceTime);
@@ -145,7 +146,7 @@ namespace DiabloSimulator.Game
         private void OnMonsterDead(object sender, GameEventArgs e)
         {
             Monster monster = sender as Monster;
-            if(monster.Name != Monster.EmptyMonster)
+            if (monster.Name != Monster.EmptyMonster)
                 Hero.AddExperience(monster);
         }
 
@@ -156,7 +157,7 @@ namespace DiabloSimulator.Game
             float lifeRegenAmount = Hero.Stats.ModifiedValues["HealthRegen"];
             if (lifeRegenAmount != 0)
             {
-                RaiseGameEvent(GameEvents.AddWorldEventText, Hero, 
+                RaiseGameEvent(GameEvents.AddWorldEventText, Hero,
                     Hero.Heal(lifeRegenAmount) + " from natural healing.");
             }
         }
@@ -215,6 +216,36 @@ namespace DiabloSimulator.Game
         private void OnSetWorldZone(object sender, GameEventArgs e)
         {
             Hero.CurrentZone = e.Get<string>();
+        }
+
+        private void OnItemUnequip(object sender, GameEventArgs e)
+        {
+            SlotType slot = e.Get<SlotType>();
+
+            if(slot == SlotType.MainHand)
+            {
+                Item unequipped = Hero.UnequipItem(SlotType.MainHand);
+
+                if (unequipped is null)
+                    return;
+
+                if (unequipped.slot == SlotType.BothHands)
+                    Hero.UnequipItem(SlotType.OffHand);
+            }
+            else if(slot == SlotType.OffHand)
+            {
+                Item unequipped = Hero.UnequipItem(SlotType.OffHand);
+
+                if (unequipped is null)
+                    return;
+
+                if (unequipped.slot == SlotType.BothHands)
+                    Hero.UnequipItem(SlotType.MainHand);
+            }
+            else 
+            {
+                Hero.UnequipItem(e.Get<SlotType>());
+            }
         }
 
         #region inventoryEvents

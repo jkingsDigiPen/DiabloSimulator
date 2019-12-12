@@ -67,5 +67,6 @@ namespace DiabloSimulator.Game
         ItemSell,
         ItemJunk,
         ItemKeep,
+        ItemUnequip,
     }
 }

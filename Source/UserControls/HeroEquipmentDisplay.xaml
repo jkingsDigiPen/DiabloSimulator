@@ -36,47 +36,47 @@
 			</ListView.ItemsPanel>
 			<ListViewItem Grid.Row="0" Grid.Column="0"/>
 			<ListViewItem Name="liHead" Grid.Row="0" Grid.Column="1">
-				<TextBlock Name="tbHead" Text="{Binding Hero.Equipment.Items[Head],
+				<TextBlock Name="tbHead" Text="{Binding Equipment[Head],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Head:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liAmulet" Grid.Row="0" Grid.Column="2">
-				<TextBlock Name="tbAmulet" Text="{Binding Hero.Equipment.Items[Amulet],
+				<TextBlock Name="tbAmulet" Text="{Binding Equipment[Amulet],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Amulet:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liGloves" Grid.Row="1" Grid.Column="0">
-				<TextBlock Name="tbGloves" Text="{Binding Hero.Equipment.Items[Hands],
+				<TextBlock Name="tbGloves" Text="{Binding Equipment[Hands],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Gloves:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liTorso" Grid.Row="1" Grid.Column="1">
-				<TextBlock Name="tbTorso" Text="{Binding Hero.Equipment.Items[Torso],
+				<TextBlock Name="tbTorso" Text="{Binding Equipment[Torso],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Torso:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liWaist" Grid.Row="1" Grid.Column="2">
-				<TextBlock Name="tbWaist" Text="{Binding Hero.Equipment.Items[Waist],
+				<TextBlock Name="tbWaist" Text="{Binding Equipment[Waist],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Waist:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liRing1" Grid.Row="2" Grid.Column="0">
-				<TextBlock Name="tbRing1" Text="{Binding Hero.Equipment.Items[Ring1],
+				<TextBlock Name="tbRing1" Text="{Binding Equipment[Ring1],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Ring 1:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liLegs" Grid.Row="2" Grid.Column="1">
-				<TextBlock Name="tbLegs" Text="{Binding Hero.Equipment.Items[Legs],
+				<TextBlock Name="tbLegs" Text="{Binding Equipment[Legs],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Legs:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liRing2" Grid.Row="2" Grid.Column="2">
-				<TextBlock Name="tbRing2" Text="{Binding Hero.Equipment.Items[Ring2],
+				<TextBlock Name="tbRing2" Text="{Binding Equipment[Ring2],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Ring 2:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liMainHand" Grid.Row="3" Grid.Column="0">
-				<TextBlock x:Name="tbMainHand" Text="{Binding Hero.Equipment.Items[MainHand],
+				<TextBlock x:Name="tbMainHand" Text="{Binding Equipment[MainHand],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Main-Hand:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liFeet" Grid.Row="3" Grid.Column="1">
-				<TextBlock Name="tbFeet" Text="{Binding Hero.Equipment.Items[Feet],
+				<TextBlock Name="tbFeet" Text="{Binding Equipment[Feet],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Feet:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 			<ListViewItem Name="liOffHand" Grid.Row="3" Grid.Column="2">
-				<TextBlock Name="tbOffHand" Text="{Binding Hero.Equipment.Items[OffHand],
+				<TextBlock Name="tbOffHand" Text="{Binding Equipment[OffHand],
 						UpdateSourceTrigger=PropertyChanged, StringFormat=Off-Hand:&#x0d;&#x0a;{0}}" TextWrapping="Wrap"/>
 			</ListViewItem>
 		</ListView>

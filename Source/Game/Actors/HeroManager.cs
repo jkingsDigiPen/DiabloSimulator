@@ -49,6 +49,12 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.PlayerRest, OnPlayerRest);
             AddEventHandler(GameEvents.WorldZoneDiscovery, OnWorldZoneDiscovery);
             AddEventHandler(GameEvents.SetWorldZone, OnSetWorldZone);
+
+            AddEventHandler(GameEvents.ItemEquip, OnItemEquip);
+            AddEventHandler(GameEvents.ItemDiscard, OnItemDiscard);
+            AddEventHandler(GameEvents.ItemSell, OnItemSell);
+            AddEventHandler(GameEvents.ItemJunk, OnItemJunk);
+            AddEventHandler(GameEvents.ItemKeep, OnItemKeep);
         }
 
         public void CreateHero()
@@ -210,6 +216,36 @@ namespace DiabloSimulator.Game
         {
             Hero.CurrentZone = e.Get<string>();
         }
+
+        #region inventoryEvents
+
+        private void OnItemKeep(object sender, GameEventArgs e)
+        {
+            Hero.Inventory.KeepItem(e.Get<int>());
+        }
+
+        private void OnItemJunk(object sender, GameEventArgs e)
+        {
+            Hero.Inventory.JunkItem(e.Get<int>());
+        }
+
+        private void OnItemSell(object sender, GameEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnItemDiscard(object sender, GameEventArgs e)
+        {
+            Item itemToRemove = Hero.Inventory.Items[e.Get<int>()];
+            Hero.Inventory.DiscardItem(itemToRemove);
+        }
+
+        private void OnItemEquip(object sender, GameEventArgs e)
+        {
+            Hero.EquipItem(e.Get<int>());
+        }
+
+        #endregion
 
         //------------------------------------------------------------------------------
         // Private Variables:

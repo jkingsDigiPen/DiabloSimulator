@@ -60,5 +60,12 @@ namespace DiabloSimulator.Game
         SetAmbientTrack,
         SetBackgroundTrack,
         LoadAudioBank,
+
+        // Items
+        ItemEquip,
+        ItemDiscard,
+        ItemSell,
+        ItemJunk,
+        ItemKeep,
     }
 }

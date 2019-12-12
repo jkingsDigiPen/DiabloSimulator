@@ -8,11 +8,7 @@
 
 using DiabloSimulator.Engine;
 using DiabloSimulator.Game;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace DiabloSimulator.ViewModel
 {
@@ -26,62 +22,43 @@ namespace DiabloSimulator.ViewModel
         // Public Functions:
         //------------------------------------------------------------------------------
 
-        public InventoryViewModel(ListView lvInventory_)
+        public InventoryViewModel()
         {
             heroManager = EngineCore.GetModule<HeroManager>();
-            lvInventory = lvInventory_;
         }
 
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public Hero Hero { get => heroManager.Hero; }
+        public ObservableCollection<Item> Inventory { get => heroManager.Hero.Inventory.Items; }
 
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
 
-        public void btnItemEquip_Click(object sender, RoutedEventArgs e)
+        public void ItemEquip(int selection)
         {
-            int selection = lvInventory.SelectedIndex;
-            if (selection == -1)
-                return;
-            
-            Hero.EquipItem(selection);
+            EngineCore.RaiseGameEvent(this, GameEventArgs.Create(GameEvents.ItemEquip, selection));
         }
 
-        public void btnItemDiscardSell_Click(object sender, RoutedEventArgs e)
+        public void ItemDiscardSell(int selection)
         {
-            int selection = lvInventory.SelectedIndex;
-            if (selection == -1)
-                return;
-
-            Inventory inventory = Hero.Inventory;
-
             // Remove item from inventory
-            Item itemToRemove = inventory.Items[selection];
-            inventory.DiscardItem(itemToRemove);
+            EngineCore.RaiseGameEvent(this, GameEventArgs.Create(GameEvents.ItemDiscard, selection));
 
             // TO DO: Implement selling items when in town
+
         }
 
-        public void btnItemJunk_Click(object sender, RoutedEventArgs e)
+        public void ItemJunk(int selection)
         {
-            int selection = lvInventory.SelectedIndex;
-            if (selection == -1)
-                return;
-            Hero.Inventory.JunkItem(selection);
-            lvInventory.SelectedIndex = selection;
+            EngineCore.RaiseGameEvent(this, GameEventArgs.Create(GameEvents.ItemJunk, selection));
         }
 
-        public void btnItemKeep_Click(object sender, RoutedEventArgs e)
+        public void ItemKeep(int selection)
         {
-            int selection = lvInventory.SelectedIndex;
-            if (selection == -1)
-                return;
-            Hero.Inventory.KeepItem(selection);
-            lvInventory.SelectedIndex = selection;
+            EngineCore.RaiseGameEvent(this, GameEventArgs.Create(GameEvents.ItemKeep, selection));
         }
 
         //------------------------------------------------------------------------------
@@ -90,6 +67,5 @@ namespace DiabloSimulator.ViewModel
 
         // Modules
         private HeroManager heroManager;
-        private ListView lvInventory;
     }
 }

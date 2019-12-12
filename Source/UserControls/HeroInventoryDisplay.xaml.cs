@@ -29,7 +29,7 @@ namespace DiabloSimulator.UserControls
             InitializeComponent();
 
             // Create view model
-            DataContext = new InventoryViewModel(lbInventory);
+            DataContext = new InventoryViewModel();
 
             btnItemEquip.Click += btnItemEquip_Click;
             btnItemDiscardSell.Click += btnItemDiscardSell_Click;
@@ -54,7 +54,7 @@ namespace DiabloSimulator.UserControls
             if (selection == -1)
                 return;
 
-            View.Hero.EquipItem(selection);
+            View.ItemEquip(selection);
         }
 
         private void btnItemDiscardSell_Click(object sender, RoutedEventArgs e)
@@ -63,13 +63,10 @@ namespace DiabloSimulator.UserControls
             if (selection == -1)
                 return;
 
-            Inventory inventory = View.Hero.Inventory;
-
-            // Remove item from inventory
-            Item itemToRemove = inventory.Items[selection];
-            inventory.DiscardItem(itemToRemove);
+            View.ItemDiscardSell(selection);
 
             // TO DO: Implement selling items when in town
+
         }
 
         private void btnItemJunk_Click(object sender, RoutedEventArgs e)
@@ -77,7 +74,8 @@ namespace DiabloSimulator.UserControls
             int selection = lbInventory.SelectedIndex;
             if (selection == -1)
                 return;
-            View.Hero.Inventory.JunkItem(selection);
+            
+            View.ItemJunk(selection);
             lbInventory.SelectedIndex = selection;
         }
 
@@ -86,7 +84,8 @@ namespace DiabloSimulator.UserControls
             int selection = lbInventory.SelectedIndex;
             if (selection == -1)
                 return;
-            View.Hero.Inventory.KeepItem(selection);
+
+            View.ItemKeep(selection);
             lbInventory.SelectedIndex = selection;
         }
 

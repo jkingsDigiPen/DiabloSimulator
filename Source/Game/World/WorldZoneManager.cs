@@ -71,7 +71,7 @@ namespace DiabloSimulator.Game.World
 
         private void OnPlayerProceed(object sender, GameEventArgs e)
         {
-            SetZone(NextZoneName);
+            RaiseGameEvent(GameEvents.SetWorldZone, this, NextZoneName);
         }
 
         private void OnPlayerBack(object sender, GameEventArgs e)

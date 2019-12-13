@@ -44,6 +44,7 @@ namespace DiabloSimulator.Game
         // Game
         GameStart,
         GameSave,
+        GameLoad,
         AdvanceTime,
 
         // Monster
@@ -54,6 +55,7 @@ namespace DiabloSimulator.Game
         // Hero
         HeroDead,
         HeroAttack,
+        HeroCreate,
 
         // World Zone
         SetWorldZone,

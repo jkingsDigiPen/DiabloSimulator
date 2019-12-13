@@ -45,7 +45,7 @@ namespace DiabloSimulator.ViewModel
 
         public void CreateHero()
         {
-            heroManager.CreateHero();
+            EngineCore.RaiseGameEvent(this, GameEvents.HeroCreate);
         }
 
         public Monster Monster { get => monsterManager.Monster; }
@@ -204,7 +204,7 @@ namespace DiabloSimulator.ViewModel
 
         public void LoadGame(string saveFileName)
         {
-            heroManager.LoadState(saveFileName);
+            EngineCore.RaiseGameEvent(this, GameEventArgs.Create(GameEvents.GameLoad, saveFileName));
         }
 
         #endregion

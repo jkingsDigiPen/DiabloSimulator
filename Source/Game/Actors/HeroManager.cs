@@ -59,39 +59,8 @@ namespace DiabloSimulator.Game
 
             AddEventHandler(GameEvents.PlayerUsePotion, OnPlayerUsePotion);
             AddEventHandler(GameEvents.GameSave, OnGameSave);
-        }
-
-        public void CreateHero()
-        {
-            // Create hero class, set name and description
-            Hero = heroFactory.Create(Hero.Archetype, Hero);
-
-            // Set starting zone
-            RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
-            Hero.DiscoveredZones.Add(Hero.CurrentZone);
-
-            // Add starting equipment
-            Hero.Inventory.PotionsHeld = 3;
-            Hero.Inventory.AddItem(itemFactory.Create("Simple Dagger", Hero));
-            Hero.Inventory.AddItem(itemFactory.Create("Short Sword", Hero));
-            Hero.Inventory.AddItem(itemFactory.Create("Leather Hood", Hero));
-        }
-
-        public void LoadState(string saveFileName)
-        {
-            string heroSaveLocation = saveLocation + saveFileName + "\\";
-
-            // Load hero data, inventory, equipment
-            string heroDataFilename = heroSaveLocation + "HeroData.txt";
-            var stream = new StreamReader(heroDataFilename);
-            string heroStrings = stream.ReadToEnd();
-            stream.Close();
-
-            Hero = JsonConvert.DeserializeObject<Hero>(heroStrings);
-            Hero.Stats.RemapModifierSources(Hero);
-
-            // Load zone data
-            RaiseGameEvent(GameEvents.SetWorldZone, this, Hero.CurrentZone);
+            AddEventHandler(GameEvents.GameLoad, OnGameLoad);
+            AddEventHandler(GameEvents.HeroCreate, OnHeroCreate);
         }
 
         //------------------------------------------------------------------------------
@@ -256,6 +225,38 @@ namespace DiabloSimulator.Game
             stream.Close();
         }
 
+        private void OnGameLoad(object sender, GameEventArgs e)
+        {
+            string heroSaveLocation = saveLocation + e.Get<string>() + "\\";
+
+            // Load hero data, inventory, equipment
+            string heroDataFilename = heroSaveLocation + "HeroData.txt";
+            var stream = new StreamReader(heroDataFilename);
+            string heroStrings = stream.ReadToEnd();
+            stream.Close();
+
+            Hero = JsonConvert.DeserializeObject<Hero>(heroStrings);
+            Hero.Stats.RemapModifierSources(Hero);
+
+            // Load zone data
+            RaiseGameEvent(GameEvents.SetWorldZone, this, Hero.CurrentZone);
+        }
+
+        private void OnHeroCreate(object sender, GameEventArgs e)
+        {
+            // Create hero class, set name and description
+            Hero = heroFactory.Create(Hero.Archetype, Hero);
+
+            // Set starting zone
+            RaiseGameEvent(GameEvents.SetWorldZone, this, "New Tristram");
+            Hero.DiscoveredZones.Add(Hero.CurrentZone);
+
+            // Add starting equipment
+            Hero.Inventory.PotionsHeld = 3;
+            Hero.Inventory.AddItem(itemFactory.Create("Simple Dagger", Hero));
+            Hero.Inventory.AddItem(itemFactory.Create("Short Sword", Hero));
+            Hero.Inventory.AddItem(itemFactory.Create("Leather Hood", Hero));
+        }
 
         #region inventoryEvents
 

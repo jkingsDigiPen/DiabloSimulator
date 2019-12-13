@@ -27,6 +27,7 @@ namespace DiabloSimulator.Game
         PlayerYes,
         [Description("No")]
         PlayerNo,
+        PlayerUsePotion,
 
         // World Text
         AddWorldEventText,
@@ -42,6 +43,7 @@ namespace DiabloSimulator.Game
 
         // Game
         GameStart,
+        GameSave,
         AdvanceTime,
 
         // Monster

@@ -56,6 +56,9 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.ItemJunk, OnItemJunk);
             AddEventHandler(GameEvents.ItemKeep, OnItemKeep);
             AddEventHandler(GameEvents.ItemUnequip, OnItemUnequip);
+
+            AddEventHandler(GameEvents.PlayerUsePotion, OnPlayerUsePotion);
+            AddEventHandler(GameEvents.GameSave, OnGameSave);
         }
 
         public void CreateHero()
@@ -72,21 +75,6 @@ namespace DiabloSimulator.Game
             Hero.Inventory.AddItem(itemFactory.Create("Simple Dagger", Hero));
             Hero.Inventory.AddItem(itemFactory.Create("Short Sword", Hero));
             Hero.Inventory.AddItem(itemFactory.Create("Leather Hood", Hero));
-        }
-
-        public void SaveState()
-        {
-            // Attempt to create directories
-            string heroSaveLocation = saveLocation + Hero.Name.Trim() + "\\";
-            Directory.CreateDirectory(heroSaveLocation);
-
-            // Save hero data, inventory, equipment
-            string heroDataFilename = heroSaveLocation + "HeroData.txt";
-            string heroStrings = JsonConvert.SerializeObject(Hero, Formatting.Indented);
-
-            var stream = new StreamWriter(heroDataFilename);
-            stream.Write(heroStrings);
-            stream.Close();
         }
 
         public void LoadState(string saveFileName)
@@ -247,6 +235,27 @@ namespace DiabloSimulator.Game
                 Hero.UnequipItem(e.Get<SlotType>());
             }
         }
+
+        private void OnPlayerUsePotion(object sender, GameEventArgs e)
+        {
+            Hero.UsePotion();
+        }
+
+        private void OnGameSave(object sender, GameEventArgs e)
+        {
+            // Attempt to create directories
+            string heroSaveLocation = saveLocation + Hero.Name.Trim() + "\\";
+            Directory.CreateDirectory(heroSaveLocation);
+
+            // Save hero data, inventory, equipment
+            string heroDataFilename = heroSaveLocation + "HeroData.txt";
+            string heroStrings = JsonConvert.SerializeObject(Hero, Formatting.Indented);
+
+            var stream = new StreamWriter(heroDataFilename);
+            stream.Write(heroStrings);
+            stream.Close();
+        }
+
 
         #region inventoryEvents
 

@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
+using System;
+using System.Windows;
 
 namespace DiabloSimulator.Game
 {

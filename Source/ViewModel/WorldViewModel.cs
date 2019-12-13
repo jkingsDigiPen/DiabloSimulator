@@ -86,7 +86,7 @@ namespace DiabloSimulator.ViewModel
 
                 if (result == MessageBoxResult.OK)
                 {
-                    heroManager.SaveState();
+                    EngineCore.RaiseGameEvent(sender, GameEvents.GameSave);
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace DiabloSimulator.ViewModel
 
         public void OnUsePotionClicked(object sender, RoutedEventArgs e)
         {
-            heroManager.Hero.UsePotion();
+            EngineCore.RaiseGameEvent(sender, GameEvents.PlayerUsePotion);
         }
 
         public PlayerChoiceText ChoiceText
@@ -182,7 +182,7 @@ namespace DiabloSimulator.ViewModel
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    heroManager.SaveState();
+                    EngineCore.RaiseGameEvent(sender, GameEvents.GameSave);
                 }
             }
 

@@ -55,17 +55,16 @@
 
 		<!-- INVENTORY/EQUIPMENT -->
 		<Border Grid.Column="1" Grid.Row="2">
-			<Grid>
-				<!-- Grid Format -->
-				<Grid.RowDefinitions>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				 <!-- Equipment Panel -->
-				<Controls:HeroEquipmentDisplay Grid.Row="0" x:Name="ctrlEquipment" HorizontalContentAlignment="Stretch"/>
-				<!-- Inventory Panel -->
-				<Controls:HeroInventoryDisplay Grid.Row="1" x:Name="ctrlInventory"/>
-			</Grid>
+			<TabControl>
+				<TabItem Header="Equipment">
+					<!-- Equipment Panel -->
+					<Controls:HeroEquipmentDisplay Grid.Row="0" x:Name="ctrlEquipment" HorizontalContentAlignment="Stretch"/>
+				</TabItem>
+				<TabItem Header="Inventory">
+					<!-- Inventory Panel -->
+					<Controls:HeroInventoryDisplay Grid.Row="1" x:Name="ctrlInventory"/>
+				</TabItem>
+			</TabControl>
 		</Border>
 
 		<!-- HEALTH -->

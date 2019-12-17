@@ -125,12 +125,41 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+		
+		<!-- TabItem Template -->
+		<Style TargetType="{x:Type TabItem}">
+			<Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="TabItem">
+						<Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
+							<ContentPresenter x:Name="ContentSite"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  ContentSource="Header"
+                  Margin="10,2"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter Property="Background" Value="{StaticResource WindowToolbarColor}"/>
+								<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+							</Trigger>
+							<Trigger Property="IsSelected" Value="False">
+								<Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+								<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 
 		<!-- Misc Styles-->
 		<Style TargetType="{x:Type Grid}">
 			<Setter Property="Background" Value="{StaticResource WindowBackColor}"/>
 		</Style>
-
+		
 		<Style TargetType="{x:Type Label}">
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
 		</Style>
@@ -157,7 +186,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-
+		
 		<Style TargetType="{x:Type ListBoxItem}">
 			<Setter Property="Background" Value="{StaticResource WindowToolbarColor}"/>
 			<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
@@ -337,7 +366,7 @@
 			<Setter Property="FontFamily" Value="{StaticResource VollkornSC}"/>
 			<Setter Property="FontSize" Value="14"/>
 		</Style>
-
+		
 		<!--Custom Window Style-->
 		<Style x:Key="FixedWindowStyle" TargetType="{x:Type Window}">
 			<Setter Property="WindowStyle" Value="None"/>

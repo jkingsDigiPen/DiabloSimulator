@@ -9,6 +9,7 @@
 using DiabloSimulator.Engine;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DiabloSimulator.Game
 {
@@ -36,7 +37,22 @@ namespace DiabloSimulator.Game
         // Public Variables:
         //------------------------------------------------------------------------------
 
-        public Monster Monster { get; set; } = new Monster();
+        public Monster Monster 
+        {
+            get
+            {
+                if (MonsterList.Count != 0)
+                {
+                    return MonsterList[selectedMonsterIndex];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public ObservableCollection<Monster> MonsterList { get; private set; } = new ObservableCollection<Monster>();
 
         //------------------------------------------------------------------------------
         // Private Functions:
@@ -45,42 +61,35 @@ namespace DiabloSimulator.Game
         #region eventHandlers
         private void OnHeroAttack(object sender, GameEventArgs e)
         {
-            string damageDealtString = Monster.Damage(e.Get<List<DamageArgs>>());
-            RaiseGameEvent(GameEvents.AddWorldEventText, this,
-                "You attack the " + Monster.Race + ". " + damageDealtString);
+            Monster monster = MonsterList[selectedMonsterIndex];
 
-            if (!Monster.IsDead)
-            {
-                RaiseGameEvent(GameEvents.MonsterAttack, Monster, Monster.GetAttackDamage());
-            }
-            else
-            {
-                RaiseGameEvent(GameEvents.MonsterDead, Monster);
-            }
+            string damageDealtString = monster.Damage(e.Get<List<DamageArgs>>());
+            RaiseGameEvent(GameEvents.AddWorldEventText, this,
+                "You attack the " + monster.Race + ". " + damageDealtString);
+
+            ExecuteMonsterActions();
         }
 
         private void OnPlayerFlee(object sender, GameEventArgs e)
         {
             RaiseGameEvent(GameEvents.AddWorldEventText, this,
-               "You attempt to flee from the " + Monster.Race + "...");
+                "You attempt to flee from battle...");
 
             bool fleeSuccess = random.NextDouble() <= 0.6f;
             if (fleeSuccess)
             {
                 RaiseGameEvent(GameEvents.AddWorldEventText, this,
-                    "You have successfully escaped from " + Monster.Name + ".");
+                    "You have successfully escaped from battle.");
+
                 DestroyAllMonsters();
                 RaiseGameEvent(GameEvents.PlayerLook);
             }
             else
             {
                 RaiseGameEvent(GameEvents.AddWorldEventText, this, "You can't seem to find an opening" +
-                    " to escape! You are locked in combat with " + Monster.Name + ".");
+                    " to escape! You are locked in combat!");
 
-                if (!Monster.IsDead)
-                {
-                    RaiseGameEvent(GameEvents.MonsterAttack, Monster, Monster.GetAttackDamage());
-                }
+                ExecuteMonsterActions();
 
                 RaiseGameEvent(GameEvents.AdvanceTime);
             }
@@ -93,13 +102,9 @@ namespace DiabloSimulator.Game
             RaiseGameEvent(GameEvents.AddWorldEventText, this,
                 "You steel yourself, waiting for your enemy to attack.");
 
-            if (!Monster.IsDead)
-            {
-                RaiseGameEvent(GameEvents.MonsterAttack, Monster, Monster.GetAttackDamage());
-            }
+            ExecuteMonsterActions();
 
             // TO DO: Remove bonus dodge chance, block chance
-
             RaiseGameEvent(GameEvents.AdvanceTime);
         }
 
@@ -110,19 +115,51 @@ namespace DiabloSimulator.Game
 
         private void OnSetMonster(object sender, GameEventArgs e)
         {
-            Monster = e.Get<Monster>();
-            RaiseGameEvent(GameEvents.AddWorldEventText, this, Monster.Name + ", a level "
-                    + Monster.Stats.Level + " "
-                    + Monster.Race + ", appeared!");
+            Monster monster = e.Get<Monster>();
+            MonsterList.Add(monster);
+            RaiseGameEvent(GameEvents.AddWorldEventText, this, monster.Name + ", a level "
+                    + monster.Stats.Level + " "
+                    + monster.Race + ", appeared!");
         }
 
         #endregion
 
         private void DestroyAllMonsters()
         {
-            Monster.Kill();
-            Monster = new Monster();
-            RaiseGameEvent(GameEvents.MonsterDead, Monster);
+            foreach(Monster monster in MonsterList)
+            {
+                monster.Kill();
+                RaiseGameEvent(GameEvents.MonsterDead, monster);
+            }
+            MonsterList.Clear();
+            selectedMonsterIndex = 0;
+        }
+
+        private void ExecuteMonsterActions()
+        {
+            for(int i = 0; i < MonsterList.Count; )
+            {
+                Monster m = MonsterList[i];
+
+                if (!m.IsDead)
+                {
+                    RaiseGameEvent(GameEvents.MonsterAttack, m, m.GetAttackDamage());
+                    ++i;
+                }
+                else
+                {
+                    RaiseGameEvent(GameEvents.MonsterDead, m);
+
+                    // Set selected monster index to alive monster
+                    if (selectedMonsterIndex == MonsterList.IndexOf(m) && selectedMonsterIndex != 0)
+                    {
+                        --selectedMonsterIndex;
+                    }
+
+                    // Remove monster from list
+                    MonsterList.Remove(m);
+                }
+            }
         }
 
         //------------------------------------------------------------------------------
@@ -131,5 +168,6 @@ namespace DiabloSimulator.Game
 
         // Internal data
         private Random random = new Random();
+        private int selectedMonsterIndex = 0;
     }
 }

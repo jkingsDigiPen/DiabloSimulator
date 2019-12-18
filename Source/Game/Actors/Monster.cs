@@ -167,6 +167,11 @@ namespace DiabloSimulator.Game
             }
         }
 
+        public override string ToString()
+        {
+            return Name + " ( " + Rarity.ToString() + " " + Race + ", Level " + Stats.Level + ")";
+        }
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------

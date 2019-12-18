@@ -6,39 +6,38 @@
              xmlns:local="clr-namespace:DiabloSimulator.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<Border>
-		<Grid>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
+								 FontWeight="SemiBold">Weapon</Label>
+		<Grid Grid.Row="1" >
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
-				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
-			<Label Grid.Row="0" HorizontalAlignment="Center" FontSize="18" 
-								 FontWeight="SemiBold">Weapon</Label>
-			<Grid Grid.Row="1" >
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" 
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" 
 							 Text="{Binding Hero.Equipment.Items[MainHand].Name, FallbackValue=No Item Equipped}"/>
-				<TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" 
+			<TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" 
 							 Text="{Binding Hero.Equipment.Items[MainHand].Archetype, FallbackValue=Unarmed}"/>
-				<TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
-					<TextBlock.Text>
-						<MultiBinding StringFormat="{}{0:F0} - {1:F0} Damage">
-							<Binding Path="Hero.Stats.ModifiedValues[MinDamage]"/>
-							<Binding Path="Hero.Stats.ModifiedValues[MaxDamage]"/>
-						</MultiBinding>
-					</TextBlock.Text>
-				</TextBlock>
-				<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"
+			<TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
+				<TextBlock.Text>
+					<MultiBinding StringFormat="{}{0:F0} - {1:F0} Damage">
+						<Binding Path="Hero.Stats.ModifiedValues[MinDamage]"/>
+						<Binding Path="Hero.Stats.ModifiedValues[MaxDamage]"/>
+					</MultiBinding>
+				</TextBlock.Text>
+			</TextBlock>
+			<TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"
 							 Text="{Binding Hero.Stats.ModifiedValues[CriticalHitChance], 
 								StringFormat={}{0:P1} Critical Hit Chance}"/>
-			</Grid>
 		</Grid>
-	</Border>
+	</Grid>
 </UserControl>

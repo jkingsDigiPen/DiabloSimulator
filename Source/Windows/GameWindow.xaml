@@ -17,7 +17,6 @@
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" MinHeight="200"/>
-			<RowDefinition MinHeight="100" MaxHeight="130"/>
 			<RowDefinition Height="*" MinHeight="430"/>
 		</Grid.RowDefinitions>
 
@@ -57,8 +56,16 @@
 		<Border Grid.Column="1" Grid.Row="2">
 			<TabControl>
 				<TabItem Header="Equipment">
-					<!-- Equipment Panel -->
-					<Controls:HeroEquipmentDisplay Grid.Row="0" x:Name="ctrlEquipment" HorizontalContentAlignment="Stretch"/>
+					<Grid>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+						<!-- WEAPON -->
+						<Controls:HeroWeaponDisplay Grid.Row="0" x:Name="ctrlWeapon" Margin="0, 0, 0, 10"/>
+						<!-- Equipment Panel -->
+						<Controls:HeroEquipmentDisplay Grid.Row="1" x:Name="ctrlEquipment" HorizontalContentAlignment="Stretch"/>
+					</Grid>
 				</TabItem>
 				<TabItem Header="Inventory">
 					<!-- Inventory Panel -->
@@ -67,14 +74,16 @@
 			</TabControl>
 		</Border>
 
-		<!-- HEALTH -->
-		<Controls:HeroHealthDisplay x:Name="ctrlHealth" Grid.Column="0" Grid.Row="1"/>
-
-		<!-- WEAPON -->
-		<Controls:HeroWeaponDisplay x:Name="ctrlWeapon" Grid.Column="1" Grid.Row="1"/>
-
-		<!-- MONSTER -->
-		<Controls:MonsterStatDisplay x:Name="ctrlMonster" Grid.Column="0" Grid.Row="0"/>
+		<Grid Grid.Column="0" Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<!-- MONSTER -->
+			<Controls:MonsterStatDisplay x:Name="ctrlMonster" Grid.Row="0"/>
+			<!-- HEALTH -->
+			<Controls:HeroHealthDisplay x:Name="ctrlHealth" Grid.Row="1"/>
+		</Grid>
 
 		<!-- EVENTS -->
 		<Controls:WorldEventDisplay x:Name="ctrlEvents" VerticalContentAlignment="Stretch" Grid.Column="1" Grid.Row="0"/>

@@ -142,11 +142,15 @@
 						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsSelected" Value="True">
-								<Setter Property="Background" Value="{StaticResource WindowToolbarColor}"/>
+								<Setter TargetName="Border" Property="Background" Value="{StaticResource WindowButtonOverColor}"/>
 								<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
 							</Trigger>
 							<Trigger Property="IsSelected" Value="False">
-								<Setter Property="Background" Value="{StaticResource WindowButtonColor}"/>
+								<Setter TargetName="Border" Property="Background" Value="{StaticResource WindowButtonColor}"/>
+								<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
+							</Trigger>
+							<Trigger Property="IsEnabled" Value="False">
+								<Setter TargetName="Border" Property="Background" Value="{StaticResource WindowToolbarColor}"/>
 								<Setter Property="Foreground" Value="{StaticResource WindowForeColor}"/>
 							</Trigger>
 						</ControlTemplate.Triggers>

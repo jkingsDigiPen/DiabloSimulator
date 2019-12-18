@@ -52,10 +52,13 @@
 			</Grid>
 		</Border>
 
-		<!-- INVENTORY/EQUIPMENT -->
+		<!-- COMBAT/INVENTORY/EQUIPMENT -->
 		<Border Grid.Column="1" Grid.Row="2">
 			<TabControl>
-				<TabItem Header="Equipment">
+				<TabItem Header="Combat" IsEnabled="{Binding InCombat, UpdateSourceTrigger=PropertyChanged}" IsSelected="False">
+					<Controls:CombatDisplay x:Name="ctrlCombat"/>
+				</TabItem>
+				<TabItem Header="Equipment" IsSelected="True">
 					<Grid>
 						<Grid.RowDefinitions>
 							<RowDefinition Height="auto"/>

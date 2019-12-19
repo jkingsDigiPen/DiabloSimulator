@@ -7,6 +7,7 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
+using System;
 
 namespace DiabloSimulator.Game.World
 {
@@ -112,29 +113,29 @@ namespace DiabloSimulator.Game.World
         private void OnWorldMonster(object sender, GameEventArgs e)
         {
             WorldEvent worldEvent = e.Get<WorldEvent>();
+            Monster monster;
 
-            // Assume random monster
-            string monsterName = null;
+            // Create specific monster(s)
             if (worldEvent.Name != "Wandering Monster")
             {
-                // Get specific monster name
-                monsterName = worldEvent.EventData[0];
-            }
-
-            // Create specific monster
-            Monster monster;
-            if (monsterName != null)
-            {
-                monster = monsterFactory.Create(monsterName, worldEvent.Hero);
+                foreach(string name in worldEvent.EventData)
+                {
+                    monster = monsterFactory.Create(name, worldEvent.Hero);
+                    RaiseGameEvent(GameEvents.SetMonster, this, monster);
+                }
             }
             // Create monster using monster table
             else
             {
-                monster = CurrentZone.MonsterTable.GenerateObject(
+                // Select random number of monsters
+                int groupSize = random.Next(minMonsterGroupSize, maxMonsterGroupSize + 1);
+                for(int i = 0; i < groupSize; ++i)
+                {
+                    monster = CurrentZone.MonsterTable.GenerateObject(
                     worldEvent.Hero, monsterFactory);
+                    RaiseGameEvent(GameEvents.SetMonster, this, monster);
+                }
             }
-
-            RaiseGameEvent(GameEvents.SetMonster, this, monster);
         }
 
         //------------------------------------------------------------------------------
@@ -143,5 +144,11 @@ namespace DiabloSimulator.Game.World
 
         private WorldZoneFactory zoneFactory = new WorldZoneFactory();
         private MonsterFactory monsterFactory = new MonsterFactory();
+
+        // Internal data
+        private Random random = new Random();
+
+        const int minMonsterGroupSize = 1;
+        const int maxMonsterGroupSize = 3;
     }
 }

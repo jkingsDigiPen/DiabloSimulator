@@ -28,6 +28,9 @@ namespace DiabloSimulator.UserControls
 
             // Create view model
             DataContext = new CombatViewModel();
+
+            // Register events
+            lvMonsters.SelectionChanged += OnMonsterSelectionChanged;
         }
 
         //------------------------------------------------------------------------------
@@ -38,6 +41,14 @@ namespace DiabloSimulator.UserControls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void OnMonsterSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if(lvMonsters.Items.Count > 0)
+            {
+                View.SetMonsterSelected(lvMonsters.SelectedIndex);
+            }
         }
 
         #endregion

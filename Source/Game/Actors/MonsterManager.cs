@@ -31,7 +31,9 @@ namespace DiabloSimulator.Game
             AddEventHandler(GameEvents.HeroDead, OnHeroDead);
             AddEventHandler(GameEvents.PlayerDefend, OnPlayerDefend);
             AddEventHandler(GameEvents.SetMonster, OnSetMonster);
+            AddEventHandler(GameEvents.MonsterSelected, OnMonsterSelected);
         }
+
 
         //------------------------------------------------------------------------------
         // Public Variables:
@@ -122,14 +124,22 @@ namespace DiabloSimulator.Game
                     + monster.Race + ", appeared!");
         }
 
+        private void OnMonsterSelected(object sender, GameEventArgs e)
+        {
+            selectedMonsterIndex = e.Get<int>();
+        }
+
         #endregion
 
         private void DestroyAllMonsters()
         {
+            int count = MonsterList.Count;
+
             foreach(Monster monster in MonsterList)
             {
                 monster.Kill();
-                RaiseGameEvent(GameEvents.MonsterDead, monster);
+                RaiseGameEvent(GameEvents.MonsterDead, monster, count - 1);
+                --count;
             }
             MonsterList.Clear();
             selectedMonsterIndex = 0;
@@ -148,7 +158,7 @@ namespace DiabloSimulator.Game
                 }
                 else
                 {
-                    RaiseGameEvent(GameEvents.MonsterDead, m);
+                    RaiseGameEvent(GameEvents.MonsterDead, m, MonsterList.Count - 1);
 
                     // Set selected monster index to alive monster
                     if (selectedMonsterIndex == MonsterList.IndexOf(m) && selectedMonsterIndex != 0)

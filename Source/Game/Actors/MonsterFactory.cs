@@ -43,7 +43,7 @@ namespace DiabloSimulator.Game
             // Increase monster level as necessary
             if (monster.Stats.Level < hero.Stats.Level - 3)
             {
-                monster.Stats.Level = random.Next(hero.Stats.Level - 3, hero.Stats.Level);
+                monster.Stats.Level = random.Next(hero.Stats.Level - 3, hero.Stats.Level + 1);
             }
 
             return monster;

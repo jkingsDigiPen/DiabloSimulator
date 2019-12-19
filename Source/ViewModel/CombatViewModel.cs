@@ -8,6 +8,7 @@
 
 using DiabloSimulator.Engine;
 using DiabloSimulator.Game;
+using System;
 using System.Collections.ObjectModel;
 
 namespace DiabloSimulator.ViewModel
@@ -27,6 +28,11 @@ namespace DiabloSimulator.ViewModel
             monsterManager = EngineCore.GetModule<MonsterManager>();
         }
 
+        public void SetMonsterSelected(int selectedIndex)
+        {
+            EngineCore.RaiseGameEvent(this, GameEventArgs.Create(GameEvents.MonsterSelected, selectedIndex));
+        }
+
         //------------------------------------------------------------------------------
         // Public Variables:
         //------------------------------------------------------------------------------
@@ -36,8 +42,6 @@ namespace DiabloSimulator.ViewModel
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
-
-
 
         //------------------------------------------------------------------------------
         // Private Variables:

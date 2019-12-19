@@ -55,7 +55,8 @@
 		<!-- COMBAT/INVENTORY/EQUIPMENT -->
 		<Border Grid.Column="1" Grid.Row="2">
 			<TabControl>
-				<TabItem Header="Combat" IsEnabled="{Binding InCombat, UpdateSourceTrigger=PropertyChanged}" IsSelected="False">
+				<TabItem Header="Combat" IsEnabled="{Binding InCombat, UpdateSourceTrigger=PropertyChanged}" 
+								 IsSelected="False">
 					<Controls:CombatDisplay x:Name="ctrlCombat"/>
 				</TabItem>
 				<TabItem Header="Equipment" IsSelected="True">

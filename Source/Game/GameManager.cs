@@ -7,8 +7,6 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
-using System;
-using System.Windows;
 
 namespace DiabloSimulator.Game
 {
@@ -93,7 +91,11 @@ namespace DiabloSimulator.Game
 
         private void OnMonsterDead(object sender, GameEventArgs e)
         {
-            InCombat = false;
+            // Are all monsters gone?
+            if(e.Get<int>() == 0)
+            {
+                InCombat = false;
+            }
         }
 
         private void OnHeroDead(object sender, GameEventArgs e)

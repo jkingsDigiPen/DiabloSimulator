@@ -10,6 +10,7 @@ using DiabloSimulator.Engine;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace DiabloSimulator.Game
 {
@@ -17,7 +18,7 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    class MonsterManager : IModule
+    class MonsterManager : IModule, INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -56,6 +57,8 @@ namespace DiabloSimulator.Game
 
         public ObservableCollection<Monster> MonsterList { get; private set; } = new ObservableCollection<Monster>();
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         //------------------------------------------------------------------------------
         // Private Functions:
         //------------------------------------------------------------------------------
@@ -70,6 +73,9 @@ namespace DiabloSimulator.Game
                 "You attack the " + monster.Race + ". " + damageDealtString);
 
             ExecuteMonsterActions();
+
+            // Force UI update for monster
+            OnPropertyChange("Monster");
         }
 
         private void OnPlayerFlee(object sender, GameEventArgs e)
@@ -122,11 +128,15 @@ namespace DiabloSimulator.Game
             RaiseGameEvent(GameEvents.AddWorldEventText, this, monster.Name + ", a level "
                     + monster.Stats.Level + " "
                     + monster.Race + ", appeared!");
+            OnPropertyChange("Monster");
         }
 
         private void OnMonsterSelected(object sender, GameEventArgs e)
         {
             selectedMonsterIndex = e.Get<int>();
+
+            // Force UI update for monster
+            OnPropertyChange("Monster");
         }
 
         #endregion
@@ -170,6 +180,11 @@ namespace DiabloSimulator.Game
                     MonsterList.Remove(m);
                 }
             }
+        }
+
+        private void OnPropertyChange(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         //------------------------------------------------------------------------------

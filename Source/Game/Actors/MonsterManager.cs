@@ -133,7 +133,10 @@ namespace DiabloSimulator.Game
 
         private void OnMonsterSelected(object sender, GameEventArgs e)
         {
-            selectedMonsterIndex = e.Get<int>();
+            int targetIndex = e.Get<int>();
+
+            if(targetIndex >= 0 && targetIndex < MonsterList.Count)
+                selectedMonsterIndex = targetIndex;
 
             // Force UI update for monster
             OnPropertyChange("Monster");

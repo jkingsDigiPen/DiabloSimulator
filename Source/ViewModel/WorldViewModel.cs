@@ -10,6 +10,7 @@ using DiabloSimulator.Engine;
 using DiabloSimulator.Game;
 using DiabloSimulator.Game.World;
 using DiabloSimulator.Windows;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -35,8 +36,9 @@ namespace DiabloSimulator.ViewModel
             heroManager = EngineCore.GetModule<HeroManager>();
             monsterManager = EngineCore.GetModule<MonsterManager>();
 
-            wasInCombat = false;
             ChoiceText = new PlayerChoiceText("Explore", "Rest", "Town Portal");
+
+            gameManager.PropertyChanged += OnGameManagerPropertyChanged;
         }
 
         #region actors
@@ -54,19 +56,7 @@ namespace DiabloSimulator.ViewModel
 
         #region miscGameFunctions
 
-        public bool InCombat
-        {
-            get
-            {
-                if (wasInCombat != gameManager.InCombat)
-                {
-                    wasInCombat = gameManager.InCombat;
-                    OnPropertyChange("InCombat");
-                }
-
-                return gameManager.InCombat;
-            }
-        }
+        public bool InCombat { get => gameManager.InCombat; }
 
         #endregion
 
@@ -242,21 +232,20 @@ namespace DiabloSimulator.ViewModel
             {
                 WorldEventLog.Add(eventString);
             }
-
-            // TO DO: Figure out way to correctly propagate monster change
-            if (InCombat)
-                Application.Current.Dispatcher?.Invoke(() =>
-                (Application.Current.MainWindow as GameWindow)
-                .ctrlMonster.OnMonsterChanged(this, null));
         }
 
         #endregion
+
+        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "InCombat")
+                OnPropertyChange("InCombat");
+        }
 
         //------------------------------------------------------------------------------
         // Private Variables:
         //------------------------------------------------------------------------------
 
-        private bool wasInCombat;
         private PlayerChoiceText choiceText;
 
         // Modules

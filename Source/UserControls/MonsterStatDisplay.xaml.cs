@@ -6,6 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
+using DiabloSimulator.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,14 +26,18 @@ namespace DiabloSimulator.UserControls
         public MonsterStatDisplay()
         {
             InitializeComponent();
+
+            // Create view model
+            DataContext = new CombatViewModel();
         }
 
-        public void OnMonsterChanged(object sender, RoutedEventArgs e)
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
+        private CombatViewModel View
         {
-            tbMonsterName.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
-            var multiBind = BindingOperations.GetMultiBindingExpression(tbMonsterType, TextBlock.TextProperty);
-            multiBind.UpdateTarget();
-            tbMonsterHealth.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            get => DataContext as CombatViewModel;
         }
     }
 }

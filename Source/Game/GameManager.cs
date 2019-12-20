@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 
 using DiabloSimulator.Engine;
+using System.ComponentModel;
+using System.Windows;
 
 namespace DiabloSimulator.Game
 {
@@ -14,7 +16,7 @@ namespace DiabloSimulator.Game
     // Public Structures:
     //------------------------------------------------------------------------------
 
-    public class GameManager : IModule
+    public class GameManager : IModule, INotifyPropertyChanged
     {
         //------------------------------------------------------------------------------
         // Public Functions:
@@ -58,6 +60,8 @@ namespace DiabloSimulator.Game
                     CurrentChoiceText = combatChoiceText;
                 else
                     CurrentChoiceText = exploreChoiceText;
+
+                OnPropertyChange("InCombat");
             }
         }
 
@@ -66,6 +70,31 @@ namespace DiabloSimulator.Game
         public PlayerChoiceText CurrentChoiceText { get; set; } = exploreChoiceText;
 
         #endregion
+
+        //------------------------------------------------------------------------------
+        // Public Variables:
+        //------------------------------------------------------------------------------
+
+        // Pseudo-constants
+        public static PlayerChoiceText exploreChoiceText =
+            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerExplore),
+                PlayerAction.GetDescription(GameEvents.PlayerRest),
+                PlayerAction.GetDescription(GameEvents.PlayerTownPortal));
+
+        public static PlayerChoiceText combatChoiceText =
+            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerAttack),
+                PlayerAction.GetDescription(GameEvents.PlayerDefend), PlayerAction.GetDescription(GameEvents.PlayerFlee));
+
+        public static PlayerChoiceText discoverChoiceText =
+            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerProceed),
+                PlayerAction.GetDescription(GameEvents.PlayerBack),
+                PlayerAction.GetDescription(GameEvents.PlayerTownPortal));
+
+        public static PlayerChoiceText yesNoChoiceText =
+            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerYes),
+                PlayerAction.GetDescription(GameEvents.PlayerNo), PlayerAction.GetDescription(GameEvents.PlayerBack));
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         //------------------------------------------------------------------------------
         // Private Functions:
@@ -125,28 +154,10 @@ namespace DiabloSimulator.Game
 
         #endregion
 
-        //------------------------------------------------------------------------------
-        // Public Variables:
-        //------------------------------------------------------------------------------
-
-        // Pseudo-constants
-        public static PlayerChoiceText exploreChoiceText =
-            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerExplore),
-                PlayerAction.GetDescription(GameEvents.PlayerRest), 
-                PlayerAction.GetDescription(GameEvents.PlayerTownPortal));
-
-        public static PlayerChoiceText combatChoiceText =
-            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerAttack),
-                PlayerAction.GetDescription(GameEvents.PlayerDefend), PlayerAction.GetDescription(GameEvents.PlayerFlee));
-
-        public static PlayerChoiceText discoverChoiceText =
-            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerProceed),
-                PlayerAction.GetDescription(GameEvents.PlayerBack), 
-                PlayerAction.GetDescription(GameEvents.PlayerTownPortal));
-
-        public static PlayerChoiceText yesNoChoiceText =
-            new PlayerChoiceText(PlayerAction.GetDescription(GameEvents.PlayerYes),
-                PlayerAction.GetDescription(GameEvents.PlayerNo), PlayerAction.GetDescription(GameEvents.PlayerBack));
+        private void OnPropertyChange(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         //------------------------------------------------------------------------------
         // Private Variables:

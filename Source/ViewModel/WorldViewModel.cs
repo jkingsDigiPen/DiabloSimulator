@@ -34,7 +34,6 @@ namespace DiabloSimulator.ViewModel
             gameManager = EngineCore.GetModule<GameManager>();
             worldEventManager = EngineCore.GetModule<WorldEventManager>();
             heroManager = EngineCore.GetModule<HeroManager>();
-            monsterManager = EngineCore.GetModule<MonsterManager>();
 
             ChoiceText = new PlayerChoiceText("Explore", "Rest", "Town Portal");
 
@@ -49,8 +48,6 @@ namespace DiabloSimulator.ViewModel
         {
             EngineCore.RaiseGameEvent(this, GameEvents.HeroCreate);
         }
-
-        public Monster Monster { get => monsterManager.Monster; }
 
         #endregion
 
@@ -250,7 +247,6 @@ namespace DiabloSimulator.ViewModel
 
         // Modules
         private HeroManager heroManager;
-        private MonsterManager monsterManager;
         private GameManager gameManager;
         private WorldEventManager worldEventManager;
     }

@@ -183,6 +183,8 @@ namespace DiabloSimulator.Game
                     MonsterList.Remove(m);
                 }
             }
+
+            RaiseGameEvent(GameEvents.AdvanceTime);
         }
 
         private void OnPropertyChange(string propertyName)

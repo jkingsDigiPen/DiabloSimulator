@@ -96,8 +96,6 @@ namespace DiabloSimulator.Game
 
             if (Hero.IsDead)
                 RaiseGameEvent(GameEvents.HeroDead, Hero);
-            else
-                RaiseGameEvent(GameEvents.AdvanceTime);
         }
 
         private void OnMonsterDead(object sender, GameEventArgs e)

@@ -27,8 +27,8 @@ namespace DiabloSimulator.Game
         {
             random = new Random();
 
-            //AddMonsterArchetypes();
-            LoadArchetypesFromFile();
+            AddMonsterArchetypes();
+            //LoadArchetypesFromFile();
         }
 
         public override Monster Create(string name)
@@ -102,6 +102,7 @@ namespace DiabloSimulator.Game
             monster.Stats["CurrentHealth"] = 0;
             monster.Stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
                 ModifierType.Additive, 1, monster));
+            monster.Stats["AttackSpeed"] = 2.0f;
             AddArchetype(monster);
 
             monster = new Monster("Fallen Shaman", 1,
@@ -117,6 +118,7 @@ namespace DiabloSimulator.Game
             monster.Stats["CurrentHealth"] = 0;
             monster.Stats.AddModifier(new StatModifier("CurrentHealth", "MaxHealth",
                 ModifierType.Additive, 1, monster));
+            monster.Stats["AttackSpeed"] = 1.0f;
             AddArchetype(monster);
 
            SaveArchetypesToFile();

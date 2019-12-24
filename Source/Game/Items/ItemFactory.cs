@@ -27,8 +27,8 @@ namespace DiabloSimulator.Game
         {
             random = new Random();
 
-            //AddItemArchetypes();
-            LoadArchetypesFromFile();
+            AddItemArchetypes();
+            //LoadArchetypesFromFile();
         }
 
         public override void AddArchetype(Item archetype)
@@ -87,12 +87,14 @@ namespace DiabloSimulator.Game
             Item testItem = new Item("Simple Dagger", SlotType.MainHand, ItemRarity.Common, "Dagger");
             testItem.Stats["MinDamage"] = 2;
             testItem.Stats["MaxDamage"] = 6;
+            testItem.Stats["AttackSpeed"] = 2.0f;
             testItem.Stats.Level = 1;
             AddArchetype(testItem);
 
             testItem = new Item("Short Sword", SlotType.MainHand, ItemRarity.Common, "1-Handed Sword");
             testItem.Stats["MinDamage"] = 1;
             testItem.Stats["MaxDamage"] = 7;
+            testItem.Stats["AttackSpeed"] = 1.5f;
             testItem.Stats.Level = 1;
             AddArchetype(testItem);
 
